@@ -30,3 +30,5 @@ app.MapControllers();
 Console.WriteLine("Umut");
 
 app.Run();
+
+Console.WriteLine("betul");
