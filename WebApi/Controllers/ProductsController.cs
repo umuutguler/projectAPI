@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
 using WebApi.Repositories;
 
@@ -16,7 +17,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllBooks()
+        public IActionResult GetAllProducts()
         {
             try
             {
@@ -31,7 +32,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public IActionResult GetOneBook([FromRoute(Name = "id")] int id)
+        public IActionResult GetOneProduct([FromRoute(Name = "id")] int id)
         {
             try
             {
@@ -55,7 +56,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateOneBook([FromBody] Product product)
+        public IActionResult CreateOneProduct([FromBody] Product product)
         {
             try
             {
@@ -74,7 +75,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public IActionResult UptadeOneBook([FromRoute(Name = "id")] int id,
+        public IActionResult UptadeOneProduct([FromRoute(Name = "id")] int id,
             [FromBody] Product product)
         {
             try
@@ -107,7 +108,7 @@ namespace WebApi.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        public IActionResult DeleteOneBook([FromRoute(Name = "id")] int id)
+        public IActionResult DeleteOneProduct([FromRoute(Name = "id")] int id)
         {
             try
             {
@@ -135,6 +136,33 @@ namespace WebApi.Controllers
 
                 throw new Exception(ex.Message);
             }
+        }
+
+        [HttpPatch("{id:int}")]
+        public IActionResult PartiallyUpdateOneProduct([FromRoute(Name = "id")] int id,
+            [FromBody] JsonPatchDocument<Product> productPatch)
+        {
+            try
+            {
+                // check entity
+                var entity = _context
+                    .Products
+                    .Where(b => b.Id.Equals(id))
+                    .SingleOrDefault();
+
+                if (entity is null)
+                    return NotFound(); // 404
+
+                productPatch.ApplyTo(entity);
+                _context.SaveChanges();
+
+                return NoContent(); // 204
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
         }
 
     }
