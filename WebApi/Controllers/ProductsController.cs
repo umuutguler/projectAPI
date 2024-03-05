@@ -16,7 +16,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllBooks()
+        public IActionResult GetAllProducts()
         {
             try
             {
@@ -31,7 +31,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public IActionResult GetOneBook([FromRoute(Name = "id")] int id)
+        public IActionResult GetOneProduct([FromRoute(Name = "id")] int id)
         {
             try
             {
@@ -55,7 +55,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateOneBook([FromBody] Product product)
+        public IActionResult CreateOneProduct([FromBody] Product product)
         {
             try
             {
@@ -74,7 +74,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public IActionResult UptadeOneBook([FromRoute(Name = "id")] int id,
+        public IActionResult UptadeOneProduct([FromRoute(Name = "id")] int id,
             [FromBody] Product product)
         {
             try
@@ -107,7 +107,7 @@ namespace WebApi.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        public IActionResult DeleteOneBook([FromRoute(Name = "id")] int id)
+        public IActionResult DeleteOneProduct([FromRoute(Name = "id")] int id)
         {
             try
             {
