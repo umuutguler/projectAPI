@@ -27,4 +27,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+Console.WriteLine("Umut");
+
 app.Run();
