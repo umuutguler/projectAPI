@@ -12,8 +12,8 @@ namespace Repositories.EFCore
         public IQueryable<Product> GetAllProducts(bool trackChangers) => FindAll(trackChangers)
             .OrderBy(p => p.Id);
 
-        public IQueryable<Product> GetOneProductById(int id, bool trackChangers) => 
-            FindByCondition(p => p.Id.Equals(id), trackChangers);
+        public Product GetOneProductById(int id, bool trackChangers) => 
+            FindByCondition(p => p.Id.Equals(id), trackChangers).SingleOrDefault();
 
 
         public void CreateOneProduct(Product product) => Create(product);

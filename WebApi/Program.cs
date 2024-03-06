@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Repositories.EFCore;
+using WebApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,9 +9,9 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<RepositoriesContext>(options => // Lambda fonksiyonu yardımıyla bir options ifadesi girildi ve bu options aracılığıyla bağlantı dizesi getir
-options.UseSqlServer(builder.Configuration.GetConnectionString("sqlConnection")) // builder ile appsettings.json daki sqlConnection ulaşıyoruz. 
-);
+//ServicesExtensions
+builder.Services.ConfigureSqlContext(builder.Configuration);
+builder.Services.ConfigureRepositoryManager();
 
 var app = builder.Build();
 
@@ -27,8 +28,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-Console.WriteLine("Umut");
-
 app.Run();
-
-Console.WriteLine("betul");
