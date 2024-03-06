@@ -11,7 +11,7 @@ namespace WebApi.Extensions
         public static void ConfigureSqlContext(this IServiceCollection services,
             IConfiguration configuration)
         {
-            services.AddDbContext<RepositoriesContext>(options =>
+            services.AddDbContext<RepositoryContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("sqlConnection")));
         }
 

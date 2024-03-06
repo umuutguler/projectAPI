@@ -6,7 +6,7 @@ namespace Repositories.EFCore
 {
     public class ProductRepository : RepositoryBase<Product>, IProductRepository
     {
-        public ProductRepository(RepositoriesContext context) : base(context)
+        public ProductRepository(RepositoryContext context) : base(context)
         {
         }
         public IQueryable<Product> GetAllProducts(bool trackChangers) => FindAll(trackChangers)

@@ -12,6 +12,6 @@ namespace Services
             ; _productService = new Lazy<IProductService>(() => new ProductManager(repositoryManager));
         }
 
-        public IProductService ProductService => throw new NotImplementedException();
+        public IProductService ProductService => _productService.Value;
     }
 }

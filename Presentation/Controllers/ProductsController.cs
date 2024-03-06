@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Repositories.Contracts;
 using Services.Contracts;
 
-namespace WebApi.Controllers
+namespace Presentation.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/products")]
     public class ProductsController : ControllerBase
     {
         private readonly IServiceManager _manager;
@@ -83,11 +83,11 @@ namespace WebApi.Controllers
         {
             try
             {
-                if(product is null)
+                if (product is null)
                     return BadRequest(); // 400
-                
+
                 _manager.ProductService.UpdateOneProduct(id, product, true);
-                
+
                 return Ok(product);
             }
             catch (Exception ex)
