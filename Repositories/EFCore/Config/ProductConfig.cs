@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Entities.Models;
 
-namespace WebApi.Repositories.config
+namespace Repositories.EFCore.Config
 {
     public class ProductConfig : IEntityTypeConfiguration<Product>
     {
@@ -16,3 +16,4 @@ namespace WebApi.Repositories.config
         }
     }
 }
+s

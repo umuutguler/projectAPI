@@ -1,8 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection.Emit;
+using System.Text;
+using System.Threading.Tasks;
 using Entities.Models;
-using WebApi.Repositories.config;
+using Microsoft.EntityFrameworkCore;
+using Repositories.EFCore.Config;
 
-namespace WebApi.Repositories
+namespace Repositories.EFCore
 {
     public class RepositoriesContext : DbContext
     {
@@ -13,7 +19,7 @@ namespace WebApi.Repositories
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new ProductConfig()); // Model Oluşturulurken konfigürasyon ifadesi dikkate alınacak
+            modelBuilder.ApplyConfiguration(new ProductConfig());
         }
     }
 }
