@@ -4,7 +4,7 @@ using Repositories.Contracts;
 
 namespace Repositories.EFCore
 {
-    public class RepositoryBase<T> : IRepositoryBase<T>
+    public abstract class RepositoryBase<T> : IRepositoryBase<T>
         where T : class
     {
         protected readonly RepositoriesContext _context;

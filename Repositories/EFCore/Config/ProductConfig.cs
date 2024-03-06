@@ -16,4 +16,3 @@ namespace Repositories.EFCore.Config
         }
     }
 }
-s
