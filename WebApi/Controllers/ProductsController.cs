@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Repositories.Contracts;
+using Services.Contracts;
 
 namespace WebApi.Controllers
 {
@@ -9,9 +10,9 @@ namespace WebApi.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly IRepositoryManager _manager;
+        private readonly IServiceManager _manager;
 
-        public ProductsController(IRepositoryManager manager)
+        public ProductsController(IServiceManager manager)
         {
             _manager = manager;
         }
@@ -21,7 +22,7 @@ namespace WebApi.Controllers
         {
             try
             {
-                var products = _manager.Product.GetAllProducts(false);
+                var products = _manager.ProductService.GetAllProducts(false);
                 return Ok(products);
             }
             catch (Exception)
@@ -37,7 +38,7 @@ namespace WebApi.Controllers
 
             try
             {
-                var product = _manager.Product.GetOneProductById(id, false);
+                var product = _manager.ProductService.GetOneProductById(id, false);
 
                 if (product == null)
                 {
@@ -65,8 +66,8 @@ namespace WebApi.Controllers
                     return BadRequest(); // 400
                 }
 
-                _manager.Product.CreateOneProduct(product);
-                _manager.Save(); // Manager üzerinden save işlemi
+                _manager.ProductService.CreateOneProduct(product);
+
                 return StatusCode(201, product); // Created
             }
             catch (Exception ex)
@@ -82,21 +83,11 @@ namespace WebApi.Controllers
         {
             try
             {
-                // check product
-                var entity = _manager.Product.GetOneProductById(id, true); 
-
-                if (entity == null)
-                {
-                    return NotFound(); // 404
-                }
-
-                if (id != product.Id)
+                if(product is null)
                     return BadRequest(); // 400
-
-                entity.Title = product.Title;
-                entity.Price = product.Price;
-
-                _manager.Save();
+                
+                _manager.ProductService.UpdateOneProduct(id, product, true);
+                
                 return Ok(product);
             }
             catch (Exception ex)
@@ -111,20 +102,7 @@ namespace WebApi.Controllers
         {
             try
             {
-                // check product
-                var entity = _manager.Product.GetOneProductById(id, false);
-
-                if (entity == null)
-                {
-                    return NotFound(new
-                    {
-                        StatusCode = 404,
-                        message = $"Product with id:{id} could not found."
-                    }); // 404
-                }
-
-                _manager.Product.DeleteOneProduct(entity);
-                _manager.Save();
+                _manager.ProductService.DeleteOneProduct(id, false);
 
                 return NoContent();
             }
@@ -144,7 +122,7 @@ namespace WebApi.Controllers
             {
                 // check product
                 var entity = _manager
-                    .Product
+                    .ProductService
                     .GetOneProductById(id, true);
 
                 if (entity == null)
@@ -157,8 +135,7 @@ namespace WebApi.Controllers
                 }
                 productPatch.ApplyTo(entity);
 
-                _manager.Product.Update(entity); // ?
-                //_manager.Save();
+                _manager.ProductService.UpdateOneProduct(id, entity, true); // ?
                 return NoContent(); // 204
             }
             catch (Exception ex)
