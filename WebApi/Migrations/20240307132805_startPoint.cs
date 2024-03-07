@@ -21,6 +21,7 @@ namespace WebApi.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastUpdate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -31,12 +32,12 @@ namespace WebApi.Migrations
 
             migrationBuilder.InsertData(
                 table: "Products",
-                columns: new[] { "Id", "CreatedDate", "LastUpdate", "Price", "Title" },
+                columns: new[] { "Id", "CreatedDate", "Description", "LastUpdate", "Price", "Title" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 3, 7, 13, 28, 23, 228, DateTimeKind.Local).AddTicks(6851), new DateTime(2024, 3, 7, 13, 28, 23, 228, DateTimeKind.Local).AddTicks(6863), 100m, "Product 1" },
-                    { 2, new DateTime(2024, 3, 7, 13, 28, 23, 228, DateTimeKind.Local).AddTicks(6865), new DateTime(2024, 3, 7, 13, 28, 23, 228, DateTimeKind.Local).AddTicks(6866), 75m, "Product 2" },
-                    { 3, new DateTime(2024, 3, 7, 13, 28, 23, 228, DateTimeKind.Local).AddTicks(6867), new DateTime(2024, 3, 7, 13, 28, 23, 228, DateTimeKind.Local).AddTicks(6868), 200m, "Product 3" }
+                    { 1, new DateTime(2024, 3, 7, 16, 28, 5, 344, DateTimeKind.Local).AddTicks(6602), "Description", new DateTime(2024, 3, 7, 16, 28, 5, 344, DateTimeKind.Local).AddTicks(6614), 100m, "Product 1" },
+                    { 2, new DateTime(2024, 3, 7, 16, 28, 5, 344, DateTimeKind.Local).AddTicks(6615), "Description", new DateTime(2024, 3, 7, 16, 28, 5, 344, DateTimeKind.Local).AddTicks(6616), 75m, "Product 2" },
+                    { 3, new DateTime(2024, 3, 7, 16, 28, 5, 344, DateTimeKind.Local).AddTicks(6617), "Description", new DateTime(2024, 3, 7, 16, 28, 5, 344, DateTimeKind.Local).AddTicks(6617), 200m, "Product 3" }
                 });
         }
 

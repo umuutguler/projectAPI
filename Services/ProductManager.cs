@@ -60,6 +60,7 @@ namespace Services
 
             entity.Title = product.Title;
             entity.Price = product.Price;
+            entity.Description = product.Description;
             entity.LastUpdate = DateTime.Now;
 
             _manager.Product.UpdateOneProduct(entity);

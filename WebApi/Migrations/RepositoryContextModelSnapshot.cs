@@ -33,6 +33,10 @@ namespace WebApi.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("LastUpdate")
                         .HasColumnType("datetime2");
 
@@ -51,24 +55,27 @@ namespace WebApi.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2024, 3, 7, 13, 28, 23, 228, DateTimeKind.Local).AddTicks(6851),
-                            LastUpdate = new DateTime(2024, 3, 7, 13, 28, 23, 228, DateTimeKind.Local).AddTicks(6863),
+                            CreatedDate = new DateTime(2024, 3, 7, 16, 28, 5, 344, DateTimeKind.Local).AddTicks(6602),
+                            Description = "Description",
+                            LastUpdate = new DateTime(2024, 3, 7, 16, 28, 5, 344, DateTimeKind.Local).AddTicks(6614),
                             Price = 100m,
                             Title = "Product 1"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2024, 3, 7, 13, 28, 23, 228, DateTimeKind.Local).AddTicks(6865),
-                            LastUpdate = new DateTime(2024, 3, 7, 13, 28, 23, 228, DateTimeKind.Local).AddTicks(6866),
+                            CreatedDate = new DateTime(2024, 3, 7, 16, 28, 5, 344, DateTimeKind.Local).AddTicks(6615),
+                            Description = "Description",
+                            LastUpdate = new DateTime(2024, 3, 7, 16, 28, 5, 344, DateTimeKind.Local).AddTicks(6616),
                             Price = 75m,
                             Title = "Product 2"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2024, 3, 7, 13, 28, 23, 228, DateTimeKind.Local).AddTicks(6867),
-                            LastUpdate = new DateTime(2024, 3, 7, 13, 28, 23, 228, DateTimeKind.Local).AddTicks(6868),
+                            CreatedDate = new DateTime(2024, 3, 7, 16, 28, 5, 344, DateTimeKind.Local).AddTicks(6617),
+                            Description = "Description",
+                            LastUpdate = new DateTime(2024, 3, 7, 16, 28, 5, 344, DateTimeKind.Local).AddTicks(6617),
                             Price = 200m,
                             Title = "Product 3"
                         });
