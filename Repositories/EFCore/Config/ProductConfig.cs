@@ -9,9 +9,9 @@ namespace Repositories.EFCore.Config
         public void Configure(EntityTypeBuilder<Product> builder)
         {
             builder.HasData(
-                new Product { Id = 1, Price = 100, Title = "Product 1" },
-                new Product { Id = 2, Price = 75, Title = "Product 2" },
-                new Product { Id = 3, Price = 200, Title = "Product 3" }
+                new Product { Id = 1, Price = 100, Title = "Product 1", Description = "Description", CreatedDate = DateTime.Now, LastUpdate = DateTime.Now },
+                new Product { Id = 2, Price = 75, Title = "Product 2" , Description = "Description", CreatedDate = DateTime.Now, LastUpdate = DateTime.Now },
+                new Product { Id = 3, Price = 200, Title = "Product 3", Description = "Description", CreatedDate = DateTime.Now, LastUpdate = DateTime.Now }
                 );
         }
     }

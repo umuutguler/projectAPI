@@ -23,6 +23,8 @@ namespace Services
         {
             if (product is null)
                 throw new ArgumentNullException(nameof(product));
+            product.CreatedDate = DateTime.Now;                    //  Added Created Time
+            product.LastUpdate = DateTime.Now;
             _manager.Product.CreateOneProduct(product);
             _manager.Save();
             return product;
@@ -63,6 +65,8 @@ namespace Services
 
             entity.Title = product.Title;
             entity.Price = product.Price;
+            entity.Description = product.Description;
+            entity.LastUpdate = DateTime.Now;
 
             _manager.Product.UpdateOneProduct(entity);
             _manager.Save();
