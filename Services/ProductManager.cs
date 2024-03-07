@@ -12,10 +12,11 @@ namespace Services
     public class ProductManager : IProductService
     {
         private readonly IRepositoryManager _manager;
-
-        public ProductManager(IRepositoryManager manager)
+        private readonly ILoggerService _logger;
+        public ProductManager(IRepositoryManager manager, ILoggerService logger)
         {
             _manager = manager;
+            _logger = logger; // constructor'a ekle
         }
 
         public Product CreateOneProduct(Product product)
@@ -31,7 +32,11 @@ namespace Services
         {
             var entity = _manager.Product.GetOneProductById(id, trackChangers);
             if (entity is null)
-                throw new Exception($"Product with id:{id} could not found");
+            {
+                string message = $"The Product with id:{id} could not found";
+                _logger.LogInf(message); // Varlık yok ise bir log düşsün
+                throw new Exception(message);
+            }
             _manager.Product.DeleteOneProduct(entity);
             _manager.Save();
         }
@@ -63,5 +68,7 @@ namespace Services
             _manager.Save();
 
         }
+
+
     }
 }
