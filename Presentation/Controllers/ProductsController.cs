@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Repositories.Contracts;
 using Services.Contracts;
+using static Entities.Exceptions.NotFoundException;
 
 namespace Presentation.Controllers
 {
@@ -20,15 +21,9 @@ namespace Presentation.Controllers
         [HttpGet]
         public IActionResult GetAllProducts()
         {
-            try
-            {
-                var products = _manager.ProductService.GetAllProducts(false);
-                return Ok(products);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            var products = _manager.ProductService.GetAllProducts(false);
+            return Ok(products);
+
         }
 
 
@@ -36,22 +31,13 @@ namespace Presentation.Controllers
         public IActionResult GetOneProduct([FromRoute(Name = "id")] int id)
         {
 
-            try
+            var product = _manager.ProductService.GetOneProductById(id, false);
+
+            if (product == null)
             {
-                var product = _manager.ProductService.GetOneProductById(id, false);
-
-                if (product == null)
-                {
-                    return NotFound(); //404
-                }
-                return Ok(product);
-
+                throw new ProductNotFoundException(id);
             }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            return Ok(product);
 
         }
 
@@ -59,21 +45,14 @@ namespace Presentation.Controllers
         [HttpPost]
         public IActionResult CreateOneProduct([FromBody] Product product)
         {
-            try
+            if (product is null)
             {
-                if (product is null)
-                {
-                    return BadRequest(); // 400
-                }
-
-                _manager.ProductService.CreateOneProduct(product);
-
-                return StatusCode(201, product); // Created
+                return BadRequest(); // 400
             }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+
+            _manager.ProductService.CreateOneProduct(product);
+
+            return StatusCode(201, product); // Created
         }
 
 
@@ -81,36 +60,20 @@ namespace Presentation.Controllers
         public IActionResult UptadeOneProduct([FromRoute(Name = "id")] int id,
             [FromBody] Product product)
         {
-            try
-            {
-                if (product is null)
-                    return BadRequest(); // 400
+            if (product is null)
+                return BadRequest(); // 400
 
-                _manager.ProductService.UpdateOneProduct(id, product, true);
+            _manager.ProductService.UpdateOneProduct(id, product, true);
 
-                return Ok(product);
-            }
-            catch (Exception ex)
-            {
-
-                throw new Exception(ex.Message);
-            }
+            return Ok(product);
         }
 
         [HttpDelete("{id:int}")]
         public IActionResult DeleteOneProduct([FromRoute(Name = "id")] int id)
         {
-            try
-            {
-                _manager.ProductService.DeleteOneProduct(id, false);
+            _manager.ProductService.DeleteOneProduct(id, false);
 
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-
-                throw new Exception(ex.Message);
-            }
+            return NoContent();
         }
 
 
@@ -118,31 +81,23 @@ namespace Presentation.Controllers
         public IActionResult PartiallyUptadeOneProduct([FromRoute(Name = "id")] int id,
      [FromBody] JsonPatchDocument<Product> productPatch)
         {
-            try
-            {
-                // check product
+            // check product
                 var entity = _manager
                     .ProductService
                     .GetOneProductById(id, true);
 
-                if (entity == null)
-                {
-                    return NotFound(new
-                    {
-                        StatusCode = 404,
-                        message = $"Product with id:{id} could not found."
-                    }); // 404
-                }
-                productPatch.ApplyTo(entity);
-
-                _manager.ProductService.UpdateOneProduct(id, entity, true); // ?
-                return NoContent(); // 204
-            }
-            catch (Exception ex)
+            if (entity == null)
             {
-
-                throw new Exception(ex.Message);
+                return NotFound(new
+                {
+                    StatusCode = 404,
+                    message = $"Product with id:{id} could not found."
+                }); // 404
             }
+            productPatch.ApplyTo(entity);
+
+            _manager.ProductService.UpdateOneProduct(id, entity, true); // ?
+            return NoContent(); // 204
         }
 
 

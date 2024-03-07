@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NLog;
 using Repositories.EFCore;
+using Services.Contracts;
 using WebApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +22,9 @@ builder.Services.ConfigureServiceManager();
 builder.Services.ConfigureLoggerService();
 
 var app = builder.Build();
+
+var logger = app.Services.GetRequiredService<ILoggerService>(); // Ihtiyaç duyduğum bir servis var bu da ILoggerService
+app.ConfigureExceptionHandler(logger);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
