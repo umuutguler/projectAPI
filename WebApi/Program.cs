@@ -13,7 +13,10 @@ builder.Services.AddControllers(config =>
     config.RespectBrowserAcceptHeader = true;
     config.ReturnHttpNotAcceptable = true;
 })
-.AddXmlDataContractSerializerFormatters();  // Tek bir satırla xml formatında çıkış verebilir.
+//.AddCustomCsvFormatter()
+.AddXmlDataContractSerializerFormatters()  // Tek bir satırla xml formatında çıkış verebilir.
+.AddApplicationPart(typeof(Presentation.AssemblyRefence).Assembly)
+.AddNewtonsoftJson();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

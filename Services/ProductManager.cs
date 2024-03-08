@@ -32,9 +32,9 @@ namespace Services
             return product;
         }
 
-        public void DeleteOneProduct(int id, bool trackChangers)
+        public void DeleteOneProduct(int id, bool trackChanges)
         {
-            var entity = _manager.Product.GetOneProductById(id, trackChangers);
+            var entity = _manager.Product.GetOneProductById(id, trackChanges);
             if (entity is null)
             {
              //btk ve umutun kodu farklı 
@@ -44,14 +44,15 @@ namespace Services
             _manager.Save();
         }
 
-        public IEnumerable<Product> GetAllProducts(bool trackChangers)
+        public IEnumerable<ProductDto> GetAllProducts(bool trackChanges)
         {
-            return _manager.Product.GetAllProducts(trackChangers);
+            var products = _manager.Product.GetAllProducts(trackChanges);
+            return _mapper.Map<IEnumerable<ProductDto>>(products);
         }
 
-        public Product GetOneProductById(int id, bool trackChangers)
+        public Product GetOneProductById(int id, bool trackChanges)
         {
-            var product = _manager.Product.GetOneProductById(id,trackChangers);
+            var product = _manager.Product.GetOneProductById(id,trackChanges);
 
             // btk ve umutun kodu farklıydı değiştirdim
             if (product is null)
@@ -59,10 +60,10 @@ namespace Services
             return product;
         }
 
-        public void UpdateOneProduct(int id, ProductDtoForUpdate productDto, bool trackChangers)
+        public void UpdateOneProduct(int id, ProductDtoForUpdate productDto, bool trackChanges)
         {
             //check entity
-            var entity = _manager.Product.GetOneProductById(id, trackChangers);
+            var entity = _manager.Product.GetOneProductById(id, trackChanges);
             if(entity is null)
                 throw new ProductNotFoundException(id);
 
