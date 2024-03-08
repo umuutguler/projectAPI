@@ -44,3 +44,68 @@
 2024-03-07 15:31:07.2557 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
 2024-03-07 15:31:07.2557 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\Umut.Guler\Source\Repos\umuutguler\projectAPI\WebApi\nlog.config
 2024-03-07 15:31:07.2713 Info Configuration initialized.
+2024-03-07 22:42:00.6760 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-03-07 22:42:00.7108 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-03-07 22:42:00.7276 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\hatice.eseroglu\OneDrive - Logo\Desktop\Yeni klasör\projectAPI\WebApi\nlog.config
+2024-03-07 22:42:00.7460 Info Configuration initialized.
+2024-03-07 22:43:38.3353 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-03-07 22:43:38.3380 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-03-07 22:43:38.3742 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-03-07 22:43:38.3874 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\hatice.eseroglu\OneDrive - Logo\Desktop\Yeni klasör\projectAPI\WebApi\nlog.config
+2024-03-07 22:43:38.4043 Info Configuration initialized.
+2024-03-07 22:43:38.4080 Info Configuration initialized.
+2024-03-07 22:43:39.9950 Info AppDomain Shutting down. LogFactory closing...
+2024-03-07 22:43:40.0076 Info LogFactory has been closed.
+2024-03-07 22:45:43.0777 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-03-07 22:45:43.1221 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-03-07 22:45:43.1426 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\hatice.eseroglu\OneDrive - Logo\Desktop\Yeni klasör\projectAPI\WebApi\nlog.config
+2024-03-07 22:45:43.1733 Info Configuration initialized.
+2024-03-07 22:45:43.2028 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-03-07 22:45:43.2519 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-03-07 22:45:43.2712 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\hatice.eseroglu\OneDrive - Logo\Desktop\Yeni klasör\projectAPI\WebApi\nlog.config
+2024-03-07 22:45:43.2906 Info Configuration initialized.
+2024-03-07 22:45:44.2669 Info AppDomain Shutting down. LogFactory closing...
+2024-03-07 22:45:44.2789 Info LogFactory has been closed.
+2024-03-07 22:45:55.2338 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-03-07 22:45:55.2629 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-03-07 22:45:55.2629 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\hatice.eseroglu\OneDrive - Logo\Desktop\Yeni klasör\projectAPI\WebApi\nlog.config
+2024-03-07 22:45:55.2880 Info Configuration initialized.
+2024-03-07 22:45:56.4036 Info AppDomain Shutting down. LogFactory closing...
+2024-03-07 22:45:56.4036 Info LogFactory has been closed.
+2024-03-07 22:46:08.2791 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-03-07 22:46:08.3178 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-03-07 22:46:08.3334 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\hatice.eseroglu\OneDrive - Logo\Desktop\Yeni klasör\projectAPI\WebApi\nlog.config
+2024-03-07 22:46:08.3520 Info Configuration initialized.
+2024-03-07 22:46:08.5198 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-03-07 22:46:08.5698 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-03-07 22:46:08.5895 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\hatice.eseroglu\OneDrive - Logo\Desktop\Yeni klasör\projectAPI\WebApi\nlog.config
+2024-03-07 22:46:08.6141 Info Configuration initialized.
+2024-03-07 22:46:10.4293 Info AppDomain Shutting down. LogFactory closing...
+2024-03-07 22:46:10.4451 Info LogFactory has been closed.
+2024-03-08 00:44:31.8176 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-03-08 00:44:31.8438 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-03-08 00:44:31.8560 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\hatice.eseroglu\OneDrive - Logo\Desktop\Yeni klasör\projectAPI\WebApi\nlog.config
+2024-03-08 00:44:31.8686 Info Configuration initialized.
+2024-03-08 00:46:58.8946 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-03-08 00:46:58.9013 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-03-08 00:46:58.9288 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-03-08 00:46:58.9414 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-03-08 00:46:58.9571 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\hatice.eseroglu\OneDrive - Logo\Desktop\Yeni klasör\projectAPI\WebApi\nlog.config
+2024-03-08 00:46:58.9672 Info Configuration initialized.
+2024-03-08 00:46:58.9834 Info Configuration initialized.
+2024-03-08 00:47:00.4753 Info AppDomain Shutting down. LogFactory closing...
+2024-03-08 00:47:00.4913 Info LogFactory has been closed.
+2024-03-08 00:48:19.2612 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-03-08 00:48:19.2964 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-03-08 00:48:19.3140 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\hatice.eseroglu\OneDrive - Logo\Desktop\Yeni klasör\projectAPI\WebApi\nlog.config
+2024-03-08 00:48:19.3406 Info Configuration initialized.
+2024-03-08 00:48:19.8254 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-03-08 00:48:19.8629 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-03-08 00:48:19.8794 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\hatice.eseroglu\OneDrive - Logo\Desktop\Yeni klasör\projectAPI\WebApi\nlog.config
+2024-03-08 00:48:19.9006 Info Configuration initialized.
+2024-03-08 00:48:21.5158 Info AppDomain Shutting down. LogFactory closing...
+2024-03-08 00:48:21.5287 Info LogFactory has been closed.
+2024-03-08 00:50:18.6537 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-03-08 00:50:18.7265 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-03-08 00:50:18.7496 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\hatice.eseroglu\OneDrive - Logo\Desktop\Yeni klasör\projectAPI\WebApi\nlog.config
+2024-03-08 00:50:18.7735 Info Configuration initialized.

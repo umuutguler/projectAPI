@@ -1,9 +1,10 @@
-﻿using Entities.Models;
+﻿using Entities.DataTransferObjects;
+using Entities.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Repositories.Contracts;
 using Services.Contracts;
-using static Entities.Exceptions.NotFoundException;
+
 
 namespace Presentation.Controllers
 {
@@ -33,10 +34,6 @@ namespace Presentation.Controllers
 
             var product = _manager.ProductService.GetOneProductById(id, false);
 
-            if (product == null)
-            {
-                throw new ProductNotFoundException(id);
-            }
             return Ok(product);
 
         }
@@ -58,15 +55,16 @@ namespace Presentation.Controllers
 
         [HttpPut("{id:int}")]
         public IActionResult UptadeOneProduct([FromRoute(Name = "id")] int id,
-            [FromBody] Product product)
+         [FromBody] ProductDtoForUpdate productDto)
         {
-            if (product is null)
+            if (productDto is null)
                 return BadRequest(); // 400
 
-            _manager.ProductService.UpdateOneProduct(id, product, true);
+            _manager.ProductService.UpdateOneProduct(id, productDto, true);
 
-            return Ok(product);
+            return NoContent();
         }
+
 
         [HttpDelete("{id:int}")]
         public IActionResult DeleteOneProduct([FromRoute(Name = "id")] int id)
@@ -79,27 +77,20 @@ namespace Presentation.Controllers
 
         [HttpPatch("{id:int}")]
         public IActionResult PartiallyUptadeOneProduct([FromRoute(Name = "id")] int id,
-     [FromBody] JsonPatchDocument<Product> productPatch)
+            [FromBody] JsonPatchDocument<Product> productPatch)
         {
             // check product
-                var entity = _manager
-                    .ProductService
-                    .GetOneProductById(id, true);
-
-            if (entity == null)
-            {
-                return NotFound(new
-                {
-                    StatusCode = 404,
-                    message = $"Product with id:{id} could not found."
-                }); // 404
-            }
+            var entity = _manager
+                .ProductService
+                .GetOneProductById(id, true);
+         
             productPatch.ApplyTo(entity);
 
-            _manager.ProductService.UpdateOneProduct(id, entity, true); // ?
+            _manager.ProductService.UpdateOneProduct(id,
+                 new ProductDtoForUpdate(entity.Id, entity.Title, entity.Price, entity.Description, entity.CreatedDate, entity.LastUpdate),
+                  true); //?
             return NoContent(); // 204
         }
-
 
     }
 }

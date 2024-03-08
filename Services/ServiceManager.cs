@@ -1,4 +1,5 @@
-﻿using Repositories.Contracts;
+﻿using AutoMapper;
+using Repositories.Contracts;
 using Services.Contracts;
 
 namespace Services
@@ -7,9 +8,9 @@ namespace Services
     {
         private readonly Lazy<IProductService> _productService;
 
-        public ServiceManager(IRepositoryManager repositoryManager, ILoggerService _logger)
+        public ServiceManager(IRepositoryManager repositoryManager, ILoggerService _logger, IMapper mapper)
         {
-            ; _productService = new Lazy<IProductService>(() => new ProductManager(repositoryManager , _logger)); // artık logger ifadesi de istiyor
+           _productService = new Lazy<IProductService>(() => new ProductManager(repositoryManager , _logger, mapper)); // artık logger ifadesi de istiyor
         }
 
         public IProductService ProductService => _productService.Value;
