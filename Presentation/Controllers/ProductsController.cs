@@ -40,16 +40,19 @@ namespace Presentation.Controllers
 
 
         [HttpPost]
-        public IActionResult CreateOneProduct([FromBody] Product product)
+        public IActionResult CreateOneProduct([FromBody] ProductDtoForInsertion productDto)
         {
-            if (product is null)
+            if (productDto is null)
             {
                 return BadRequest(); // 400
             }
-
-            _manager.ProductService.CreateOneProduct(product);
-
-            return StatusCode(201, product); // Created
+            if (!ModelState.IsValid) // 422 Unprocessable Entity
+            {
+                return UnprocessableEntity(ModelState);
+            }
+            var product = _manager.ProductService.CreateOneProduct(productDto);
+            // _manager.Save(); // Manager üzerinden save işlemi
+            return StatusCode(201, product); // CreatedAtRoute()
         }
 
 
@@ -77,17 +80,25 @@ namespace Presentation.Controllers
 
         [HttpPatch("{id:int}")]
         public IActionResult PartiallyUptadeOneProduct([FromRoute(Name = "id")] int id,
-            [FromBody] JsonPatchDocument<Product> productPatch)
+            [FromBody] JsonPatchDocument<ProductDto> productPatch)
         {
             // check product
-            var entity = _manager
+            var productDto = _manager
                 .ProductService
                 .GetOneProductById(id, true);
-         
-            productPatch.ApplyTo(entity);
+
+            productPatch.ApplyTo(productDto);
 
             _manager.ProductService.UpdateOneProduct(id,
-                 new ProductDtoForUpdate(entity.Id, entity.Title, entity.Price, entity.Description, entity.CreatedDate, entity.LastUpdate),
+                 new ProductDtoForUpdate()
+                 {
+                     Id = productDto.Id,
+                     Title = productDto.Title,
+                     Price = productDto.Price,
+                     Description = productDto.Description,
+                     CreatedDate = productDto.CreatedDate,
+                     LastUpdate = productDto.LastUpdate
+                 },
                   true); //?
             return NoContent(); // 204
         }

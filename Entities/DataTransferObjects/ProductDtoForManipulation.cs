@@ -18,6 +18,9 @@ namespace Entities.DataTransferObjects
         [Required(ErrorMessage = "Title is a required field")]
         [Range(10, 1000)] // Ürün fiyatları 10 ile 1000 arasında olacak
         public decimal Price { get; init; }
+        public string Description { get; init; }
+        public DateTime CreatedDate { get; init; }
+        public DateTime LastUpdate { get; init; }
     }
 }
 
