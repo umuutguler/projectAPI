@@ -10,10 +10,10 @@ LogManager.LoadConfiguration(String.Concat(Directory.GetCurrentDirectory(), "/nl
 
 builder.Services.AddControllers(config =>
 {
-    config.RespectBrowserAcceptHeader = true;
+    config.RespectBrowserAcceptHeader = true;// İçerik Pazarlığı true -  default olarak false- İçerik pazarlığına sebebiyet veren bir bayrak
     config.ReturnHttpNotAcceptable = true;
 })
-//.AddCustomCsvFormatter()
+.AddCustomCsvFormatter()
 .AddXmlDataContractSerializerFormatters()  // Tek bir satırla xml formatında çıkış verebilir.
 .AddApplicationPart(typeof(Presentation.AssemblyRefence).Assembly)
 .AddNewtonsoftJson();
