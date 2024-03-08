@@ -10,6 +10,7 @@ namespace WebApi.Utilities.AutoMapper
         {
             CreateMap<ProductDtoForUpdate, Product>();  // CreateMap<Tsorce, TDestination>
             CreateMap<Product, ProductDto>();
+            CreateMap<ProductDtoForInsertion , Product>();
         }
     }
 }

@@ -24,12 +24,12 @@ namespace Services
             _mapper = mapper;
         }
 
-        public Product CreateOneProduct(Product product)
+        public ProductDto CreateOneProduct(ProductDtoForInsertion productDto) //ProductDtoForInsertion dan Product nesnesine bir tanım gerçekleştirmeliyiz. MappingProfile ekle
         {
-            
-            _manager.Product.CreateOneProduct(product);
+            var entity = _mapper.Map<Product>(productDto); // BookDtoForInsertion tan Book a geçiş
+            _manager.Product.CreateOneProduct(entity);
             _manager.Save();
-            return product;
+            return _mapper.Map<ProductDto>(entity); //Book tan BookDto ya geçiş -  return book;
         }
 
         public void DeleteOneProduct(int id, bool trackChanges)
@@ -50,14 +50,16 @@ namespace Services
             return _mapper.Map<IEnumerable<ProductDto>>(products);
         }
 
-        public Product GetOneProductById(int id, bool trackChanges)
+        public ProductDto GetOneProductById(int id, bool trackChanges)
         {
             var product = _manager.Product.GetOneProductById(id,trackChanges);
 
             // btk ve umutun kodu farklıydı değiştirdim
-            if (product is null)
+            if (product == null)
+            {
                 throw new ProductNotFoundException(id);
-            return product;
+            }
+            return _mapper.Map<ProductDto>(product); //product tan ProductDto ya geçiş yapıp ProductDto cinsinde veri return ettik return product;
         }
 
         public void UpdateOneProduct(int id, ProductDtoForUpdate productDto, bool trackChanges)

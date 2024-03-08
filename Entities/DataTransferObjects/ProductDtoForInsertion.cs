@@ -8,5 +8,6 @@ namespace Entities.DataTransferObjects
 {
     public record ProductDtoForInsertion : ProductDtoForManipulation // Ekleme işlemi için de bir tip tanımı
     {
+
     }
 }

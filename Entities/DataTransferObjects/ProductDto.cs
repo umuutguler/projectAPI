@@ -2,12 +2,12 @@
 {
     public record ProductDto
     { 
-        public int Id { get; set; }
+        public int Id { get; init; }
         public String Title { get; set; }
-        public decimal Price { get; set; }
-        public string Description { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public DateTime LastUpdate { get; set; }
+        public decimal Price { get; init; }
+        public string Description { get; init; }
+        public DateTime CreatedDate { get; init; }
+        public DateTime LastUpdate { get; init; }
     }
 
 }
