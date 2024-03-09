@@ -63,9 +63,12 @@ namespace Presentation.Controllers
             if (productDto is null)
                 return BadRequest(); // 400
 
-            _manager.ProductService.UpdateOneProduct(id, productDto, true);
+            if (!ModelState.IsValid)
+                return UnprocessableEntity(ModelState);
 
-            return NoContent();
+            _manager.ProductService.UpdateOneProduct(id, productDto, false);
+
+            return NoContent(); //204
         }
 
 
