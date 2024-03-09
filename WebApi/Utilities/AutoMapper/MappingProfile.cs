@@ -8,7 +8,7 @@ namespace WebApi.Utilities.AutoMapper
     {
         public MappingProfile()
         {
-            CreateMap<ProductDtoForUpdate, Product>();  // CreateMap<Tsorce, TDestination>
+            CreateMap<ProductDtoForUpdate, Product>().ReverseMap();  // CreateMap<Tsorce, TDestination>
             CreateMap<Product, ProductDto>();
             CreateMap<ProductDtoForInsertion , Product>();
         }

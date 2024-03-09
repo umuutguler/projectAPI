@@ -83,26 +83,22 @@ namespace Presentation.Controllers
 
         [HttpPatch("{id:int}")]
         public IActionResult PartiallyUptadeOneProduct([FromRoute(Name = "id")] int id,
-            [FromBody] JsonPatchDocument<ProductDto> productPatch)
+            [FromBody] JsonPatchDocument<ProductDtoForUpdate> productPatch)
         {
-            // check product
-            var productDto = _manager
-                .ProductService
-                .GetOneProductById(id, true);
+            if (productPatch is null)
+                return BadRequest();
 
-            productPatch.ApplyTo(productDto);
+            var result = _manager.ProductService.GetOneProductForPatch(id, false);
 
-            _manager.ProductService.UpdateOneProduct(id,
-                 new ProductDtoForUpdate()
-                 {
-                     Id = productDto.Id,
-                     Title = productDto.Title,
-                     Price = productDto.Price,
-                     Description = productDto.Description,
-                     CreatedDate = productDto.CreatedDate,
-                     LastUpdate = productDto.LastUpdate
-                 },
-                  true); //?
+            productPatch.ApplyTo(result.productDtoForUpdate, ModelState);
+
+            TryValidateModel(result.productDtoForUpdate);
+
+            if (!ModelState.IsValid)
+                return UnprocessableEntity(ModelState);
+
+            _manager.ProductService.SaveChangesForPatch(result.productDtoForUpdate, result.product);
+
             return NoContent(); // 204
         }
 

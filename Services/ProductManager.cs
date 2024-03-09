@@ -55,11 +55,27 @@ namespace Services
             var product = _manager.Product.GetOneProductById(id,trackChanges);
 
             // btk ve umutun kodu farklıydı değiştirdim
-            if (product == null)
+            if (product is null)
             {
                 throw new ProductNotFoundException(id);
             }
             return _mapper.Map<ProductDto>(product); //product tan ProductDto ya geçiş yapıp ProductDto cinsinde veri return ettik return product;
+        }
+
+        public (ProductDtoForUpdate productDtoForUpdate, Product product) GetOneProductForPatch(int id, bool trackChanges)
+        {
+            var product = _manager.Product.GetOneProductById(id, trackChanges);
+            if (product is null)
+                throw new ProductNotFoundException(id);
+
+            var productDtoForUpdate = _mapper.Map<ProductDtoForUpdate>(product);
+            return (productDtoForUpdate, product);
+        }
+
+        public void SaveChangesForPatch(ProductDtoForUpdate productDtoForUpdate, Product product)
+        {
+            _mapper.Map(productDtoForUpdate, product);
+            _manager.Save();
         }
 
         public void UpdateOneProduct(int id, ProductDtoForUpdate productDto, bool trackChanges)
