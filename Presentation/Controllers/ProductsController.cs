@@ -9,6 +9,9 @@ using Services.Contracts;
 
 namespace Presentation.Controllers
 {
+    [ServiceFilter(typeof(LogFilterAttribute))] // En üste eklediğimizde bütün metodların loglanmasını sağlayabiliriz.
+                                                // Action bazlı değil de controller bazlı loglama işlemi yapıyoruz
+
     [ApiController]
     [Route("api/products")]
     public class ProductsController : ControllerBase
