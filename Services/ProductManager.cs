@@ -14,6 +14,9 @@ namespace Services
 {
     public class ProductManager : IProductService
     {
+        /* Manager e ihtiyaç duyuyorum. BookRepository e değil.
+         * Book Repository e enjekte etmeyeceğiz
+         * Manager ı enjekte edeceğiz. Her şey onun üzerinde dönecek*/
         private readonly IRepositoryManager _manager;
         private readonly ILoggerService _logger;
         private readonly IMapper _mapper;
@@ -24,35 +27,35 @@ namespace Services
             _mapper = mapper;
         }
 
-        public ProductDto CreateOneProduct(ProductDtoForInsertion productDto) //ProductDtoForInsertion dan Product nesnesine bir tanım gerçekleştirmeliyiz. MappingProfile ekle
+        public async Task <ProductDto> CreateOneProductAsync(ProductDtoForInsertion productDto) //ProductDtoForInsertion dan Product nesnesine bir tanım gerçekleştirmeliyiz. MappingProfile ekle
         {
             var entity = _mapper.Map<Product>(productDto); // BookDtoForInsertion tan Book a geçiş
             _manager.Product.CreateOneProduct(entity);
-            _manager.Save();
+            await _manager.SaveAsync();
             return _mapper.Map<ProductDto>(entity); //Book tan BookDto ya geçiş -  return book;
         }
 
-        public void DeleteOneProduct(int id, bool trackChanges)
+        public async Task DeleteOneProductAsync(int id, bool trackChanges)
         {
-            var entity = _manager.Product.GetOneProductById(id, trackChanges);
+            var entity = await _manager.Product.GetOneProductByIdAsync(id, trackChanges);
             if (entity is null)
             {
              //btk ve umutun kodu farklı 
                 throw new ProductNotFoundException(id);
             }
             _manager.Product.DeleteOneProduct(entity);
-            _manager.Save();
+            await _manager.SaveAsync();
         }
 
-        public IEnumerable<ProductDto> GetAllProducts(bool trackChanges)
+        public async Task<IEnumerable<ProductDto>> GetAllProductsAsync(bool trackChanges)
         {
-            var products = _manager.Product.GetAllProducts(trackChanges);
+            var products = await _manager.Product.GetAllProductsAsync(trackChanges);
             return _mapper.Map<IEnumerable<ProductDto>>(products);
         }
 
-        public ProductDto GetOneProductById(int id, bool trackChanges)
+        public async Task<ProductDto> GetOneProductByIdAsync(int id, bool trackChanges)
         {
-            var product = _manager.Product.GetOneProductById(id,trackChanges);
+            var product = await _manager.Product.GetOneProductByIdAsync(id, trackChanges);
 
             // btk ve umutun kodu farklıydı değiştirdim
             if (product is null)
@@ -62,9 +65,9 @@ namespace Services
             return _mapper.Map<ProductDto>(product); //product tan ProductDto ya geçiş yapıp ProductDto cinsinde veri return ettik return product;
         }
 
-        public (ProductDtoForUpdate productDtoForUpdate, Product product) GetOneProductForPatch(int id, bool trackChanges)
+        public async Task<(ProductDtoForUpdate productDtoForUpdate, Product product)> GetOneProductForPatchAsync(int id, bool trackChanges)
         {
-            var product = _manager.Product.GetOneProductById(id, trackChanges);
+            var product = await _manager.Product.GetOneProductByIdAsync(id, trackChanges);
             if (product is null)
                 throw new ProductNotFoundException(id);
 
@@ -72,16 +75,16 @@ namespace Services
             return (productDtoForUpdate, product);
         }
 
-        public void SaveChangesForPatch(ProductDtoForUpdate productDtoForUpdate, Product product)
+        public async Task SaveChangesForPatchAsync(ProductDtoForUpdate productDtoForUpdate, Product product)
         {
             _mapper.Map(productDtoForUpdate, product);
-            _manager.Save();
+            await _manager.SaveAsync();
         }
 
-        public void UpdateOneProduct(int id, ProductDtoForUpdate productDto, bool trackChanges)
+        public async Task UpdateOneProductAsync(int id, ProductDtoForUpdate productDto, bool trackChanges)
         {
             //check entity
-            var entity = _manager.Product.GetOneProductById(id, trackChanges);
+            var entity = await _manager.Product.GetOneProductByIdAsync(id, trackChanges);
             if(entity is null)
                 throw new ProductNotFoundException(id);
 
@@ -99,11 +102,9 @@ namespace Services
              */
             entity = _mapper.Map<Product>(productDto);
 
-            _manager.Product.UpdateOneProduct(entity);
-            _manager.Save();
+            _manager.Product.Update(entity);
+            await _manager.SaveAsync();
 
         }
-
-
     }
 }

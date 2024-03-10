@@ -20,19 +20,19 @@ namespace Presentation.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllProducts()
+        public async Task<IActionResult> GetAllProductsAsync()
         {
-            var products = _manager.ProductService.GetAllProducts(false);
+            var products = await _manager.ProductService.GetAllProductsAsync(false);
             return Ok(products);
 
         }
 
 
         [HttpGet("{id:int}")]
-        public IActionResult GetOneProduct([FromRoute(Name = "id")] int id)
+        public async Task<IActionResult> GetOneProductAsync([FromRoute(Name = "id")] int id)
         {
 
-            var product = _manager.ProductService.GetOneProductById(id, false);
+            var product = await _manager.ProductService.GetOneProductByIdAsync(id, false);
 
             return Ok(product);
 
@@ -40,7 +40,7 @@ namespace Presentation.Controllers
 
 
         [HttpPost]
-        public IActionResult CreateOneProduct([FromBody] ProductDtoForInsertion productDto)
+        public async Task<IActionResult> CreateOneProductAsync([FromBody] ProductDtoForInsertion productDto)
         {
             if (productDto is null)
             {
@@ -50,14 +50,14 @@ namespace Presentation.Controllers
             {
                 return UnprocessableEntity(ModelState);
             }
-            var product = _manager.ProductService.CreateOneProduct(productDto);
+            var product = await _manager.ProductService.CreateOneProductAsync(productDto);
             // _manager.Save(); // Manager üzerinden save işlemi
             return StatusCode(201, product); // CreatedAtRoute()
         }
 
 
         [HttpPut("{id:int}")]
-        public IActionResult UptadeOneProduct([FromRoute(Name = "id")] int id,
+        public async Task<IActionResult> UptadeOneProductAsync([FromRoute(Name = "id")] int id,
          [FromBody] ProductDtoForUpdate productDto)
         {
             if (productDto is null)
@@ -66,29 +66,29 @@ namespace Presentation.Controllers
             if (!ModelState.IsValid)
                 return UnprocessableEntity(ModelState);
 
-            _manager.ProductService.UpdateOneProduct(id, productDto, false);
+            await _manager.ProductService.UpdateOneProductAsync(id, productDto, false);
 
             return NoContent(); //204
         }
 
 
         [HttpDelete("{id:int}")]
-        public IActionResult DeleteOneProduct([FromRoute(Name = "id")] int id)
+        public async Task<IActionResult> DeleteOneProductAsync([FromRoute(Name = "id")] int id)
         {
-            _manager.ProductService.DeleteOneProduct(id, false);
+            await _manager.ProductService.DeleteOneProductAsync(id, false);
 
             return NoContent();
         }
 
 
         [HttpPatch("{id:int}")]
-        public IActionResult PartiallyUptadeOneProduct([FromRoute(Name = "id")] int id,
+        public async Task<IActionResult> PartiallyUptadeOneProductAsync([FromRoute(Name = "id")] int id,
             [FromBody] JsonPatchDocument<ProductDtoForUpdate> productPatch)
         {
             if (productPatch is null)
                 return BadRequest();
 
-            var result = _manager.ProductService.GetOneProductForPatch(id, false);
+            var result = await _manager.ProductService.GetOneProductForPatchAsync(id, false);
 
             productPatch.ApplyTo(result.productDtoForUpdate, ModelState);
 
@@ -97,10 +97,9 @@ namespace Presentation.Controllers
             if (!ModelState.IsValid)
                 return UnprocessableEntity(ModelState);
 
-            _manager.ProductService.SaveChangesForPatch(result.productDtoForUpdate, result.product);
+            await _manager.ProductService.SaveChangesForPatchAsync(result.productDtoForUpdate, result.product);
 
             return NoContent(); // 204
         }
-
     }
 }
