@@ -37,12 +37,8 @@ namespace Services
 
         public async Task DeleteOneProductAsync(int id, bool trackChanges)
         {
-            var entity = await _manager.Product.GetOneProductByIdAsync(id, trackChanges);
-            if (entity is null)
-            {
-             //btk ve umutun kodu farklı 
-                throw new ProductNotFoundException(id);
-            }
+            var entity = await GetOneBookByIdAndCheckExists(id, trackChanges);
+           
             _manager.Product.DeleteOneProduct(entity);
             await _manager.SaveAsync();
         }
@@ -55,22 +51,14 @@ namespace Services
 
         public async Task<ProductDto> GetOneProductByIdAsync(int id, bool trackChanges)
         {
-            var product = await _manager.Product.GetOneProductByIdAsync(id, trackChanges);
-
-            // btk ve umutun kodu farklıydı değiştirdim
-            if (product is null)
-            {
-                throw new ProductNotFoundException(id);
-            }
+            var product = await GetOneBookByIdAndCheckExists(id, trackChanges);
             return _mapper.Map<ProductDto>(product); //product tan ProductDto ya geçiş yapıp ProductDto cinsinde veri return ettik return product;
         }
 
         public async Task<(ProductDtoForUpdate productDtoForUpdate, Product product)> GetOneProductForPatchAsync(int id, bool trackChanges)
         {
-            var product = await _manager.Product.GetOneProductByIdAsync(id, trackChanges);
-            if (product is null)
-                throw new ProductNotFoundException(id);
-
+            var product = await GetOneBookByIdAndCheckExists(id, trackChanges);
+           
             var productDtoForUpdate = _mapper.Map<ProductDtoForUpdate>(product);
             return (productDtoForUpdate, product);
         }
@@ -84,27 +72,25 @@ namespace Services
         public async Task UpdateOneProductAsync(int id, ProductDtoForUpdate productDto, bool trackChanges)
         {
             //check entity
-            var entity = await _manager.Product.GetOneProductByIdAsync(id, trackChanges);
-            if(entity is null)
-                throw new ProductNotFoundException(id);
-
-            /*// check params
-            if (productDto is null)
-                throw new ArgumentException(nameof(productDto));*/ 
-            //check params kodu umutta var btkda yok
-
-            /*Mapping
-            Request'ten gelen book nesnesini entity ile eşleştiriyoruz
-            entity.Title = book.Title;
-            entity.Price = book.Price;
-            10 tane alan olsa tek tek eşleştireceğiz
-            Burada automapper uygulayacağız
-             */
+            var entity = await GetOneBookByIdAndCheckExists(id, trackChanges);
+            
             entity = _mapper.Map<Product>(productDto);
 
             _manager.Product.Update(entity);
             await _manager.SaveAsync();
 
+        }
+
+        //Action Filters la alakası yok.
+        private async Task<Product> GetOneBookByIdAndCheckExists(int id, bool trackChanges)
+        {
+            //check entity
+            var entity = await _manager.Product.GetOneProductByIdAsync(id, trackChanges);
+            if (entity is null)
+            {
+                throw new ProductNotFoundException(id);
+            }
+            return entity;
         }
     }
 }
