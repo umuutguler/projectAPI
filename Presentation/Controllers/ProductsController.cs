@@ -2,6 +2,7 @@
 using Entities.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.ActionFilters;
 using Repositories.Contracts;
 using Services.Contracts;
 
@@ -38,34 +39,20 @@ namespace Presentation.Controllers
 
         }
 
-
+        [ServiceFilter(typeof(ValidationFilterAttribute))]  // ServiceFilter yapısı
         [HttpPost]
         public async Task<IActionResult> CreateOneProductAsync([FromBody] ProductDtoForInsertion productDto)
         {
-            if (productDto is null)
-            {
-                return BadRequest(); // 400
-            }
-            if (!ModelState.IsValid) // 422 Unprocessable Entity
-            {
-                return UnprocessableEntity(ModelState);
-            }
             var product = await _manager.ProductService.CreateOneProductAsync(productDto);
             // _manager.Save(); // Manager üzerinden save işlemi
             return StatusCode(201, product); // CreatedAtRoute()
         }
 
-
+        [ServiceFilter(typeof(ValidationFilterAttribute))]  // ServiceFilter yapısı
         [HttpPut("{id:int}")]
         public async Task<IActionResult> UptadeOneProductAsync([FromRoute(Name = "id")] int id,
          [FromBody] ProductDtoForUpdate productDto)
         {
-            if (productDto is null)
-                return BadRequest(); // 400
-
-            if (!ModelState.IsValid)
-                return UnprocessableEntity(ModelState);
-
             await _manager.ProductService.UpdateOneProductAsync(id, productDto, false);
 
             return NoContent(); //204

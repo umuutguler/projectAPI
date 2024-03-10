@@ -239,3 +239,15 @@
 2024-03-10 15:37:14.7405 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
 2024-03-10 15:37:14.7405 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\hatice.eseroglu\OneDrive - Logo\Desktop\Yeni klasör\projectAPI\WebApi\nlog.config
 2024-03-10 15:37:14.7585 Info Configuration initialized.
+2024-03-10 20:36:07.2865 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-03-10 20:36:07.3035 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-03-10 20:36:07.3035 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\hatice.eseroglu\OneDrive - Logo\Desktop\Yeni klasör\projectAPI\WebApi\nlog.config
+2024-03-10 20:36:07.3207 Info Configuration initialized.
+2024-03-10 20:36:54.7428 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-03-10 20:36:54.7609 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-03-10 20:36:54.7693 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\hatice.eseroglu\OneDrive - Logo\Desktop\Yeni klasör\projectAPI\WebApi\nlog.config
+2024-03-10 20:36:54.7693 Info Configuration initialized.
+2024-03-10 20:40:53.1055 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-03-10 20:40:53.1216 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-03-10 20:40:53.1281 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\hatice.eseroglu\OneDrive - Logo\Desktop\Yeni klasör\projectAPI\WebApi\nlog.config
+2024-03-10 20:40:53.1281 Info Configuration initialized.
