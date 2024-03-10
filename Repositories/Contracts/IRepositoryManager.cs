@@ -3,6 +3,6 @@
     public interface IRepositoryManager
     {
         IProductRepository Product { get; }
-        void Save();
+        Task SaveAsync(); // KAYIT İŞLEMİ - void Save() -> Task<void> yerine Task
     }
 }
