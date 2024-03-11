@@ -1,5 +1,6 @@
 ﻿using Entities.DataTransferObjects;
 using Entities.Models;
+using Entities.RequestFeatures;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.ActionFilters;
@@ -24,11 +25,12 @@ namespace Presentation.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllProductsAsync()
+        public async Task<IActionResult> GetAllProductsAsync([FromQuery] ProductParameters productParameters)
+        //[FromQuery] -> BookParameters ifadesinin nasıl alınacağı. Bu ifadeler Query string ile gelecek
+        // Query string -> /book?pageNumber=2&pageSize=10
         {
-            var products = await _manager.ProductService.GetAllProductsAsync(false);
+            var products = await _manager.ProductService.GetAllProductsAsync(productParameters, false);
             return Ok(products);
-
         }
 
 

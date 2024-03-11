@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Entities.DataTransferObjects;
 using Entities.Models;
+using Entities.RequestFeatures;
 using Repositories.Contracts;
 using Services.Contracts;
 using static Entities.Exceptions.NotFoundException;
@@ -43,9 +44,9 @@ namespace Services
             await _manager.SaveAsync();
         }
 
-        public async Task<IEnumerable<ProductDto>> GetAllProductsAsync(bool trackChanges)
+        public async Task<IEnumerable<ProductDto>> GetAllProductsAsync(ProductParameters productParameters,bool trackChanges)
         {
-            var products = await _manager.Product.GetAllProductsAsync(trackChanges);
+            var products = await _manager.Product.GetAllProductsAsync(productParameters, trackChanges);
             return _mapper.Map<IEnumerable<ProductDto>>(products);
         }
 
