@@ -31,5 +31,19 @@ namespace WebApi.Extensions
             services.AddSingleton<LogFilterAttribute>();
         }
 
+        public static void ConfigureCors(this IServiceCollection services)
+        // Cors - Kökenler arası kaynak paylaşımı. - API'ye bağlanmak isteyene kanala erişim izni vermeliyiz ki API ya istek atabilsin
+        {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", builder =>  // ismi ve builder ifadesi
+                    builder.AllowAnyOrigin()   // bütün kökenlere izin ver
+                    .AllowAnyMethod()     // bütün metodlara izin ver. GET, POST, PUT ...
+                    .AllowAnyHeader()     // Bütün headerlara izin ver
+                    .WithExposedHeaders("X-Pagination")
+                );
+            });
+        }
+
     }
 }

@@ -44,10 +44,11 @@ namespace Services
             await _manager.SaveAsync();
         }
 
-        public async Task<IEnumerable<ProductDto>> GetAllProductsAsync(ProductParameters productParameters,bool trackChanges)
+        public async Task<(IEnumerable<ProductDto> products, MetaData metaData)> GetAllProductsAsync(ProductParameters productParameters,bool trackChanges)
         {
-            var products = await _manager.Product.GetAllProductsAsync(productParameters, trackChanges);
-            return _mapper.Map<IEnumerable<ProductDto>>(products);
+            var productsWithMetaData = await _manager.Product.GetAllProductsAsync(productParameters, trackChanges);
+            var productsDto = _mapper.Map<IEnumerable<ProductDto>>(productsWithMetaData);
+            return (productsDto, productsWithMetaData.MetaData);
         }
 
         public async Task<ProductDto> GetOneProductByIdAsync(int id, bool trackChanges)

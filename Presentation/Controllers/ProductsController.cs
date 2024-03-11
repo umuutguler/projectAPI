@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Presentation.ActionFilters;
 using Repositories.Contracts;
 using Services.Contracts;
+using System.Text.Json;
 
 
 namespace Presentation.Controllers
@@ -29,8 +30,11 @@ namespace Presentation.Controllers
         //[FromQuery] -> BookParameters ifadesinin nasıl alınacağı. Bu ifadeler Query string ile gelecek
         // Query string -> /book?pageNumber=2&pageSize=10
         {
-            var products = await _manager.ProductService.GetAllProductsAsync(productParameters, false);
-            return Ok(products);
+            var pagedResult = await _manager.ProductService.GetAllProductsAsync(productParameters, false);
+
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(pagedResult.metaData));
+
+            return Ok(pagedResult.products);
         }
 
 
