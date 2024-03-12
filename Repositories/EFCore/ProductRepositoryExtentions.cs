@@ -14,5 +14,19 @@ namespace Repositories.EFCore
             products.Where(product =>
             (product.Price >= minPrice) &&
             (product.Price <= maxPrice));
+
+
+        public static IQueryable<Product> Search(this IQueryable<Product> products,
+            string searchTerm)
+        {
+            if (string.IsNullOrWhiteSpace(searchTerm)) //Boşlukları varsa
+                return products;
+
+            var lowerCaseTerm = searchTerm.Trim().ToLower(); // trim, boşlukaları at - ToLower, küçük harflere çevir
+            return products
+                .Where(b => b.Title
+                .ToLower()
+                .Contains(searchTerm));
+        }
     }
 }

@@ -18,6 +18,7 @@ namespace Repositories.EFCore
         {
             var products = await  FindAll(trackChanges)
              .FilterProducts(productParameters.MinPrice, productParameters.MaxPrice) // BookRepositoryExtensions Metodu
+             .Search(productParameters.SearchTerm) // BookRepositoryExtensions Metodu
              .OrderBy(p => p.Id) // kitaplar id ye bağlı olarak sıralanmış olsun
              .ToListAsync(); // ifadenin asenkron dönmesi için
 
