@@ -1,12 +1,13 @@
 ﻿using Entities.DataTransferObjects;
 using Entities.Models;
 using Entities.RequestFeatures;
+using System.Dynamic;
 
 namespace Services.Contracts
 {
     public interface IProductService
     {
-        Task <(IEnumerable<ProductDto> products, MetaData metaData)> GetAllProductsAsync(ProductParameters productParameters, bool trackChanges);
+        Task <(IEnumerable<ExpandoObject> products, MetaData metaData)> GetAllProductsAsync(ProductParameters productParameters, bool trackChanges);
         Task <ProductDto> GetOneProductByIdAsync(int id, bool trackChanges);
         Task <ProductDto> CreateOneProductAsync(ProductDtoForInsertion product);
         Task UpdateOneProductAsync(int id, ProductDtoForUpdate productDto, bool trackChanges);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,11 +23,14 @@ namespace Services
         private readonly IRepositoryManager _manager;
         private readonly ILoggerService _logger;
         private readonly IMapper _mapper;
-        public ProductManager(IRepositoryManager manager, ILoggerService logger, IMapper mapper)
+        private readonly IDataShaper<ProductDto> _shaper;
+
+        public ProductManager(IRepositoryManager manager, ILoggerService logger, IMapper mapper, IDataShaper<ProductDto> shaper)
         {
             _manager = manager;
             _logger = logger; // constructor'a ekle
             _mapper = mapper;
+            _shaper = shaper;
         }
 
         public async Task <ProductDto> CreateOneProductAsync(ProductDtoForInsertion productDto) //ProductDtoForInsertion dan Product nesnesine bir tanım gerçekleştirmeliyiz. MappingProfile ekle
@@ -45,7 +49,7 @@ namespace Services
             await _manager.SaveAsync();
         }
 
-        public async Task<(IEnumerable<ProductDto> products, MetaData metaData)> GetAllProductsAsync(ProductParameters productParameters,bool trackChanges)
+        public async Task<(IEnumerable<ExpandoObject> products, MetaData metaData)> GetAllProductsAsync(ProductParameters productParameters,bool trackChanges)
         //BookParameters'da PageSize, PageNumber vardı ama artık minNumber ve maxNumber değerleri de var.
         {
             if (!productParameters.ValidPriceRange) // valid bir ifade gelmediyse hata kodu
@@ -54,7 +58,9 @@ namespace Services
 
             var productsWithMetaData = await _manager.Product.GetAllProductsAsync(productParameters, trackChanges);
             var productsDto = _mapper.Map<IEnumerable<ProductDto>>(productsWithMetaData);
-            return (productsDto, productsWithMetaData.MetaData);
+            var shapedData = _shaper.ShapeData(productsDto, productParameters.Fields);
+            // booksDto-> liste | bookParameters.Fields -> ihtiyaç duyulan alanlar
+            return (products: shapedData, metaData: productsWithMetaData.MetaData);
         }
 
         public async Task<ProductDto> GetOneProductByIdAsync(int id, bool trackChanges)
