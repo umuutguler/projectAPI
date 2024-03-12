@@ -3,6 +3,7 @@ using Entities.RequestFeatures;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Update.Internal;
 using Repositories.Contracts;
+using Repositories.EFCore.Extensions;
 
 namespace Repositories.EFCore
 {
@@ -20,6 +21,7 @@ namespace Repositories.EFCore
              .FilterProducts(productParameters.MinPrice, productParameters.MaxPrice) // BookRepositoryExtensions Metodu
              .Search(productParameters.SearchTerm) // BookRepositoryExtensions Metodu
              .OrderBy(p => p.Id) // kitaplar id ye bağlı olarak sıralanmış olsun
+             .Sort(productParameters.OrderBy)
              .ToListAsync(); // ifadenin asenkron dönmesi için
 
             return PagedList<Product>
