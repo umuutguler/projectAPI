@@ -1,4 +1,6 @@
 ﻿using Entities.DataTransferObjects;
+using Entities.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Presentation.ActionFilters;
 using Repositories.Contracts;
@@ -51,5 +53,21 @@ namespace WebApi.Extensions
             services.AddScoped<IDataShaper<ProductDto>, DataShaper<ProductDto>>();
         }
 
+
+        public static void ConfigureIdentity(this IServiceCollection services)
+        {
+            var builder = services.AddIdentity<User, IdentityRole>(opts =>  // User ve User rolü - IdentityUser ve IdentityRole - User ifadesini IdentityUser clasından kalıtarak ürettiğimiz için IdentityUser yerine User yazabiliyoruz
+            {
+                opts.Password.RequireDigit = true;   // Şifrede rakan istiyor muyuz
+                opts.Password.RequireLowercase = false; // küçük harf istiyor muyuz
+                opts.Password.RequireUppercase = false; // büyük harf istiyor muyuz
+                opts.Password.RequireNonAlphanumeric = false; // Alfanumarik istiyor muyuz
+                opts.Password.RequiredLength = 6;    // Şifre uzunluğu
+
+                opts.User.RequireUniqueEmail = true;      // Bir email bir defa kullanılsın
+            })
+                .AddEntityFrameworkStores<RepositoryContext>() // 
+                .AddDefaultTokenProviders();  // Json ve Token Kullanmak için
+        }
     }
 }

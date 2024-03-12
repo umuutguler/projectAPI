@@ -4,5 +4,8 @@
     {
         public int DepartmentId { get; set; }
         public String? DepartmentName { get; set; }
+
+        // Ref : Collection navigation property
+        public ICollection<User> Users { get; set; }
     }
 }

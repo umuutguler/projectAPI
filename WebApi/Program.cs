@@ -40,6 +40,8 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.ConfigureActionFilters();
 builder.Services.ConfigureCors();
 builder.Services.ConfigureDataShaper();
+builder.Services.AddAuthentication(); //Kullanıcıadı Şifre middleware i aktifleştirmek
+builder.Services.ConfigureIdentity();
 
 var app = builder.Build();
 
@@ -57,6 +59,7 @@ app.UseHttpsRedirection();
 
 app.UseCors("CorsPolicy");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
