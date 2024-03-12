@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Entities.DataTransferObjects;
+using Entities.Exceptions;
 using Entities.Models;
 using Entities.RequestFeatures;
 using Repositories.Contracts;
@@ -45,7 +46,12 @@ namespace Services
         }
 
         public async Task<(IEnumerable<ProductDto> products, MetaData metaData)> GetAllProductsAsync(ProductParameters productParameters,bool trackChanges)
+        //BookParameters'da PageSize, PageNumber vardı ama artık minNumber ve maxNumber değerleri de var.
         {
+            if (!productParameters.ValidPriceRange) // valid bir ifade gelmediyse hata kodu
+                throw new PriceOutofRangeBadRequestException();
+
+
             var productsWithMetaData = await _manager.Product.GetAllProductsAsync(productParameters, trackChanges);
             var productsDto = _mapper.Map<IEnumerable<ProductDto>>(productsWithMetaData);
             return (productsDto, productsWithMetaData.MetaData);

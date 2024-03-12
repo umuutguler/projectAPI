@@ -12,12 +12,14 @@ namespace Repositories.EFCore
         public ProductRepository(RepositoryContext context) : base(context)
         {
         }
+
         public async Task<PagedList<Product>> GetAllProductsAsync(ProductParameters productParameters, bool trackChanges)
         // async ve await anahtar sözcüğü gerekli
         {
-            var products = await FindAll(trackChanges)
-           .OrderBy(b => b.Id) // kitaplar id ye bağlı olarak sıralanmış olsun
-           .ToListAsync(); // ifadenin asenkron dönmesi için
+            var products = await  FindAll(trackChanges)
+             .FilterProducts(productParameters.MinPrice, productParameters.MaxPrice) // BookRepositoryExtensions Metodu
+             .OrderBy(p => p.Id) // kitaplar id ye bağlı olarak sıralanmış olsun
+             .ToListAsync(); // ifadenin asenkron dönmesi için
 
             return PagedList<Product>
                 .ToPagedList(products, productParameters.PageNumber, productParameters.PageSize);
