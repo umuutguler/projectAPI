@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AspNetCoreRateLimit;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using Presentation.ActionFilters;
@@ -42,6 +43,9 @@ builder.Services.ConfigureCors();
 builder.Services.ConfigureDataShaper();
 builder.Services.ConfigureIdentity();
 builder.Services.ConfigureJWT(builder.Configuration);
+builder.Services.AddMemoryCache(); // İstekleri saymak için 
+builder.Services.ConfigureRateLimitingOptions(); // RateLimit Konfigürasyonu - ServicesExtensions
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
@@ -56,6 +60,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseIpRateLimiting();
 
 app.UseCors("CorsPolicy");
 

@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using AspNetCoreRateLimit;
 using Entities.DataTransferObjects;
 using Entities.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -54,6 +55,31 @@ namespace WebApi.Extensions
         public static void ConfigureDataShaper(this IServiceCollection services)
         {
             services.AddScoped<IDataShaper<ProductDto>, DataShaper<ProductDto>>();
+        }
+
+        public static void ConfigureRateLimitingOptions(this IServiceCollection services)
+        {
+            var rateLimitRules = new List<RateLimitRule>() // Limit Kuralları listesi
+    {
+        new RateLimitRule() // Limit Kuralları
+        {
+            Endpoint = "*", // Endpointlerin tamamını kapsasın
+            Limit = 3, // Dakikada 3 istek alalım
+            Period = "1m" // 1 dakika
+            // Yeni Kurallar Eklenebilir
+        }
+    };
+
+            services.Configure<IpRateLimitOptions>(opt =>
+            {
+                opt.GeneralRules = rateLimitRules; // Yukarıda belirttiğimiz kualları genel kurallar olarak konfigüre etmiş olduk
+            });
+
+            // IoC Kayıtları
+            services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();  // AddSingleton -> Tek Bir Nesne Oluşması Yeter
+            services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+            services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
         }
 
 
