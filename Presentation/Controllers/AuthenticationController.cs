@@ -43,11 +43,22 @@ namespace Presentation.Controllers
             if (!await _service.AuthenticationManager.ValidateUser(user))
                 return Unauthorized(); // 401
 
-            return Ok(new
-            {
-                Token = await _service.AuthenticationManager.CreateToken()
-            });
+            var tokenDto = await _service
+                .AuthenticationManager
+                .CreateToken(populateExp: true);
+
+            return Ok(tokenDto); // tokenDto içerisinde hem accesstoken hem de refreshtoken var
         }
 
+
+        [HttpPost("refresh")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> Refresh([FromBody] TokenDto tokenDto)
+        {
+            var tokenDtoToReturn = await _service
+                .AuthenticationManager
+                .RefreshToken(tokenDto);
+            return Ok(tokenDtoToReturn);
+        }
     }
 }
