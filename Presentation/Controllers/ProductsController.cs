@@ -1,6 +1,7 @@
 ﻿using Entities.DataTransferObjects;
 using Entities.Models;
 using Entities.RequestFeatures;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.ActionFilters;
@@ -37,7 +38,7 @@ namespace Presentation.Controllers
             return Ok(pagedResult.products);
         }
 
-
+        [Authorize]
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetOneProductAsync([FromRoute(Name = "id")] int id)
         {
