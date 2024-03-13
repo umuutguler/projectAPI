@@ -26,7 +26,8 @@ namespace Presentation.Controllers
             _manager = manager;
         }
 
-        [HttpGet]
+        [HttpHead]
+        [HttpGet(Name = "GetAllProductsAsync")]
         public async Task<IActionResult> GetAllProductsAsync([FromQuery] ProductParameters productParameters)
         //[FromQuery] -> BookParameters ifadesinin nasıl alınacağı. Bu ifadeler Query string ile gelecek
         // Query string -> /book?pageNumber=2&pageSize=10
@@ -98,5 +99,15 @@ namespace Presentation.Controllers
 
             return NoContent(); // 204
         }
+
+
+        [HttpOptions]
+        public IActionResult GetProductsOptions() // Asenkron yaptığımız bir şey olmadığı için IActionResult ifadesiyle dönüş sağlaycağız
+        {
+            Response.Headers.Add("Allow", "GET, PUT, POST, PATCH, DELETE, HEAD, OPTIONS"); //Response'un Header'ına ekle
+                                                                                           // Allow key - Diğer HTTP metodları ise value
+            return Ok();
+        }
+
     }
 }
