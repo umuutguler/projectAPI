@@ -35,5 +35,19 @@ namespace Presentation.Controllers
 
             return StatusCode(201); // kullanıcıya ait herhangi bir ifade olmayacak, sadece 201 koduyla dönüş yapacağız
         }
+
+        [HttpPost("login")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> Authenticate([FromBody] UserForAuthenticationDto user)
+        {
+            if (!await _service.AuthenticationManager.ValidateUser(user))
+                return Unauthorized(); // 401
+
+            return Ok(new
+            {
+                Token = await _service.AuthenticationManager.CreateToken()
+            });
+        }
+
     }
 }
