@@ -11,6 +11,7 @@ namespace WebApi.Utilities.AutoMapper
             CreateMap<ProductDtoForUpdate, Product>().ReverseMap();  // CreateMap<Tsorce, TDestination>
             CreateMap<Product, ProductDto>();
             CreateMap<ProductDtoForInsertion , Product>();
+            CreateMap<UserForRegistrationDto, User>();
         }
     }
 }
