@@ -12,7 +12,7 @@ using Repositories.EFCore;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20240312211820_init")]
+    [Migration("20240314112830_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -24,6 +24,27 @@ namespace WebApi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Entities.Models.Chair", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("TableId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TableId");
+
+                    b.ToTable("Chairs");
+                });
 
             modelBuilder.Entity("Entities.Models.Department", b =>
                 {
@@ -117,30 +138,90 @@ namespace WebApi.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2024, 3, 13, 0, 18, 20, 24, DateTimeKind.Local).AddTicks(4173),
+                            CreatedDate = new DateTime(2024, 3, 14, 14, 28, 29, 901, DateTimeKind.Local).AddTicks(5195),
                             Description = "Description",
-                            LastUpdate = new DateTime(2024, 3, 13, 0, 18, 20, 24, DateTimeKind.Local).AddTicks(4187),
+                            LastUpdate = new DateTime(2024, 3, 14, 14, 28, 29, 901, DateTimeKind.Local).AddTicks(5211),
                             Price = 100m,
                             Title = "Product 1"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2024, 3, 13, 0, 18, 20, 24, DateTimeKind.Local).AddTicks(4189),
+                            CreatedDate = new DateTime(2024, 3, 14, 14, 28, 29, 901, DateTimeKind.Local).AddTicks(5212),
                             Description = "Description",
-                            LastUpdate = new DateTime(2024, 3, 13, 0, 18, 20, 24, DateTimeKind.Local).AddTicks(4189),
+                            LastUpdate = new DateTime(2024, 3, 14, 14, 28, 29, 901, DateTimeKind.Local).AddTicks(5213),
                             Price = 75m,
                             Title = "Product 2"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2024, 3, 13, 0, 18, 20, 24, DateTimeKind.Local).AddTicks(4191),
+                            CreatedDate = new DateTime(2024, 3, 14, 14, 28, 29, 901, DateTimeKind.Local).AddTicks(5214),
                             Description = "Description",
-                            LastUpdate = new DateTime(2024, 3, 13, 0, 18, 20, 24, DateTimeKind.Local).AddTicks(4191),
+                            LastUpdate = new DateTime(2024, 3, 14, 14, 28, 29, 901, DateTimeKind.Local).AddTicks(5215),
                             Price = 200m,
                             Title = "Product 3"
                         });
+                });
+
+            modelBuilder.Entity("Entities.Models.ReservationInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ChairId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ReservationEndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ReservationStartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Updatdate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChairId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ReservationInfos");
+                });
+
+            modelBuilder.Entity("Entities.Models.Table", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.ToTable("Tables");
                 });
 
             modelBuilder.Entity("Entities.Models.User", b =>
@@ -194,6 +275,12 @@ namespace WebApi.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RefreshTokenExpiryTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -244,6 +331,26 @@ namespace WebApi.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "c78d0857-2f3f-4be4-8439-ffb3c5e90f62",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        },
+                        new
+                        {
+                            Id = "9c80532a-9756-4304-822b-7a9fa40fdbeb",
+                            Name = "Editor",
+                            NormalizedName = "EDITOR"
+                        },
+                        new
+                        {
+                            Id = "b5618a5d-78f3-47a7-a2d8-886e8b5218c1",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -350,6 +457,45 @@ namespace WebApi.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Entities.Models.Chair", b =>
+                {
+                    b.HasOne("Entities.Models.Table", "Table")
+                        .WithMany()
+                        .HasForeignKey("TableId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Table");
+                });
+
+            modelBuilder.Entity("Entities.Models.ReservationInfo", b =>
+                {
+                    b.HasOne("Entities.Models.Chair", "Chair")
+                        .WithMany()
+                        .HasForeignKey("ChairId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Chair");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Entities.Models.Table", b =>
+                {
+                    b.HasOne("Entities.Models.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
                 });
 
             modelBuilder.Entity("Entities.Models.User", b =>

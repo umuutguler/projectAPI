@@ -85,6 +85,8 @@ namespace WebApi.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RefreshTokenExpiryTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DepartmentId = table.Column<int>(type: "int", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -106,6 +108,26 @@ namespace WebApi.Migrations
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                     table.ForeignKey(
                         name: "FK_AspNetUsers_Departments_DepartmentId",
+                        column: x => x.DepartmentId,
+                        principalTable: "Departments",
+                        principalColumn: "DepartmentId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Tables",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Status = table.Column<bool>(type: "bit", nullable: false),
+                    DepartmentId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tables", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Tables_Departments_DepartmentId",
                         column: x => x.DepartmentId,
                         principalTable: "Departments",
                         principalColumn: "DepartmentId",
@@ -197,6 +219,66 @@ namespace WebApi.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Chairs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Status = table.Column<bool>(type: "bit", nullable: false),
+                    TableId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Chairs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Chairs_Tables_TableId",
+                        column: x => x.TableId,
+                        principalTable: "Tables",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ReservationInfos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Updatdate = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ReservationStartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ReservationEndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ChairId = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReservationInfos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ReservationInfos_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_ReservationInfos_Chairs_ChairId",
+                        column: x => x.ChairId,
+                        principalTable: "Chairs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "9c80532a-9756-4304-822b-7a9fa40fdbeb", null, "Editor", "EDITOR" },
+                    { "b5618a5d-78f3-47a7-a2d8-886e8b5218c1", null, "Admin", "ADMIN" },
+                    { "c78d0857-2f3f-4be4-8439-ffb3c5e90f62", null, "User", "USER" }
+                });
+
             migrationBuilder.InsertData(
                 table: "Departments",
                 columns: new[] { "DepartmentId", "DepartmentName" },
@@ -217,9 +299,9 @@ namespace WebApi.Migrations
                 columns: new[] { "Id", "CreatedDate", "Description", "LastUpdate", "Price", "Title" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 3, 13, 0, 18, 20, 24, DateTimeKind.Local).AddTicks(4173), "Description", new DateTime(2024, 3, 13, 0, 18, 20, 24, DateTimeKind.Local).AddTicks(4187), 100m, "Product 1" },
-                    { 2, new DateTime(2024, 3, 13, 0, 18, 20, 24, DateTimeKind.Local).AddTicks(4189), "Description", new DateTime(2024, 3, 13, 0, 18, 20, 24, DateTimeKind.Local).AddTicks(4189), 75m, "Product 2" },
-                    { 3, new DateTime(2024, 3, 13, 0, 18, 20, 24, DateTimeKind.Local).AddTicks(4191), "Description", new DateTime(2024, 3, 13, 0, 18, 20, 24, DateTimeKind.Local).AddTicks(4191), 200m, "Product 3" }
+                    { 1, new DateTime(2024, 3, 14, 14, 28, 29, 901, DateTimeKind.Local).AddTicks(5195), "Description", new DateTime(2024, 3, 14, 14, 28, 29, 901, DateTimeKind.Local).AddTicks(5211), 100m, "Product 1" },
+                    { 2, new DateTime(2024, 3, 14, 14, 28, 29, 901, DateTimeKind.Local).AddTicks(5212), "Description", new DateTime(2024, 3, 14, 14, 28, 29, 901, DateTimeKind.Local).AddTicks(5213), 75m, "Product 2" },
+                    { 3, new DateTime(2024, 3, 14, 14, 28, 29, 901, DateTimeKind.Local).AddTicks(5214), "Description", new DateTime(2024, 3, 14, 14, 28, 29, 901, DateTimeKind.Local).AddTicks(5215), 200m, "Product 3" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -265,6 +347,26 @@ namespace WebApi.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Chairs_TableId",
+                table: "Chairs",
+                column: "TableId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReservationInfos_ChairId",
+                table: "ReservationInfos",
+                column: "ChairId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReservationInfos_UserId",
+                table: "ReservationInfos",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tables_DepartmentId",
+                table: "Tables",
+                column: "DepartmentId");
         }
 
         /// <inheritdoc />
@@ -289,10 +391,19 @@ namespace WebApi.Migrations
                 name: "Products");
 
             migrationBuilder.DropTable(
+                name: "ReservationInfos");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Chairs");
+
+            migrationBuilder.DropTable(
+                name: "Tables");
 
             migrationBuilder.DropTable(
                 name: "Departments");
