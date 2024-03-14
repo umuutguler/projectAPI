@@ -12,6 +12,9 @@ namespace Repositories.EFCore
         { }
         public DbSet<Product> Products { get; set; }
         public DbSet<Department> Departments { get; set; }
+        public DbSet<ReservationInfo> ReservationInfos { get; set; }
+        public DbSet<Chair> Chairs { get; set; }
+        public DbSet<Table> Tables { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

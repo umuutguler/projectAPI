@@ -22,6 +22,27 @@ namespace WebApi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Entities.Models.Chair", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("TableId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TableId");
+
+                    b.ToTable("Chairs");
+                });
+
             modelBuilder.Entity("Entities.Models.Department", b =>
                 {
                     b.Property<int>("DepartmentId")
@@ -114,30 +135,90 @@ namespace WebApi.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2024, 3, 13, 14, 28, 22, 174, DateTimeKind.Local).AddTicks(197),
+                            CreatedDate = new DateTime(2024, 3, 14, 14, 28, 29, 901, DateTimeKind.Local).AddTicks(5195),
                             Description = "Description",
-                            LastUpdate = new DateTime(2024, 3, 13, 14, 28, 22, 174, DateTimeKind.Local).AddTicks(212),
+                            LastUpdate = new DateTime(2024, 3, 14, 14, 28, 29, 901, DateTimeKind.Local).AddTicks(5211),
                             Price = 100m,
                             Title = "Product 1"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2024, 3, 13, 14, 28, 22, 174, DateTimeKind.Local).AddTicks(214),
+                            CreatedDate = new DateTime(2024, 3, 14, 14, 28, 29, 901, DateTimeKind.Local).AddTicks(5212),
                             Description = "Description",
-                            LastUpdate = new DateTime(2024, 3, 13, 14, 28, 22, 174, DateTimeKind.Local).AddTicks(214),
+                            LastUpdate = new DateTime(2024, 3, 14, 14, 28, 29, 901, DateTimeKind.Local).AddTicks(5213),
                             Price = 75m,
                             Title = "Product 2"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2024, 3, 13, 14, 28, 22, 174, DateTimeKind.Local).AddTicks(216),
+                            CreatedDate = new DateTime(2024, 3, 14, 14, 28, 29, 901, DateTimeKind.Local).AddTicks(5214),
                             Description = "Description",
-                            LastUpdate = new DateTime(2024, 3, 13, 14, 28, 22, 174, DateTimeKind.Local).AddTicks(216),
+                            LastUpdate = new DateTime(2024, 3, 14, 14, 28, 29, 901, DateTimeKind.Local).AddTicks(5215),
                             Price = 200m,
                             Title = "Product 3"
                         });
+                });
+
+            modelBuilder.Entity("Entities.Models.ReservationInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ChairId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ReservationEndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ReservationStartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Updatdate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChairId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ReservationInfos");
+                });
+
+            modelBuilder.Entity("Entities.Models.Table", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.ToTable("Tables");
                 });
 
             modelBuilder.Entity("Entities.Models.User", b =>
@@ -251,19 +332,19 @@ namespace WebApi.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "40631648-71eb-4df9-be70-0529b24c2198",
+                            Id = "c78d0857-2f3f-4be4-8439-ffb3c5e90f62",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "8839b595-7691-4fc8-b7eb-e232d41250c0",
+                            Id = "9c80532a-9756-4304-822b-7a9fa40fdbeb",
                             Name = "Editor",
                             NormalizedName = "EDITOR"
                         },
                         new
                         {
-                            Id = "4dd28d87-ebfa-46de-8340-41324b889363",
+                            Id = "b5618a5d-78f3-47a7-a2d8-886e8b5218c1",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -373,6 +454,45 @@ namespace WebApi.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Entities.Models.Chair", b =>
+                {
+                    b.HasOne("Entities.Models.Table", "Table")
+                        .WithMany()
+                        .HasForeignKey("TableId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Table");
+                });
+
+            modelBuilder.Entity("Entities.Models.ReservationInfo", b =>
+                {
+                    b.HasOne("Entities.Models.Chair", "Chair")
+                        .WithMany()
+                        .HasForeignKey("ChairId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Chair");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Entities.Models.Table", b =>
+                {
+                    b.HasOne("Entities.Models.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
                 });
 
             modelBuilder.Entity("Entities.Models.User", b =>
