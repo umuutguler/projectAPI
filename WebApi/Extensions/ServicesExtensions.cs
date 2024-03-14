@@ -64,7 +64,7 @@ namespace WebApi.Extensions
         new RateLimitRule() // Limit Kuralları
         {
             Endpoint = "*", // Endpointlerin tamamını kapsasın
-            Limit = 3, // Dakikada 3 istek alalım
+            Limit = 60, // Dakikada 3 istek alalım
             Period = "1m" // 1 dakika
             // Yeni Kurallar Eklenebilir
         }

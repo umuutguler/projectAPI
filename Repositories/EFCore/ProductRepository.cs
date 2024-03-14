@@ -24,6 +24,12 @@ namespace Repositories.EFCore
              .Sort(productParameters.OrderBy)
              .ToListAsync(); // ifadenin asenkron dönmesi için
 
+            // Eğer Price parametresi belirlenmişse, bu parametreye göre fiyat filtresi uygulanır
+            if (productParameters.Price.HasValue)
+            {
+                products = products.Where(p => p.Price == productParameters.Price.Value).ToList();
+            }
+
             return PagedList<Product>
                 .ToPagedList(products, productParameters.PageNumber, productParameters.PageSize);
         }
