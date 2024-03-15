@@ -6,6 +6,6 @@
         public String? DepartmentName { get; set; }
 
         // Ref : Collection navigation property
-        public ICollection<User> Users { get; set; }
+        // public ICollection<User> Users { get; set; }
     }
 }

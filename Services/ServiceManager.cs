@@ -13,6 +13,7 @@ namespace Services
         private readonly Lazy<IProductService> _productService;
         private readonly Lazy<IDepartmentService> _departmentService;
         private readonly Lazy<IAuthenticationService> _authenticationService;
+        private readonly Lazy<IReservationInfoService> _reservationInfoService;
 
         public ServiceManager(IRepositoryManager repositoryManager, 
             ILoggerService _logger, 
@@ -24,10 +25,13 @@ namespace Services
            _productService = new Lazy<IProductService>(() => new ProductManager(repositoryManager , _logger, mapper, shaper)); // artık logger ifadesi de istiyor
            _departmentService = new Lazy<IDepartmentService>(() => new DepartmentManager(repositoryManager));
            _authenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationManager(_logger, mapper, _userManager, _configuration));
+           _reservationInfoService = new Lazy<IReservationInfoService>(() => new  ReservationInfoManager(repositoryManager));
         }
 
         public IProductService ProductService => _productService.Value;
         public IDepartmentService DepartmentService => _departmentService.Value;
         public IAuthenticationService AuthenticationManager => _authenticationService.Value;
+
+        public IReservationInfoService ReservationInfoService => _reservationInfoService.Value;
     }
 }

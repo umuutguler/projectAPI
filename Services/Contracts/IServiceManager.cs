@@ -11,5 +11,6 @@ namespace Services.Contracts
         IProductService ProductService { get; }
         IDepartmentService DepartmentService { get; }
         IAuthenticationService AuthenticationManager { get; }
+        IReservationInfoService ReservationInfoService { get; }
     }
 }
