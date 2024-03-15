@@ -22,7 +22,14 @@ namespace Repositories.EFCore
              .Search(productParameters.SearchTerm) // BookRepositoryExtensions Metodu
              .OrderBy(p => p.Id) // kitaplar id ye bağlı olarak sıralanmış olsun
              .Sort(productParameters.OrderBy)
+             .Where(p => !productParameters.Price.HasValue || p.Price == productParameters.Price.Value)
              .ToListAsync(); // ifadenin asenkron dönmesi için
+
+            // Eğer Price parametresi belirlenmişse, bu parametreye göre fiyat filtresi uygulanır
+            //if (productParameters.Price.HasValue)
+            //{
+              //  products = products.Where(p => p.Price == productParameters.Price.Value).ToList();
+            //}
 
             return PagedList<Product>
                 .ToPagedList(products, productParameters.PageNumber, productParameters.PageSize);
