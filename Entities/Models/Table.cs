@@ -13,5 +13,7 @@ namespace Entities.Models
 
         public int DepartmentId { get; set; }
         public Department Department { get; set; }
+
+        public ICollection<Chair> Chairs { get; set; }
     }
 }

@@ -7,5 +7,6 @@
 
         // Ref : Collection navigation property
         // public ICollection<User> Users { get; set; }
+        public ICollection<Table> Tables { get; set; }
     }
 }

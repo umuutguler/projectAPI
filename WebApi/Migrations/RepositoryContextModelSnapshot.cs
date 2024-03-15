@@ -41,6 +41,62 @@ namespace WebApi.Migrations
                     b.HasIndex("TableId");
 
                     b.ToTable("Chairs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Status = false,
+                            TableId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Status = false,
+                            TableId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Status = false,
+                            TableId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Status = false,
+                            TableId = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Status = false,
+                            TableId = 2
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Status = false,
+                            TableId = 2
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Status = false,
+                            TableId = 3
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Status = false,
+                            TableId = 3
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Status = false,
+                            TableId = 3
+                        });
                 });
 
             modelBuilder.Entity("Entities.Models.Department", b =>
@@ -135,27 +191,27 @@ namespace WebApi.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2024, 3, 14, 14, 28, 29, 901, DateTimeKind.Local).AddTicks(5195),
+                            CreatedDate = new DateTime(2024, 3, 15, 10, 59, 58, 49, DateTimeKind.Local).AddTicks(5468),
                             Description = "Description",
-                            LastUpdate = new DateTime(2024, 3, 14, 14, 28, 29, 901, DateTimeKind.Local).AddTicks(5211),
+                            LastUpdate = new DateTime(2024, 3, 15, 10, 59, 58, 49, DateTimeKind.Local).AddTicks(5491),
                             Price = 100m,
                             Title = "Product 1"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2024, 3, 14, 14, 28, 29, 901, DateTimeKind.Local).AddTicks(5212),
+                            CreatedDate = new DateTime(2024, 3, 15, 10, 59, 58, 49, DateTimeKind.Local).AddTicks(5496),
                             Description = "Description",
-                            LastUpdate = new DateTime(2024, 3, 14, 14, 28, 29, 901, DateTimeKind.Local).AddTicks(5213),
+                            LastUpdate = new DateTime(2024, 3, 15, 10, 59, 58, 49, DateTimeKind.Local).AddTicks(5497),
                             Price = 75m,
                             Title = "Product 2"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2024, 3, 14, 14, 28, 29, 901, DateTimeKind.Local).AddTicks(5214),
+                            CreatedDate = new DateTime(2024, 3, 15, 10, 59, 58, 49, DateTimeKind.Local).AddTicks(5499),
                             Description = "Description",
-                            LastUpdate = new DateTime(2024, 3, 14, 14, 28, 29, 901, DateTimeKind.Local).AddTicks(5215),
+                            LastUpdate = new DateTime(2024, 3, 15, 10, 59, 58, 49, DateTimeKind.Local).AddTicks(5500),
                             Price = 200m,
                             Title = "Product 3"
                         });
@@ -219,6 +275,26 @@ namespace WebApi.Migrations
                     b.HasIndex("DepartmentId");
 
                     b.ToTable("Tables");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DepartmentId = 1,
+                            Status = false
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DepartmentId = 2,
+                            Status = false
+                        },
+                        new
+                        {
+                            Id = 3,
+                            DepartmentId = 2,
+                            Status = false
+                        });
                 });
 
             modelBuilder.Entity("Entities.Models.User", b =>
@@ -332,19 +408,19 @@ namespace WebApi.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c78d0857-2f3f-4be4-8439-ffb3c5e90f62",
+                            Id = "041023bc-8cea-4ff1-a357-60f3ea049bd6",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "9c80532a-9756-4304-822b-7a9fa40fdbeb",
+                            Id = "47e4877d-1831-41b9-a83a-957dbf6bf226",
                             Name = "Editor",
                             NormalizedName = "EDITOR"
                         },
                         new
                         {
-                            Id = "b5618a5d-78f3-47a7-a2d8-886e8b5218c1",
+                            Id = "9cc88ff7-8ee4-4ae6-be19-ae170a48aa38",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -459,7 +535,7 @@ namespace WebApi.Migrations
             modelBuilder.Entity("Entities.Models.Chair", b =>
                 {
                     b.HasOne("Entities.Models.Table", "Table")
-                        .WithMany()
+                        .WithMany("Chairs")
                         .HasForeignKey("TableId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -487,7 +563,7 @@ namespace WebApi.Migrations
             modelBuilder.Entity("Entities.Models.Table", b =>
                 {
                     b.HasOne("Entities.Models.Department", "Department")
-                        .WithMany()
+                        .WithMany("Tables")
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -498,7 +574,7 @@ namespace WebApi.Migrations
             modelBuilder.Entity("Entities.Models.User", b =>
                 {
                     b.HasOne("Entities.Models.Department", "Department")
-                        .WithMany("Users")
+                        .WithMany()
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -559,7 +635,12 @@ namespace WebApi.Migrations
 
             modelBuilder.Entity("Entities.Models.Department", b =>
                 {
-                    b.Navigation("Users");
+                    b.Navigation("Tables");
+                });
+
+            modelBuilder.Entity("Entities.Models.Table", b =>
+                {
+                    b.Navigation("Chairs");
                 });
 #pragma warning restore 612, 618
         }
