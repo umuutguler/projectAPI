@@ -16,16 +16,37 @@ namespace Repositories.EFCore
         }
 
 
-        public async Task<IEnumerable<Department>> GetAllDepartmentsAsync(bool trackChanges) =>
-            await FindAll(trackChanges)
-                .OrderBy(c => c.DepartmentName)
-                .ToListAsync();
-       
+        public async Task<IEnumerable<Department>> GetAllDepartmentsAsync(bool trackChanges, bool includeRelated)
+        /*  await FindAll(trackChanges)
+          .OrderBy(t => t.Id)
+          .ToListAsync();*/
+        {
+            IQueryable<Department> query = FindAll(trackChanges).OrderBy(d => d.DepartmentId);
 
-        public async Task<Department> GetOneDepartmentByIdAsync(int id, bool trackChanges) =>
-            await FindByCondition(c => c.DepartmentId.Equals(id), trackChanges)
-                .SingleOrDefaultAsync();
+            if (includeRelated)
+            {
+                query = query.Include(d => d.Tables).ThenInclude(t => t.Chairs);
+            }
 
+            return await query.ToListAsync();
+        }
+
+
+        public async Task<Department> GetOneDepartmentByIdAsync(int id, bool trackChanges, bool includeRelated)
+        /*=>
+        await FindByCondition(c => c.DepartmentId.Equals(id), trackChanges)
+            .SingleOrDefaultAsync();
+        */
+        {
+            IQueryable<Department> query = FindByCondition(d => d.DepartmentId.Equals(id), trackChanges);
+
+            if (includeRelated)
+            {
+                query = query.Include(d => d.Tables);
+            }
+
+            return await query.SingleOrDefaultAsync();
+        }
         public void CreateOneDepartment(Department department) => Create(department);
 
         public void DeleteOneDepartment(Department department) => Delete(department);
