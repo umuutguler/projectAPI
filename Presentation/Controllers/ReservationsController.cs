@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Entities.DataTransferObjects;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
@@ -33,5 +34,22 @@ namespace Presentation.Controllers
             var reservation = await _manager.ReservationInfoService.CreateOneReservationInfoAsync(reservationInfo);
             return StatusCode(201, reservation);
         }
+
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> UptadeOneReservationAsync([FromRoute(Name = "id")] int id,[FromBody] ReservationInfo reservationInfo)
+        {
+            await _manager.ReservationInfoService.UpdateOneReservationInfoAsync(id, reservationInfo, false);
+
+            return NoContent(); //204
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteOneReservationAsync([FromRoute(Name = "id")] int id)
+        {
+            await _manager.ReservationInfoService.DeleteOneReservationInfoAsync(id, false);
+
+            return NoContent();
+        }
+
     }
 }

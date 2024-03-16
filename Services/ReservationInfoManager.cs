@@ -69,6 +69,8 @@ namespace Services
             if (entity is null)
                 throw new ArgumentException(nameof(entity));
 
+            entity.Status = false;
+
             _manager.ReservationInfo.DeleteOneReservationInfo(entity);
             await _manager.SaveAsync();
         }
