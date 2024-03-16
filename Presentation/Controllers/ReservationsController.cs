@@ -28,6 +28,12 @@ namespace Presentation.Controllers
                 .GetAllReservationInfosAsync(false));
         }
 
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetOneRReservationAsync([FromRoute] int id)
+        {
+            return Ok(await _manager.ReservationInfoService.GetOneReservationInfoByIdAsync(id, false));
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateOneReservationAsync([FromBody] ReservationInfo reservationInfo)
         {

@@ -853,3 +853,15 @@
 2024-03-17 00:47:32.9508 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
 2024-03-17 00:47:32.9628 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\Umut.Guler\Source\Repos\umuutguler\projectAPI\WebApi\nlog.config
 2024-03-17 00:47:32.9765 Info Configuration initialized.
+2024-03-17 00:55:10.8446 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-03-17 00:55:10.8828 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-03-17 00:55:10.8969 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\Umut.Guler\Source\Repos\umuutguler\projectAPI\WebApi\nlog.config
+2024-03-17 00:55:10.9121 Info Configuration initialized.
+2024-03-17 01:00:29.7302 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-03-17 01:00:29.7666 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-03-17 01:00:29.7666 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\Umut.Guler\Source\Repos\umuutguler\projectAPI\WebApi\nlog.config
+2024-03-17 01:00:29.7837 Info Configuration initialized.
+2024-03-17 01:08:12.3648 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-03-17 01:08:12.3950 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-03-17 01:08:12.4060 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\Umut.Guler\Source\Repos\umuutguler\projectAPI\WebApi\nlog.config
+2024-03-17 01:08:12.4060 Info Configuration initialized.
