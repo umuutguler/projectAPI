@@ -14,7 +14,7 @@ namespace Services
         private readonly IRepositoryManager _manager;
         public ReservationInfoManager(IRepositoryManager manager)
         {
-            
+            _manager = manager;
         }
 
         public async Task<IEnumerable<ReservationInfo>> GetAllReservationInfosAsync(bool trackChanges)
@@ -33,8 +33,9 @@ namespace Services
         {
             if (reservationInfo is null)
                 throw new ArgumentException(nameof(reservationInfo));
-
+ 
             reservationInfo.CreateDate = DateTime.Now;
+            reservationInfo.Updatdate ??= new List<DateTime>();
             reservationInfo.Updatdate.Add(DateTime.Now);
             reservationInfo.ReservationEndDate = reservationInfo.ReservationStartDate.AddDays(1);
             reservationInfo.Status = true;
