@@ -274,9 +274,9 @@ namespace WebApi.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "03babd8f-e571-4171-8629-96cb89fed32e", null, "Editor", "EDITOR" },
-                    { "7d0b9ae9-b7d4-4219-89e3-cc4739a04cb2", null, "Admin", "ADMIN" },
-                    { "f8620e38-9d6c-436f-a46c-9b351d0ae9a8", null, "User", "USER" }
+                    { "6586595d-fe09-4bbb-a41e-03da6c2442ca", null, "Editor", "EDITOR" },
+                    { "6c5276d5-edd7-41a9-9ebc-d4f3df85a592", null, "User", "USER" },
+                    { "99529544-2bbf-4748-8b14-5d2c0c13082e", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.InsertData(
@@ -299,9 +299,9 @@ namespace WebApi.Migrations
                 columns: new[] { "Id", "CreatedDate", "Description", "LastUpdate", "Price", "Title" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 3, 16, 1, 23, 54, 623, DateTimeKind.Local).AddTicks(912), "Description", new DateTime(2024, 3, 16, 1, 23, 54, 623, DateTimeKind.Local).AddTicks(930), 100m, "Product 1" },
-                    { 2, new DateTime(2024, 3, 16, 1, 23, 54, 623, DateTimeKind.Local).AddTicks(933), "Description", new DateTime(2024, 3, 16, 1, 23, 54, 623, DateTimeKind.Local).AddTicks(934), 75m, "Product 2" },
-                    { 3, new DateTime(2024, 3, 16, 1, 23, 54, 623, DateTimeKind.Local).AddTicks(936), "Description", new DateTime(2024, 3, 16, 1, 23, 54, 623, DateTimeKind.Local).AddTicks(937), 200m, "Product 3" }
+                    { 1, new DateTime(2024, 3, 17, 0, 9, 59, 657, DateTimeKind.Local).AddTicks(970), "Description", new DateTime(2024, 3, 17, 0, 9, 59, 657, DateTimeKind.Local).AddTicks(983), 100m, "Product 1" },
+                    { 2, new DateTime(2024, 3, 17, 0, 9, 59, 657, DateTimeKind.Local).AddTicks(984), "Description", new DateTime(2024, 3, 17, 0, 9, 59, 657, DateTimeKind.Local).AddTicks(985), 75m, "Product 2" },
+                    { 3, new DateTime(2024, 3, 17, 0, 9, 59, 657, DateTimeKind.Local).AddTicks(986), "Description", new DateTime(2024, 3, 17, 0, 9, 59, 657, DateTimeKind.Local).AddTicks(986), 200m, "Product 3" }
                 });
 
             migrationBuilder.InsertData(

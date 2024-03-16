@@ -15,14 +15,29 @@ namespace Repositories.EFCore
         {
         }
 
-        public async Task<IEnumerable<Chair>> GetAllChairsAsync(bool trackChanges) =>
-             await FindAll(trackChanges)
-                .OrderBy(c => c.Id)
-                .ToListAsync();
+        public async Task<IEnumerable<Chair>> GetAllChairsAsync(bool trackChanges, bool includeRelated = true)
+        {
+            IQueryable<Chair> query = FindAll(trackChanges).OrderBy(c => c.Id);
 
-        public async Task<Chair> GetOneChairByIdAsync(int id, bool trackChanges) =>
-            await FindByCondition(c => c.Id.Equals(id), trackChanges)
-                .SingleOrDefaultAsync();
+            if (includeRelated)
+            {
+                query = query.Include(c => c.Table);
+            }
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<Chair> GetOneChairByIdAsync(int id, bool trackChanges, bool includeRelated = true)
+        {
+            IQueryable<Chair> query = FindByCondition(c => c.Id.Equals(id), trackChanges);
+
+            if (includeRelated)
+            {
+                query = query.Include(c => c.Table);
+            }
+
+            return await query.SingleOrDefaultAsync();
+        }
 
         public void CreateOneChair(Chair chair) => Create(chair);
 

@@ -191,27 +191,27 @@ namespace WebApi.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2024, 3, 16, 1, 23, 54, 623, DateTimeKind.Local).AddTicks(912),
+                            CreatedDate = new DateTime(2024, 3, 17, 0, 9, 59, 657, DateTimeKind.Local).AddTicks(970),
                             Description = "Description",
-                            LastUpdate = new DateTime(2024, 3, 16, 1, 23, 54, 623, DateTimeKind.Local).AddTicks(930),
+                            LastUpdate = new DateTime(2024, 3, 17, 0, 9, 59, 657, DateTimeKind.Local).AddTicks(983),
                             Price = 100m,
                             Title = "Product 1"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2024, 3, 16, 1, 23, 54, 623, DateTimeKind.Local).AddTicks(933),
+                            CreatedDate = new DateTime(2024, 3, 17, 0, 9, 59, 657, DateTimeKind.Local).AddTicks(984),
                             Description = "Description",
-                            LastUpdate = new DateTime(2024, 3, 16, 1, 23, 54, 623, DateTimeKind.Local).AddTicks(934),
+                            LastUpdate = new DateTime(2024, 3, 17, 0, 9, 59, 657, DateTimeKind.Local).AddTicks(985),
                             Price = 75m,
                             Title = "Product 2"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2024, 3, 16, 1, 23, 54, 623, DateTimeKind.Local).AddTicks(936),
+                            CreatedDate = new DateTime(2024, 3, 17, 0, 9, 59, 657, DateTimeKind.Local).AddTicks(986),
                             Description = "Description",
-                            LastUpdate = new DateTime(2024, 3, 16, 1, 23, 54, 623, DateTimeKind.Local).AddTicks(937),
+                            LastUpdate = new DateTime(2024, 3, 17, 0, 9, 59, 657, DateTimeKind.Local).AddTicks(986),
                             Price = 200m,
                             Title = "Product 3"
                         });
@@ -408,19 +408,19 @@ namespace WebApi.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f8620e38-9d6c-436f-a46c-9b351d0ae9a8",
+                            Id = "6c5276d5-edd7-41a9-9ebc-d4f3df85a592",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "03babd8f-e571-4171-8629-96cb89fed32e",
+                            Id = "6586595d-fe09-4bbb-a41e-03da6c2442ca",
                             Name = "Editor",
                             NormalizedName = "EDITOR"
                         },
                         new
                         {
-                            Id = "7d0b9ae9-b7d4-4219-89e3-cc4739a04cb2",
+                            Id = "99529544-2bbf-4748-8b14-5d2c0c13082e",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });

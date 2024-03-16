@@ -17,14 +17,14 @@ namespace Services
         {
             return await _manager
                 .Department
-                .GetAllDepartmentsAsync(trackChanges);
+                .GetAllDepartmentsAsync(trackChanges, includeRelated: true);
         }
 
         public async Task<Department> GetOneDepartmentByIdAsync(int id, bool trackChanges)
         {
             var department = await _manager
                .Department
-               .GetOneDepartmentByIdAsync(id, trackChanges);
+               .GetOneDepartmentByIdAsync(id, trackChanges, includeRelated: true);
             if (department is null)
                 throw new DepartmentNotFoundException(id);
 

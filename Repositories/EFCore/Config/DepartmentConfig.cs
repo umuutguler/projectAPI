@@ -11,6 +11,12 @@ namespace Repositories.EFCore.Config
             builder.HasKey(d => d.DepartmentId); // Primery Key
             builder.Property(d => d.DepartmentName).IsRequired();
 
+            builder.HasMany(d => d.Tables) // Bir Department birden fazla Table'a sahip olacak
+               .WithOne(t => t.Department) // Bir Table bir Department'e ait olacak
+               .HasForeignKey(t => t.DepartmentId) // Table tablosunda DepartmentId alanı ile dış anahtar ilişkisi
+               .OnDelete(DeleteBehavior.Cascade); // Opsiyonel: Department silindiğinde ilgili table'lar da silinir
+
+
             builder.HasData(
                 new Department()
                 {
