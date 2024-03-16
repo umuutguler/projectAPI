@@ -9,8 +9,8 @@ namespace Repositories.Contracts
 {
     public interface ITableRepository :IRepositoryBase<Table>
     {
-        Task<IEnumerable<Table>> GetAllTablesAsync(bool trackChanges);
-        Task<Table> GetOneTableByIdAsync(int id, bool trackChanges);
+        Task<IEnumerable<Table>> GetAllTablesAsync(bool trackChanges, bool includeRelated);
+        Task<Table> GetOneTableByIdAsync(int id, bool trackChanges, bool includeRelated);
         void CreateOneTable(Table table);
         void UpdateOneTable(Table table);
         void DeleteOneTable(Table table);

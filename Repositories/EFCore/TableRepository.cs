@@ -15,14 +15,36 @@ namespace Repositories.EFCore
         {
         }
 
-        public async Task<IEnumerable<Table>> GetAllTablesAsync(bool trackChanges) =>
-            await FindAll(trackChanges)
+        public async Task<IEnumerable<Table>> GetAllTablesAsync(bool trackChanges, bool includeRelated = true) //=>
+          /*  await FindAll(trackChanges)
             .OrderBy(t => t.Id)
-            .ToListAsync();
+            .ToListAsync();*/
+        {
+            IQueryable<Table> query = FindAll(trackChanges).OrderBy(t => t.Id);
 
-        public async Task<Table> GetOneTableByIdAsync(int id, bool trackChanges) =>
-            await FindByCondition(t => t.Id.Equals(id), trackChanges)
-            .SingleOrDefaultAsync();
+            if (includeRelated)
+            {
+                query = query.Include(t => t.Department)
+                             .Include(t => t.Chairs);
+            }
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<Table> GetOneTableByIdAsync(int id, bool trackChanges, bool includeRelated = true) //=>
+        /* await FindByCondition(t => t.Id.Equals(id), trackChanges)
+         .SingleOrDefaultAsync();*/
+        {
+            IQueryable<Table> query = FindByCondition(t => t.Id.Equals(id), trackChanges);
+
+            if (includeRelated)
+            {
+                query = query.Include(t => t.Department)
+                             .Include(t => t.Chairs);
+            }
+
+            return await query.SingleOrDefaultAsync();
+        }
 
         public void CreateOneTable(Table table) => Create(table);
 

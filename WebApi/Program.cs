@@ -19,7 +19,8 @@ builder.Services.AddControllers(config =>
 .AddCustomCsvFormatter()
 .AddXmlDataContractSerializerFormatters()  // Tek bir satırla xml formatında çıkış verebilir.
 .AddApplicationPart(typeof(Presentation.AssemblyRefence).Assembly)
-.AddNewtonsoftJson();
+.AddNewtonsoftJson(opt =>
+       opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
 builder.Services.AddScoped<ValidationFilterAttribute>(); //IoC
 

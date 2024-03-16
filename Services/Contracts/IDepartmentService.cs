@@ -12,6 +12,7 @@ namespace Services.Contracts
         Task<IEnumerable<Department>> GetAllDepartmentsAsync(bool trackChanges);
         Task<Department> GetOneDepartmentByIdAsync(int id, bool trackChanges);
 
-        // Create and Delete
+
+    // Create and Delete
     }
 }

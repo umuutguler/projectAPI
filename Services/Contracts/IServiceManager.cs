@@ -10,6 +10,8 @@ namespace Services.Contracts
     {
         IProductService ProductService { get; }
         IDepartmentService DepartmentService { get; }
+        IChairService ChairService { get; }
+        ITableService TableService { get; }
         IAuthenticationService AuthenticationManager { get; }
         IReservationInfoService ReservationInfoService { get; }
     }
