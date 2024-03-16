@@ -22,14 +22,14 @@ namespace Services
         {
             return await _manager
                 .Chair
-                .GetAllChairsAsync(trackChanges);
+                .GetAllChairsAsync(trackChanges , includeRelated: true);
         }
 
         public async Task<Chair> GetOneChairByIdAsync(int id, bool trackChanges)
         {
             var chair = await _manager
                 .Chair
-                .GetOneChairByIdAsync(id, trackChanges);
+                .GetOneChairByIdAsync(id, trackChanges, includeRelated: true);
             if (chair is null)
                 throw new ChairNotFoundException(id);
 
