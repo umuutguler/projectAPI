@@ -25,6 +25,16 @@ namespace Services
                 .GetAllChairsAsync(trackChanges , includeRelated: true);
         }
 
+        // Empty Chairs
+        public async Task<IEnumerable<Chair>> GetAllEmptyChairsAsync(bool trackChanges)
+        {
+            var chairs = await _manager
+                .Chair
+                .GetAllChairsAsync(trackChanges, includeRelated: true);
+
+            return chairs.Where(c => c.Status == false);
+        }
+
         public async Task<Chair> GetOneChairByIdAsync(int id, bool trackChanges)
         {
             var chair = await _manager

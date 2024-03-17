@@ -12,7 +12,7 @@ using Repositories.EFCore;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20240316214547_init")]
+    [Migration("20240316225919_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -194,27 +194,27 @@ namespace WebApi.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2024, 3, 17, 0, 45, 47, 637, DateTimeKind.Local).AddTicks(5094),
+                            CreatedDate = new DateTime(2024, 3, 17, 1, 59, 19, 40, DateTimeKind.Local).AddTicks(4958),
                             Description = "Description",
-                            LastUpdate = new DateTime(2024, 3, 17, 0, 45, 47, 637, DateTimeKind.Local).AddTicks(5112),
+                            LastUpdate = new DateTime(2024, 3, 17, 1, 59, 19, 40, DateTimeKind.Local).AddTicks(4976),
                             Price = 100m,
                             Title = "Product 1"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2024, 3, 17, 0, 45, 47, 637, DateTimeKind.Local).AddTicks(5114),
+                            CreatedDate = new DateTime(2024, 3, 17, 1, 59, 19, 40, DateTimeKind.Local).AddTicks(4978),
                             Description = "Description",
-                            LastUpdate = new DateTime(2024, 3, 17, 0, 45, 47, 637, DateTimeKind.Local).AddTicks(5114),
+                            LastUpdate = new DateTime(2024, 3, 17, 1, 59, 19, 40, DateTimeKind.Local).AddTicks(4978),
                             Price = 75m,
                             Title = "Product 2"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2024, 3, 17, 0, 45, 47, 637, DateTimeKind.Local).AddTicks(5115),
+                            CreatedDate = new DateTime(2024, 3, 17, 1, 59, 19, 40, DateTimeKind.Local).AddTicks(4979),
                             Description = "Description",
-                            LastUpdate = new DateTime(2024, 3, 17, 0, 45, 47, 637, DateTimeKind.Local).AddTicks(5116),
+                            LastUpdate = new DateTime(2024, 3, 17, 1, 59, 19, 40, DateTimeKind.Local).AddTicks(4980),
                             Price = 200m,
                             Title = "Product 3"
                         });
@@ -411,19 +411,19 @@ namespace WebApi.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "d9a2adcc-5e2e-4b96-9592-e70d21b140ee",
+                            Id = "e8858190-b4c5-4744-8760-8bc85a1f2973",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "5c37ed0f-abeb-4a91-86e1-413a6573985e",
+                            Id = "50bf4441-97e4-403e-8222-b7893f892f77",
                             Name = "Editor",
                             NormalizedName = "EDITOR"
                         },
                         new
                         {
-                            Id = "041ba492-762f-4252-a534-c696240e0670",
+                            Id = "a6111dc8-58a0-43e5-9d43-51f0191267db",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });

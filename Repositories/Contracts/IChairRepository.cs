@@ -9,5 +9,8 @@ namespace Repositories.Contracts
         void CreateOneChair(Chair chair);
         void UpdateOneChair(Chair chair);
         void DeleteOneChair(Chair chair);
+
+        Task<IEnumerable<Chair>> GetAllEmptyChairsAsync(bool trackChanges, bool includeRelated);
+
     }
 }

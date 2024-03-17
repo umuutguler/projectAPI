@@ -57,5 +57,12 @@ namespace Presentation.Controllers
             return NoContent();
         }
 
+        [HttpGet("Empty")]
+        public async Task<IActionResult> GetAlEmptyChairsAsync()
+        {
+            return Ok(await _manager
+                .ChairService.GetAllEmptyChairsAsync(false));
+        }
+
     }
 }

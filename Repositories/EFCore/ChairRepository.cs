@@ -44,5 +44,18 @@ namespace Repositories.EFCore
         public void DeleteOneChair(Chair chair) => Delete(chair);
 
         public void UpdateOneChair(Chair chair) => Update(chair);
+
+        // EmptyChairs
+        public async Task<IEnumerable<Chair>> GetAllEmptyChairsAsync(bool trackChanges, bool includeRelated)
+        {
+            IQueryable<Chair> query = FindAll(trackChanges).OrderBy(c => c.Id);
+
+            if (includeRelated)
+            {
+                query = query.Include(c => c.Table);
+            }
+
+            return await query.ToListAsync();
+        }
     }
 }
