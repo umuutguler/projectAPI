@@ -16,14 +16,33 @@ namespace Repositories.EFCore
         }
 
 
-        public async Task<IEnumerable<ReservationInfo>> GetAllReservationInfosAsync(bool trackChanges) =>
-            await FindAll(trackChanges)
-            .OrderBy(r => r.Id)
-            .ToListAsync();
+        public async Task<IEnumerable<ReservationInfo>> GetAllReservationInfosAsync(bool trackChanges, bool includeRelated = true)
+        {
+            IQueryable<ReservationInfo> query = FindAll(trackChanges).OrderBy(r => r.Id);
 
-        public async Task<ReservationInfo> GetOneReservationInfoByIdAsync(int id, bool trackChanges) =>
-            await FindByCondition(r => r.Id.Equals(id), trackChanges)
-            .SingleOrDefaultAsync();
+            if (includeRelated)
+            {
+                query = query.Include(r => r.User)
+                             .Include(r => r.Chair)
+                             .ThenInclude(r => r.Table);
+            }
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<ReservationInfo> GetOneReservationInfoByIdAsync(int id, bool trackChanges, bool includeRelated = true)
+        {
+            IQueryable<ReservationInfo> query = FindByCondition(r => r.Id.Equals(id), trackChanges);
+
+            if (includeRelated)
+            {
+                query = query.Include(r => r.User)
+                             .Include(r => r.Chair)
+                             .ThenInclude(r => r.Table);
+            }
+
+            return await query.SingleOrDefaultAsync();
+        }
 
         public void CreateOneReservationInfo(ReservationInfo reservationInfo) => Create(reservationInfo);
 

@@ -14,5 +14,7 @@ namespace Entities.Models
         // Ref: navigation property
         public int DepartmentId { get; set; }
         public Department Department { get; set; }
+
+        //public ICollection<ReservationInfo> ReservationInfos { get; set; }
     }
 }

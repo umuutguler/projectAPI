@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Entities.Models;
+﻿using Entities.Models;
 using Repositories.Contracts;
 using Services.Contracts;
 
@@ -19,12 +14,12 @@ namespace Services
 
         public async Task<IEnumerable<ReservationInfo>> GetAllReservationInfosAsync(bool trackChanges)
         {
-            return await _manager.ReservationInfo.GetAllReservationInfosAsync(trackChanges);
+            return await _manager.ReservationInfo.GetAllReservationInfosAsync(trackChanges, includeRelated: true);
         }
 
         public async Task<ReservationInfo> GetOneReservationInfoByIdAsync(int id, bool trackChanges)
         {
-            var info = await _manager.ReservationInfo.GetOneReservationInfoByIdAsync(id, trackChanges);
+            var info = await _manager.ReservationInfo.GetOneReservationInfoByIdAsync(id, trackChanges, includeRelated: true);
 
             return info;
         }
@@ -40,6 +35,19 @@ namespace Services
             reservationInfo.ReservationEndDate = reservationInfo.ReservationStartDate.AddDays(1);
             reservationInfo.Status = true;
 
+            
+
+            /*Console.Write("         UMUT12345       ");
+            Console.Write(reservationInfo.ChairId);
+
+            var chair = await _manager.Chair.GetOneChairByIdAsync(1, false, true);
+            chair.Status = true;
+
+            Console.Write(chair.Status);
+            
+            Console.Write(chair);*/
+
+
             _manager.ReservationInfo.CreateOneReservationInfo(reservationInfo);
             await _manager.SaveAsync();
 
@@ -48,7 +56,7 @@ namespace Services
 
         public async Task UpdateOneReservationInfoAsync(int id, ReservationInfo reservationInfo, bool trackChanges)
         {
-            var entity = await _manager.ReservationInfo.GetOneReservationInfoByIdAsync(id, trackChanges);
+            var entity = await _manager.ReservationInfo.GetOneReservationInfoByIdAsync(id, trackChanges, includeRelated: true);
             if (entity is null)
                 throw new Exception($"Reservation with id:{id} could not found.");
 
@@ -65,7 +73,7 @@ namespace Services
 
         public async Task DeleteOneReservationInfoAsync(int id, bool trackChanges)
         {
-            var entity = await _manager.ReservationInfo.GetOneReservationInfoByIdAsync(id, trackChanges);
+            var entity = await _manager.ReservationInfo.GetOneReservationInfoByIdAsync(id, trackChanges, includeRelated: true);
             if (entity is null)
                 throw new ArgumentException(nameof(entity));
 

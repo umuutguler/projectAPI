@@ -9,8 +9,8 @@ namespace Repositories.Contracts
 {
     public interface IReservationInfoRepository : IRepositoryBase<ReservationInfo>
     {
-        Task<IEnumerable<ReservationInfo>> GetAllReservationInfosAsync(bool trackChanges);
-        Task<ReservationInfo> GetOneReservationInfoByIdAsync(int id, bool trackChanges);
+        Task<IEnumerable<ReservationInfo>> GetAllReservationInfosAsync(bool trackChanges, bool includeRelated);
+        Task<ReservationInfo> GetOneReservationInfoByIdAsync(int id, bool trackChanges, bool includeRelated);
         void CreateOneReservationInfo(ReservationInfo reservationInfo);
         void UpdateOneReservationInfo(ReservationInfo reservationInfo);
         void DeleteOneReservationInfo(ReservationInfo reservationInfo);
