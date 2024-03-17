@@ -111,7 +111,7 @@ namespace Services
         {
             var claims = new List<Claim>()
             {
-                new Claim(ClaimTypes.Name, _user.UserName) // Listeye username bilgisini ekliyoruz
+                new Claim(ClaimTypes.Name, _user.Id) // Listeye username bilgisini ekliyoruz
             };
 
             var roles = await _userManager // rolleri _userManager kullanarak alarak listeye atıyoruz,

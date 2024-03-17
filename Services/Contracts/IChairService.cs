@@ -11,6 +11,7 @@ namespace Services.Contracts
     {
         Task<IEnumerable<Chair>> GetAllChairsAsync(bool trackChanges);
         Task<Chair> GetOneChairByIdAsync(int id, bool trackChanges);
+        Task<Chair> CreateOneReservationInfoAsync(Chair chair);
 
         Task<IEnumerable<Chair>> GetAllEmptyChairsAsync(bool trackChange);
 

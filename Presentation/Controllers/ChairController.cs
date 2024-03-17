@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Entities.Models;
+using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,13 @@ namespace Presentation.Controllers
             return Ok(await _services
                 .ChairService
                 .GetOneChairByIdAsync(id, false));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateOneChairAsync([FromBody] Chair chair)
+        {
+            var entity = await _services.ChairService.CreateOneReservationInfoAsync(chair);
+            return StatusCode(201, entity);
         }
     }
 }

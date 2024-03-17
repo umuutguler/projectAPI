@@ -14,8 +14,10 @@ namespace Entities.Models
         public int TableId { get; set; }
         public Table Table { get; set; }
 
-       // public int DepartmentId { get; set; }
-      //  public Department Department { get; set; }
+        //public ICollection<ReservationInfo> ReservationInfos { get; set; }
+
+        // public int DepartmentId { get; set; }
+        //  public Department Department { get; set; }
 
     }
 }

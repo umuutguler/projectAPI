@@ -18,6 +18,18 @@ namespace Services
             _manager = manager;
         }
 
+        public async Task<Chair> CreateOneReservationInfoAsync(Chair chair)
+        {
+            if (chair is null)
+                throw new ArgumentException(nameof(chair));
+
+
+            _manager.Chair.CreateOneChair(chair);
+            await _manager.SaveAsync();
+
+            return chair;
+        }
+
         public async Task<IEnumerable<Chair>> GetAllChairsAsync(bool trackChanges)
         {
             return await _manager
@@ -42,6 +54,7 @@ namespace Services
                 .GetOneChairByIdAsync(id, trackChanges, includeRelated: true);
             if (chair is null)
                 throw new ChairNotFoundException(id);
+
 
             return chair;
         }
