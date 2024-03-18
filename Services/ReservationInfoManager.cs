@@ -67,9 +67,11 @@ namespace Services
                 throw new Exception($"Reservation with id:{id} could not found.");
 
             entity.ReservationStartDate = reservationInfo.ReservationStartDate;
-            entity.User = reservationInfo.User;
+            
             entity.ChairId = reservationInfo.ChairId;
             entity.UserId = token;
+            entity.Chair = reservationInfo.Chair;
+            entity.User = reservationInfo.User;
 
             entity.Updatdate.Add(DateTime.Now);
             entity.ReservationEndDate = reservationInfo.ReservationStartDate.AddDays(1);
