@@ -12,7 +12,7 @@ using Repositories.EFCore;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20240316225919_init")]
+    [Migration("20240318103306_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -194,27 +194,27 @@ namespace WebApi.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2024, 3, 17, 1, 59, 19, 40, DateTimeKind.Local).AddTicks(4958),
+                            CreatedDate = new DateTime(2024, 3, 18, 13, 33, 5, 835, DateTimeKind.Local).AddTicks(1999),
                             Description = "Description",
-                            LastUpdate = new DateTime(2024, 3, 17, 1, 59, 19, 40, DateTimeKind.Local).AddTicks(4976),
+                            LastUpdate = new DateTime(2024, 3, 18, 13, 33, 5, 835, DateTimeKind.Local).AddTicks(2014),
                             Price = 100m,
                             Title = "Product 1"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2024, 3, 17, 1, 59, 19, 40, DateTimeKind.Local).AddTicks(4978),
+                            CreatedDate = new DateTime(2024, 3, 18, 13, 33, 5, 835, DateTimeKind.Local).AddTicks(2017),
                             Description = "Description",
-                            LastUpdate = new DateTime(2024, 3, 17, 1, 59, 19, 40, DateTimeKind.Local).AddTicks(4978),
+                            LastUpdate = new DateTime(2024, 3, 18, 13, 33, 5, 835, DateTimeKind.Local).AddTicks(2017),
                             Price = 75m,
                             Title = "Product 2"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2024, 3, 17, 1, 59, 19, 40, DateTimeKind.Local).AddTicks(4979),
+                            CreatedDate = new DateTime(2024, 3, 18, 13, 33, 5, 835, DateTimeKind.Local).AddTicks(2018),
                             Description = "Description",
-                            LastUpdate = new DateTime(2024, 3, 17, 1, 59, 19, 40, DateTimeKind.Local).AddTicks(4980),
+                            LastUpdate = new DateTime(2024, 3, 18, 13, 33, 5, 835, DateTimeKind.Local).AddTicks(2019),
                             Price = 200m,
                             Title = "Product 3"
                         });
@@ -248,6 +248,7 @@ namespace WebApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -256,7 +257,7 @@ namespace WebApi.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ReservationInfos");
+                    b.ToTable("Reservations", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Models.Table", b =>
@@ -379,7 +380,7 @@ namespace WebApi.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("AspNetUsers", (string)null);
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -411,19 +412,19 @@ namespace WebApi.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e8858190-b4c5-4744-8760-8bc85a1f2973",
+                            Id = "7b30de99-88cc-4ee2-a9fe-720101b6f289",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "50bf4441-97e4-403e-8222-b7893f892f77",
+                            Id = "6d502cad-a271-4b9b-926d-322f78e9a9e6",
                             Name = "Editor",
                             NormalizedName = "EDITOR"
                         },
                         new
                         {
-                            Id = "a6111dc8-58a0-43e5-9d43-51f0191267db",
+                            Id = "ffb310f1-7058-4861-9fa7-3cf6493acc3b",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -555,8 +556,10 @@ namespace WebApi.Migrations
                         .IsRequired();
 
                     b.HasOne("Entities.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                        .WithMany("ReservationInfos")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("Chair");
 
@@ -644,6 +647,11 @@ namespace WebApi.Migrations
             modelBuilder.Entity("Entities.Models.Table", b =>
                 {
                     b.Navigation("Chairs");
+                });
+
+            modelBuilder.Entity("Entities.Models.User", b =>
+                {
+                    b.Navigation("ReservationInfos");
                 });
 #pragma warning restore 612, 618
         }

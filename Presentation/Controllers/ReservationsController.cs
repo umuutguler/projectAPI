@@ -29,6 +29,16 @@ namespace Presentation.Controllers
                 .GetAllReservationInfosAsync(false));
         }
 
+        [HttpGet("User")]
+        public async Task<IActionResult> GetAllReservationsByUserId()
+        {
+            var userId = HttpContext.User.Identity.Name;
+            var reservations = await _manager
+                .ReservationInfoService
+                .GetAllReservationInfosByUserId(false, userId);
+            return Ok(reservations);
+        }
+
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetOneRReservationAsync([FromRoute] int id)
         {

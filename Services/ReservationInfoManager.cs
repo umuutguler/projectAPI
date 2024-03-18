@@ -17,6 +17,13 @@ namespace Services
             return await _manager.ReservationInfo.GetAllReservationInfosAsync(trackChanges, includeRelated: true);
         }
 
+        public async Task<IEnumerable<ReservationInfo>> GetAllReservationInfosByUserId(bool trackChanges, string token)
+        {
+            var reservations = await _manager.ReservationInfo.GetAllReservationInfosAsync(trackChanges, includeRelated: true);
+            var reservationsByUserId = reservations.Where(r => r.UserId == token).ToList();
+            return reservationsByUserId;
+        }
+
         public async Task<ReservationInfo> GetOneReservationInfoByIdAsync(int id, bool trackChanges)
         {
             var info = await _manager.ReservationInfo.GetOneReservationInfoByIdAsync(id, trackChanges, includeRelated: true);
@@ -34,11 +41,7 @@ namespace Services
             reservationInfo.Updatdate.Add(DateTime.Now);
             reservationInfo.ReservationEndDate = reservationInfo.ReservationStartDate.AddDays(1);
             reservationInfo.Status = true;
-
-
-            Console.Write("         UserId:       ");
-            Console.Write(token);
-
+            reservationInfo.UserId = token;
 
             /*Console.Write("         ChairId       ");
             Console.Write(reservationInfo.ChairId);
@@ -63,12 +66,10 @@ namespace Services
             if (entity is null)
                 throw new Exception($"Reservation with id:{id} could not found.");
 
-            Console.Write("         UserId:       ");
-            Console.Write(token);
-
             entity.ReservationStartDate = reservationInfo.ReservationStartDate;
             entity.User = reservationInfo.User;
             entity.ChairId = reservationInfo.ChairId;
+            entity.UserId = token;
 
             entity.Updatdate.Add(DateTime.Now);
             entity.ReservationEndDate = reservationInfo.ReservationStartDate.AddDays(1);
@@ -88,5 +89,7 @@ namespace Services
             _manager.ReservationInfo.DeleteOneReservationInfo(entity);
             await _manager.SaveAsync();
         }
+
+        
     }
 }
