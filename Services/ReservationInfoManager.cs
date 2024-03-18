@@ -24,7 +24,7 @@ namespace Services
             return info;
         }
 
-        public async Task<ReservationInfo> CreateOneReservationInfoAsync(ReservationInfo reservationInfo)
+        public async Task<ReservationInfo> CreateOneReservationInfoAsync(ReservationInfo reservationInfo, String token)
         {
             if (reservationInfo is null)
                 throw new ArgumentException(nameof(reservationInfo));
@@ -35,9 +35,12 @@ namespace Services
             reservationInfo.ReservationEndDate = reservationInfo.ReservationStartDate.AddDays(1);
             reservationInfo.Status = true;
 
-            
 
-            /*Console.Write("         UMUT12345       ");
+            Console.Write("         UserId:       ");
+            Console.Write(token);
+
+
+            /*Console.Write("         ChairId       ");
             Console.Write(reservationInfo.ChairId);
 
             var chair = await _manager.Chair.GetOneChairByIdAsync(1, false, true);
@@ -54,11 +57,14 @@ namespace Services
             return reservationInfo;
         }
 
-        public async Task UpdateOneReservationInfoAsync(int id, ReservationInfo reservationInfo, bool trackChanges)
+        public async Task UpdateOneReservationInfoAsync(int id, ReservationInfo reservationInfo, bool trackChanges, String token)
         {
             var entity = await _manager.ReservationInfo.GetOneReservationInfoByIdAsync(id, trackChanges, includeRelated: true);
             if (entity is null)
                 throw new Exception($"Reservation with id:{id} could not found.");
+
+            Console.Write("         UserId:       ");
+            Console.Write(token);
 
             entity.ReservationStartDate = reservationInfo.ReservationStartDate;
             entity.User = reservationInfo.User;
