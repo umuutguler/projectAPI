@@ -43,16 +43,9 @@ namespace Services
             reservationInfo.Status = true;
             reservationInfo.UserId = token;
 
-            /*Console.Write("         ChairId       ");
-            Console.Write(reservationInfo.ChairId);
-
-            var chair = await _manager.Chair.GetOneChairByIdAsync(1, false, true);
+            var chair = await _manager.Chair.GetOneChairByIdAsync(reservationInfo.ChairId, false, true);
             chair.Status = true;
-
-            Console.Write(chair.Status);
-            
-            Console.Write(chair);*/
-
+            _manager.Chair.Update(chair);
 
             _manager.ReservationInfo.CreateOneReservationInfo(reservationInfo);
             await _manager.SaveAsync();
@@ -66,6 +59,11 @@ namespace Services
             if (entity is null)
                 throw new Exception($"Reservation with id:{id} could not found.");
 
+            var chair = await _manager.Chair.GetOneChairByIdAsync(entity.ChairId, false, true);
+            chair.Status = false;
+            var newchair = await _manager.Chair.GetOneChairByIdAsync(reservationInfo.ChairId, false, true);
+            newchair.Status = true;
+
             entity.ReservationStartDate = reservationInfo.ReservationStartDate;
             
             entity.ChairId = reservationInfo.ChairId;
@@ -76,6 +74,8 @@ namespace Services
             entity.Updatdate.Add(DateTime.Now);
             entity.ReservationEndDate = reservationInfo.ReservationStartDate.AddDays(1);
 
+            _manager.Chair.Update(chair);
+            _manager.Chair.Update(newchair);
             _manager.ReservationInfo.Update(entity);
             await _manager.SaveAsync();
         }
@@ -88,8 +88,13 @@ namespace Services
 
             entity.Status = false;
 
+            var chair = await _manager.Chair.GetOneChairByIdAsync(entity.ChairId, false, true);
+            chair.Status = false;
+            _manager.Chair.Update(chair);
+
             _manager.ReservationInfo.DeleteOneReservationInfo(entity);
             await _manager.SaveAsync();
+
         }
 
         
