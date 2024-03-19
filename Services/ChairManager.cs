@@ -58,5 +58,22 @@ namespace Services
 
             return chair;
         }
+
+        public async Task<Chair> UpdateChairByIdAsync(int id, Chair updatedChair, bool trackChanges)
+        {
+            var chair = await _manager
+                .Chair
+                .GetOneChairByIdAsync(id, trackChanges, includeRelated: false); // Güncellenmiş sandalyeyi almak için includeRelated: false kullanıyoruz
+            if (chair == null)
+                throw new ChairNotFoundException(id);
+
+            chair.Status = updatedChair.Status; // Güncelleme işlemleri, updatedChair içindeki özelliklere göre yapılmalıdır
+            chair.TableId = updatedChair.TableId; 
+
+            _manager.Chair.UpdateOneChair(chair); // Güncelleme işlemi
+            await _manager.SaveAsync(); // Değişiklikleri kaydet
+
+            return chair;
+        }
     }
 }
