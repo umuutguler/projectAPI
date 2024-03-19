@@ -16,5 +16,6 @@ namespace Services.Contracts
         Task<IEnumerable<Chair>> GetAllEmptyChairsAsync(bool trackChange);
 
         Task<Chair> UpdateChairByIdAsync(int id,Chair updatedChair, bool trackChanges);
+        Task<Chair> DeleteChairByIdAsync(int id, bool trackChanges);
     }
 }

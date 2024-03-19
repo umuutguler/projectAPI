@@ -53,6 +53,16 @@ namespace Presentation.Controllers
 
             return NoContent(); //204
         }
-        
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteChairByIdAsync(int id)
+        {
+            var deletedChair = await _services.ChairService.DeleteChairByIdAsync(id, trackChanges: true);
+            if (deletedChair == null)
+                return NotFound();
+
+            return NoContent(); // 204
+        }
+
     }
 }

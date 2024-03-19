@@ -75,5 +75,18 @@ namespace Services
 
             return chair;
         }
+
+        public async Task<Chair> DeleteChairByIdAsync(int id, bool trackChanges)
+        {
+            var chair = await _manager.Chair.GetOneChairByIdAsync(id, trackChanges, includeRelated: true);
+            if (chair == null)
+                throw new ChairNotFoundException(id);
+
+            _manager.Chair.DeleteOneChair(chair);
+            await _manager.SaveAsync();
+
+            return chair;
+        }
+
     }
 }
