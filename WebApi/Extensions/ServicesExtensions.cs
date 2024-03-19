@@ -5,6 +5,7 @@ using Entities.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Presentation.ActionFilters;
 using Repositories.Contracts;
@@ -20,8 +21,10 @@ namespace WebApi.Extensions
             IConfiguration configuration)
         {
             services.AddDbContext<RepositoryContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("sqlConnection")));
+            options.UseSqlServer(configuration.GetConnectionString("sqlConnection"))
+                 /*  .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)*/);
         }
+
 
         public static void ConfigureRepositoryManager(this IServiceCollection services) =>
         services.AddScoped<IRepositoryManager, RepositoryManager>();

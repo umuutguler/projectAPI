@@ -35,7 +35,15 @@ namespace Services
         {
             if (reservationInfo is null)
                 throw new ArgumentException(nameof(reservationInfo));
- 
+
+
+            var chair = await _manager.Chair.GetOneChairByIdAsync(reservationInfo.ChairId, false, true);
+
+            if (chair.Status == true)
+                throw new Exception($"Chair by id:{reservationInfo.ChairId} is already reserved ");
+
+            Console.Write($"    Department: {chair.Table.DepartmentId}   ");
+
             reservationInfo.CreateDate = DateTime.Now;
             reservationInfo.Updatdate ??= new List<DateTime>();
             reservationInfo.Updatdate.Add(DateTime.Now);
@@ -43,7 +51,7 @@ namespace Services
             reservationInfo.Status = true;
             reservationInfo.UserId = token;
 
-            var chair = await _manager.Chair.GetOneChairByIdAsync(reservationInfo.ChairId, false, true);
+           
             chair.Status = true;
             _manager.Chair.Update(chair);
 
@@ -59,13 +67,19 @@ namespace Services
             if (entity is null)
                 throw new Exception($"Reservation with id:{id} could not found.");
 
-            var chair = await _manager.Chair.GetOneChairByIdAsync(entity.ChairId, false, true);
-            chair.Status = false;
+
             var newchair = await _manager.Chair.GetOneChairByIdAsync(reservationInfo.ChairId, false, true);
+
+            if (newchair.Status == true && entity.ChairId!=reservationInfo.ChairId)
+                throw new Exception($"Chair by id:{reservationInfo.ChairId} is already reserved ");
+
+            entity.Chair.Status = false;
             newchair.Status = true;
+            
+            
 
             entity.ReservationStartDate = reservationInfo.ReservationStartDate;
-            
+ 
             entity.ChairId = reservationInfo.ChairId;
             entity.UserId = token;
             entity.Chair = reservationInfo.Chair;
@@ -74,7 +88,7 @@ namespace Services
             entity.Updatdate.Add(DateTime.Now);
             entity.ReservationEndDate = reservationInfo.ReservationStartDate.AddDays(1);
 
-            _manager.Chair.Update(chair);
+            
             _manager.Chair.Update(newchair);
             _manager.ReservationInfo.Update(entity);
             await _manager.SaveAsync();
@@ -87,10 +101,9 @@ namespace Services
                 throw new ArgumentException(nameof(entity));
 
             entity.Status = false;
+            entity.Chair.Status = false;
+            _manager.ReservationInfo.Update(entity);
 
-            var chair = await _manager.Chair.GetOneChairByIdAsync(entity.ChairId, false, true);
-            chair.Status = false;
-            _manager.Chair.Update(chair);
 
             _manager.ReservationInfo.DeleteOneReservationInfo(entity);
             await _manager.SaveAsync();
