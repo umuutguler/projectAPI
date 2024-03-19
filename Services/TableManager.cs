@@ -34,5 +34,34 @@ namespace Services
 
             return table;
         }
+
+        public async Task<Table> UpdateTableByIdAsync(int id, Table updatedTable, bool trackChanges)
+        {
+            var table = await _manager
+                .Table
+                .GetOneTableByIdAsync(id, trackChanges, includeRelated: false); // Güncellenmiş sandalyeyi almak için includeRelated: false kullanıyoruz
+            if (table == null)
+                throw new TableNotFoundException(id);
+
+            table.Status = updatedTable.Status; // Güncelleme işlemleri, updatedChair içindeki özelliklere göre yapılmalıdır
+            table.DepartmentId = updatedTable.DepartmentId;
+
+            _manager.Table.UpdateOneTable(table); // Güncelleme işlemi
+            await _manager.SaveAsync(); // Değişiklikleri kaydet
+
+            return table;
+        }
+
+        public async Task<Table> DeleteTableByIdAsync(int id, bool trackChanges)
+        {
+            var table = await _manager.Table.GetOneTableByIdAsync(id, trackChanges, includeRelated: true);
+            if (table == null)
+                throw new TableNotFoundException(id);
+
+            _manager.Table.DeleteOneTable(table);
+            await _manager.SaveAsync();
+
+            return table;
+        }
     }
 }
