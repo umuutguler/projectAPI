@@ -15,6 +15,8 @@ namespace Repositories.EFCore
         public DbSet<ReservationInfo> ReservationInfos { get; set; }
         public DbSet<Chair> Chairs { get; set; }
         public DbSet<Table> Tables { get; set; }
+        public DbSet<User> Users { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

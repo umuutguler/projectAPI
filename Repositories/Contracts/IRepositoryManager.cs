@@ -7,6 +7,7 @@
         IChairRepository Chair { get; }
         IReservationInfoRepository ReservationInfo { get; }
         ITableRepository Table { get; }
+        IUserRepository User { get; }
 
         Task SaveAsync(); // KAYIT İŞLEMİ - void Save() -> Task<void> yerine Task
     }

@@ -16,6 +16,8 @@ namespace Services
         private readonly Lazy<IReservationInfoService> _reservationInfoService;
         public readonly Lazy<ITableService> _tableService;
         public readonly Lazy<IChairService> _chairService;
+        public readonly Lazy<IUserService> _userService;
+
 
         public ServiceManager(IRepositoryManager repositoryManager, 
             ILoggerService _logger, 
@@ -30,6 +32,7 @@ namespace Services
            _reservationInfoService = new Lazy<IReservationInfoService>(() => new  ReservationInfoManager(repositoryManager));
            _tableService = new Lazy<ITableService> (() => new TableManager(repositoryManager));
            _chairService = new Lazy<IChairService> (() => new ChairManager(repositoryManager));
+            _userService = new Lazy<IUserService>(() => new UserManager(repositoryManager, ReservationInfoService));
         }
 
         public IProductService ProductService => _productService.Value;
@@ -38,5 +41,7 @@ namespace Services
         public IReservationInfoService ReservationInfoService => _reservationInfoService.Value;
         public ITableService TableService => _tableService.Value;
         public IChairService ChairService => _chairService.Value;
+
+        public IUserService UserService => _userService.Value;
     }
 }

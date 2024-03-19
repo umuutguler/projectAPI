@@ -63,8 +63,9 @@ namespace Presentation.Controllers
             var userId = HttpContext.User.Identity.Name;
 
             await _manager.ReservationInfoService.UpdateOneReservationInfoAsync(id, reservationInfo, false, userId);
+            var updatedReservation = await _manager.ReservationInfoService.GetOneReservationInfoByIdAsync(id, false);
 
-            return NoContent(); //204
+            return StatusCode(200, updatedReservation);
         }
 
         [HttpDelete("{id:int}")]
