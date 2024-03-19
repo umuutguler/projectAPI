@@ -11,6 +11,7 @@ namespace Repositories.EFCore
         private readonly Lazy<IChairRepository> _chairRepository;
         private readonly Lazy<IReservationInfoRepository> _reservationInfoRepository;
         private readonly Lazy<ITableRepository> _tableRepository;
+        private readonly Lazy<IUserRepository> _userRepository;
 
 
         public RepositoryManager(RepositoryContext context)
@@ -21,6 +22,7 @@ namespace Repositories.EFCore
             _chairRepository = new Lazy<IChairRepository> (() => new ChairRepository(_context));
             _reservationInfoRepository = new Lazy<IReservationInfoRepository> (() => new ReservationInfoRepository(_context));
             _tableRepository = new Lazy<ITableRepository> (() => new TableRepository(_context));
+            _userRepository = new Lazy<IUserRepository> (()=> new UserRepository(_context));
         }
 
         public IProductRepository Product => _productRepository.Value;
@@ -31,6 +33,8 @@ namespace Repositories.EFCore
         public IReservationInfoRepository ReservationInfo => _reservationInfoRepository.Value;
 
         public ITableRepository Table => _tableRepository.Value;
+
+        public IUserRepository User => _userRepository.Value;
 
         public async Task SaveAsync()
         {
