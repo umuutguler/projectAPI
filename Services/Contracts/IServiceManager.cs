@@ -14,5 +14,6 @@ namespace Services.Contracts
         ITableService TableService { get; }
         IAuthenticationService AuthenticationManager { get; }
         IReservationInfoService ReservationInfoService { get; }
+        IUserService UserService { get; }
     }
 }

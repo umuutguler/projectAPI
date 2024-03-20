@@ -38,11 +38,13 @@ namespace Services
 
 
             var chair = await _manager.Chair.GetOneChairByIdAsync(reservationInfo.ChairId, false, true);
+            var user = await _manager.User.GetOneUserByIdAsync(token, false, true);
 
             if (chair.Status == true)
-                throw new Exception($"Chair by id:{reservationInfo.ChairId} is already reserved ");
+                throw new Exception($"Chair by id: {reservationInfo.ChairId} is already reserved ");
 
-            Console.Write($"    Department: {chair.Table.DepartmentId}   ");
+            if (user.DepartmentId != chair.Table.DepartmentId)
+                throw new Exception($"Chair by id: {reservationInfo.ChairId} does not belong to your department. ");
 
             reservationInfo.CreateDate = DateTime.Now;
             reservationInfo.Updatdate ??= new List<DateTime>();
@@ -69,9 +71,12 @@ namespace Services
 
 
             var newchair = await _manager.Chair.GetOneChairByIdAsync(reservationInfo.ChairId, false, true);
+            var user = await _manager.User.GetOneUserByIdAsync(token, false, true);
 
             if (newchair.Status == true && entity.ChairId!=reservationInfo.ChairId)
                 throw new Exception($"Chair by id:{reservationInfo.ChairId} is already reserved ");
+            if (user.DepartmentId != newchair.Table.DepartmentId)
+                throw new Exception($"Chair by id: {reservationInfo.ChairId} does not belong to your department. ");
 
             entity.Chair.Status = false;
             newchair.Status = true;
