@@ -4,6 +4,7 @@ using Entities.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Repositories.Contracts;
+using Repositories.EFCore;
 using Services.Contracts;
 
 namespace Services
@@ -20,6 +21,7 @@ namespace Services
 
 
         public ServiceManager(IRepositoryManager repositoryManager, 
+            RepositoryContext context,
             ILoggerService _logger, 
             IMapper mapper, 
             IDataShaper<ProductDto> shaper,
@@ -32,7 +34,7 @@ namespace Services
            _reservationInfoService = new Lazy<IReservationInfoService>(() => new  ReservationInfoManager(repositoryManager));
            _tableService = new Lazy<ITableService> (() => new TableManager(repositoryManager));
            _chairService = new Lazy<IChairService> (() => new ChairManager(repositoryManager));
-            _userService = new Lazy<IUserService>(() => new UserManager(repositoryManager, ReservationInfoService));
+            _userService = new Lazy<IUserService>(() => new UserManager(repositoryManager, ReservationInfoService, context));
         }
 
         public IProductService ProductService => _productService.Value;

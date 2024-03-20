@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core.Tokenizer;
 using System.Text;
 using System.Threading.Tasks;
 using Entities.DataTransferObjects;
@@ -80,8 +81,10 @@ namespace Presentation.Controllers
         [HttpGet("Empty")]
         public async Task<IActionResult> GetAlEmptyChairsAsync()
         {
+            //UserIdFromToken
+            var userId = HttpContext.User.Identity.Name;
             return Ok(await _manager
-                .ChairService.GetAllEmptyChairsAsync(false));
+                .ChairService.GetAllEmptyChairsAsync(false, userId));
         }
 
     }

@@ -5,6 +5,7 @@ using Services.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core.Tokenizer;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -38,13 +39,21 @@ namespace Services
         }
 
         // Empty Chairs
-        public async Task<IEnumerable<Chair>> GetAllEmptyChairsAsync(bool trackChanges)
+        public async Task<IEnumerable<Chair>> GetAllEmptyChairsAsync(bool trackChanges, string token)
         {
             var chairs = await _manager
                 .Chair
                 .GetAllChairsAsync(trackChanges, includeRelated: true);
+            var user = await _manager.User.GetOneUserByIdAsync(token, false, true);
+            if (user is null)
+                throw new Exception("Please Log in");
 
-            return chairs.Where(c => c.Status == false);
+            var filteredChairs = chairs.Where(chair =>
+                chair.Status == false &&
+                 chair.Table.DepartmentId == user.DepartmentId).ToList();
+            if (filteredChairs.Count == 0)
+                throw new Exception("All the chairs are full");
+            return filteredChairs;
         }
 
         public async Task<Chair> GetOneChairByIdAsync(int id, bool trackChanges)

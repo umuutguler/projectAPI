@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using Repositories.Contracts;
+using Repositories.EFCore;
 using Services.Contracts;
 
 namespace Services
@@ -12,32 +15,31 @@ namespace Services
     public class UserManager : IUserService
     {
         private readonly IRepositoryManager _manager;
-        //private readonly IServiceManager _service;
+        private readonly RepositoryContext _context;
         private readonly IReservationInfoService _reservationInfoService;
-        public UserManager(IRepositoryManager manager, IReservationInfoService reservationInfoService) //, IServiceManager service)
+        public UserManager(IRepositoryManager manager, IReservationInfoService reservationInfoService, RepositoryContext context) //, IServiceManager service)
         {
             _manager = manager;
             _reservationInfoService = reservationInfoService;
                 //_service = service;
         }
 
-        public async Task DeleteOneUserAsync(string id, bool trackChanges)
+        public async Task DeleteOneUserAsync(string id, bool trackChanges=false)
         {
-            var user = await _manager.User.GetOneUserByIdAsync(id, false, true);
+            var user = await _manager.User.GetOneUserByIdAsync(id, false, true); // Rezervasyonları da al
+
             if (user is null)
                 throw new ArgumentException(nameof(user));
 
-
-
-            var userReservations = await _reservationInfoService.GetAllReservationInfosByUserId(false, user.Id);
-            foreach (var reservation in userReservations)
+            foreach (var reservation in user.ReservationInfos)
             {
-                await _reservationInfoService.DeleteOneReservationInfoAsync(reservation.Id, false);
+                _manager.ReservationInfo.DeleteOneReservationInfo(reservation);
             }
 
-
+            // Tek tek rezervasyon silmeye gerek yok
             _manager.User.DeleteOneUser(user);
             await _manager.SaveAsync();
+
         }
 
         public async Task<IEnumerable<User>> GetAllUsersAsync(bool trackChanges) =>

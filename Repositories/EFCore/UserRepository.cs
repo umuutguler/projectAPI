@@ -22,18 +22,21 @@ namespace Repositories.EFCore
             return await query.ToListAsync();
         }
 
-        public async Task<User> GetOneUserByIdAsync(string id, bool trackChanges, bool includeRelated = true) 
+        public async Task<User> GetOneUserByIdAsync(string id, bool trackChanges = false, bool includeRelated = false)
         {
-            IQueryable<User> query = FindByCondition(t => t.Id.Equals(id), trackChanges);
+            // Tercih ettiğiniz FindByCondition metodunu kullanın
+            var query = FindByCondition(t => t.Id.Equals(id), trackChanges);
 
+            // İlgili varlıkları dahil etmek istiyorsanız, Include'u kullanın
             if (includeRelated)
             {
-                query = query.Include(u => u.Department)
-                             .Include(u => u.ReservationInfos);
+                // Departman ve ReservationInfos varlıklarını dahil edin
+                query = query.Include(u => u.Department).Include(u => u.ReservationInfos);
             }
 
             return await query.SingleOrDefaultAsync();
         }
+
 
         public void CreateOneUser(User user) => Create(user);
 
