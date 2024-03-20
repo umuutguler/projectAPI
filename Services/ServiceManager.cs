@@ -29,7 +29,7 @@ namespace Services
            _authenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationManager(_logger, mapper, _userManager, _configuration));
            _reservationInfoService = new Lazy<IReservationInfoService>(() => new  ReservationInfoManager(repositoryManager));
            _tableService = new Lazy<ITableService> (() => new TableManager(repositoryManager));
-           _chairService = new Lazy<IChairService> (() => new ChairManager(repositoryManager));
+           _chairService = new Lazy<IChairService> (() => new ChairManager(repositoryManager, ReservationInfoService));
         }
 
         public IProductService ProductService => _productService.Value;

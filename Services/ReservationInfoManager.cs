@@ -110,6 +110,11 @@ namespace Services
 
         }
 
-        
+        public async Task<ReservationInfo> GetOneReservationInfosByChairId(bool trackChanges, int chairId)
+        {
+            var reservation = await _manager.ReservationInfo.GetAllReservationInfosAsync(trackChanges, includeRelated: true);
+            var reservationByChairId = reservation.SingleOrDefault(c => c.ChairId == chairId);
+            return reservationByChairId;
+        }
     }
 }

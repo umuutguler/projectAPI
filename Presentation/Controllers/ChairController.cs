@@ -55,11 +55,10 @@ namespace Presentation.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        public async Task<IActionResult> DeleteChairByIdAsync(int id)
+        public async Task<IActionResult> DeleteChairByIdAsync([FromRoute]int id)
         {
-            var deletedChair = await _services.ChairService.DeleteChairByIdAsync(id, trackChanges: true);
-            if (deletedChair == null)
-                return NotFound();
+            await _services.ChairService.DeleteChairByIdAsync(id, trackChanges: true);
+           
 
             return NoContent(); // 204
         }

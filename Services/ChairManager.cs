@@ -5,6 +5,7 @@ using Services.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,9 +14,11 @@ namespace Services
     public class ChairManager : IChairService
     {
         private readonly IRepositoryManager _manager;
-        public ChairManager(IRepositoryManager manager)
+        private readonly IReservationInfoService _reservationInfoService;
+        public ChairManager(IRepositoryManager manager, IReservationInfoService reservationInfoService)
         {
             _manager = manager;
+            _reservationInfoService = reservationInfoService;
         }
 
         public async Task<Chair> CreateOneReservationInfoAsync(Chair chair)
@@ -76,16 +79,17 @@ namespace Services
             return chair;
         }
 
-        public async Task<Chair> DeleteChairByIdAsync(int id, bool trackChanges)
+        public async Task DeleteChairByIdAsync(int id, bool trackChanges)
         {
-            var chair = await _manager.Chair.GetOneChairByIdAsync(id, trackChanges, includeRelated: true);
-            if (chair == null)
-                throw new ChairNotFoundException(id);
 
-            _manager.Chair.DeleteOneChair(chair);
+            var chairReservations = await _reservationInfoService.GetOneReservationInfosByChairId(false, id);
+            if (chairReservations is null)
+                throw new ArgumentException(nameof(chairReservations));
+
+            _manager.Chair.DeleteOneChair(chairReservations.Chair);
+            _manager.ReservationInfo.DeleteOneReservationInfo(chairReservations);
             await _manager.SaveAsync();
 
-            return chair;
         }
 
     }
