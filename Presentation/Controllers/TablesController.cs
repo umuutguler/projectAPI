@@ -49,10 +49,12 @@ namespace Presentation.Controllers
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteTableByIdAsync(int id)
         {
-            var deletedTable = await _services.TableService.DeleteTableByIdAsync(id, trackChanges: true);
+            /*var deletedTable = await _services.TableService.DeleteTableByIdAsync(id, trackChanges: true);
             if (deletedTable == null)
                 return NotFound();
 
+            return NoContent(); // 204*/
+            await _services.TableService.DeleteTableByIdAsync(id, trackChanges: true);
             return NoContent(); // 204
         }
     }

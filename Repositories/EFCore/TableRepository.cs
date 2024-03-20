@@ -35,7 +35,7 @@ namespace Repositories.EFCore
         /* await FindByCondition(t => t.Id.Equals(id), trackChanges)
          .SingleOrDefaultAsync();*/
         {
-            IQueryable<Table> query = FindByCondition(t => t.Id.Equals(id), trackChanges);
+            var query = FindByCondition(t => t.Id.Equals(id), trackChanges);
 
             if (includeRelated)
             {

@@ -12,6 +12,7 @@ namespace Services.Contracts
         Task<IEnumerable<ReservationInfo>> GetAllReservationInfosAsync(bool trackChanges);
         Task<IEnumerable<ReservationInfo>> GetAllReservationInfosByUserId(bool trackChanges, String token);
         Task<ReservationInfo> GetOneReservationInfosByChairId(bool trackChanges, int chairId);
+        Task<IEnumerable<Chair>> GetAllChairsByTableId(int tableId, bool trackChanges); 
         Task<ReservationInfo> GetOneReservationInfoByIdAsync(int id, bool trackChanges);
         Task<ReservationInfo> CreateOneReservationInfoAsync(ReservationInfo reservationInfo, String token);
         Task UpdateOneReservationInfoAsync(int id, ReservationInfo reservationInfo, bool trackChanges, String token);

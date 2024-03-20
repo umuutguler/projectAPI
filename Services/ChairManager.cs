@@ -92,5 +92,26 @@ namespace Services
 
         }
 
+     /*   public async Task DeleteTableByIdAsync(int tableId, bool trackChanges)
+        {
+            var table = await _manager.Table.GetOneTableByIdAsync(tableId, trackChanges, includeRelated: false);
+
+            if (table == null)
+            {
+                throw new Exception($"Table with ID {tableId} not found.");
+            }
+
+            var chairs = await _reservationInfoService.GetAllChairsByTableId(tableId, trackChanges);
+
+            foreach (var chair in chairs)
+            {
+                await DeleteChairByIdAsync(chair.Id, trackChanges);
+            }
+
+            _manager.Table.DeleteOneTable(table);
+            await _manager.SaveAsync();
+        }*/
+
+
     }
 }

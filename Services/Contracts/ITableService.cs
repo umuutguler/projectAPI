@@ -12,6 +12,6 @@ namespace Services.Contracts
         Task<IEnumerable<Table>> GetAllTablesAsync(bool trackChanges);
         Task<Table> GetOneTableByIdAsync(int id, bool trackChanges);
         Task<Table> UpdateTableByIdAsync(int id, Table table, bool trackChanges);
-        Task<Table> DeleteTableByIdAsync(int id, bool trackChanges);
+        Task DeleteTableByIdAsync(int id, bool trackChanges);
     }
 }

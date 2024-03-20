@@ -52,16 +52,18 @@ namespace Services
             return table;
         }
 
-        public async Task<Table> DeleteTableByIdAsync(int id, bool trackChanges)
+        public async Task DeleteTableByIdAsync(int id, bool trackChanges)
         {
             var table = await _manager.Table.GetOneTableByIdAsync(id, trackChanges, includeRelated: true);
-            if (table == null)
-                throw new TableNotFoundException(id);
+
+            foreach (var chair in table.Chairs)
+            {
+                _manager.Chair.DeleteOneChair(chair);
+            }
 
             _manager.Table.DeleteOneTable(table);
             await _manager.SaveAsync();
 
-            return table;
         }
     }
 }

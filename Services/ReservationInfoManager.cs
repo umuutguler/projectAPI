@@ -53,7 +53,7 @@ namespace Services
             reservationInfo.Status = true;
             reservationInfo.UserId = token;
 
-           
+
             chair.Status = true;
             _manager.Chair.Update(chair);
 
@@ -73,18 +73,18 @@ namespace Services
             var newchair = await _manager.Chair.GetOneChairByIdAsync(reservationInfo.ChairId, false, true);
             var user = await _manager.User.GetOneUserByIdAsync(token, false, true);
 
-            if (newchair.Status == true && entity.ChairId!=reservationInfo.ChairId)
+            if (newchair.Status == true && entity.ChairId != reservationInfo.ChairId)
                 throw new Exception($"Chair by id:{reservationInfo.ChairId} is already reserved ");
             if (user.DepartmentId != newchair.Table.DepartmentId)
                 throw new Exception($"Chair by id: {reservationInfo.ChairId} does not belong to your department. ");
 
             entity.Chair.Status = false;
             newchair.Status = true;
-            
-            
+
+
 
             entity.ReservationStartDate = reservationInfo.ReservationStartDate;
- 
+
             entity.ChairId = reservationInfo.ChairId;
             entity.UserId = token;
             entity.Chair = reservationInfo.Chair;
@@ -93,7 +93,7 @@ namespace Services
             entity.Updatdate.Add(DateTime.Now);
             entity.ReservationEndDate = reservationInfo.ReservationStartDate.AddDays(1);
 
-            
+
             _manager.Chair.Update(newchair);
             _manager.ReservationInfo.Update(entity);
             await _manager.SaveAsync();
@@ -120,6 +120,15 @@ namespace Services
             var reservation = await _manager.ReservationInfo.GetAllReservationInfosAsync(trackChanges, includeRelated: true);
             var reservationByChairId = reservation.SingleOrDefault(c => c.ChairId == chairId);
             return reservationByChairId;
+        }
+
+        public async Task<IEnumerable<Chair>> GetAllChairsByTableId(int tableId, bool trackChanges)
+        {
+            var chairs = await _manager
+                .Chair
+                .GetAllChairsAsync(trackChanges, includeRelated: true);
+
+            return chairs.Where(c => c.TableId == tableId);
         }
     }
 }
