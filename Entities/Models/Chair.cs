@@ -10,7 +10,7 @@ namespace Entities.Models
     {
         public int Id { get; set; }
         public Boolean Status { get; set; }
-
+        public Decimal Price { get; set; }
         public int TableId { get; set; }
         public Table Table { get; set; }
 

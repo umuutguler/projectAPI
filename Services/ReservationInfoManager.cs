@@ -37,22 +37,21 @@ namespace Services
 
             var chair = await _manager.Chair.GetOneChairByIdAsync(reservationInfo.ChairId, false, true);
             var user = await _manager.User.GetOneUserByIdAsync(token, false, true);
-
+            if (user is null)
+                throw new Exception($"User could not found.");
             if (user.DepartmentId != chair.Table.DepartmentId)
                 throw new Exception($"Chair by id: {reservationInfo.ChairId} does not belong to your department. ");
-            if (await IsAvailable(reservationInfo, 24))
-                throw new Exception($"Chair by Id: {reservationInfo.ChairId}  {reservationInfo.ReservationStartDate}-{reservationInfo.ReservationStartDate.AddHours(24)} is already reserved ");
 
+            reservationInfo.ReservationPrice = reservationInfo.Duration * chair.Price;
             reservationInfo.CreateDate = DateTime.Now;
             reservationInfo.Updatdate ??= new List<DateTime>();
             reservationInfo.Updatdate.Add(DateTime.Now);
-            reservationInfo.ReservationEndDate = reservationInfo.ReservationStartDate.AddHours(24);
+            reservationInfo.ReservationEndDate = reservationInfo.ReservationStartDate.AddHours(reservationInfo.Duration);
             reservationInfo.Status = true;
             reservationInfo.UserId = token;
 
-           
-            chair.Status = true;
-            _manager.Chair.Update(chair);
+            if (await IsAvailable(reservationInfo))
+                throw new Exception($"Chair by Id: {reservationInfo.ChairId}  {reservationInfo.ReservationStartDate}-{reservationInfo.ReservationEndDate} is already reserved ");
 
             _manager.ReservationInfo.CreateOneReservationInfo(reservationInfo);
             await _manager.SaveAsync();
@@ -62,34 +61,36 @@ namespace Services
         public async Task UpdateOneReservationInfoAsync(int id, ReservationInfo reservationInfo, bool trackChanges, String token)
         {
             var entity = await _manager.ReservationInfo.GetOneReservationInfoByIdAsync(id, trackChanges, includeRelated: true);
+            if (entity.ReservationStartDate <= DateTime.Now)
+                throw new Exception("Your reservation has started. You cannot make changes");
             if (entity is null)
                 throw new Exception($"Reservation with id:{id} could not found.");
-
             var newchair = await _manager.Chair.GetOneChairByIdAsync(reservationInfo.ChairId, false, true);
             var user = await _manager.User.GetOneUserByIdAsync(token, false, true);
             if (user is null)
                 throw new Exception($"User could not found.");
-
-            if (newchair.Status == true && entity.ChairId!=reservationInfo.ChairId)
-                throw new Exception($"Chair by id:{reservationInfo.ChairId} is already reserved ");
             if (user.DepartmentId != newchair.Table.DepartmentId)
                 throw new Exception($"Chair by id: {reservationInfo.ChairId} does not belong to your department. ");
 
-            entity.Chair.Status = false;
-            newchair.Status = true;
+
+            if (newchair.Status == true && entity.ChairId!=reservationInfo.ChairId)
+                throw new Exception($"Chair by id:{reservationInfo.ChairId} is already reserved ");
             
-            
+
 
             entity.ReservationStartDate = reservationInfo.ReservationStartDate;
- 
+            entity.Duration = reservationInfo.Duration;
             entity.ChairId = reservationInfo.ChairId;
-            entity.UserId = token;
             entity.Chair = reservationInfo.Chair;
+            entity.ReservationEndDate = reservationInfo.ReservationStartDate.AddHours(entity.Duration);
+            entity.UserId = token;
             entity.User = reservationInfo.User;
             entity.Updatdate.Add(DateTime.Now);
-            entity.ReservationEndDate = reservationInfo.ReservationStartDate.AddDays(1);
+            entity.ReservationPrice = reservationInfo.Duration * newchair.Price;
 
-            
+            if (await IsAvailable(entity))
+                throw new Exception($"Chair by Id: {entity.ChairId}  {entity.ReservationStartDate}-{entity.ReservationEndDate} is already reserved ");
+
             _manager.Chair.Update(newchair);
             _manager.ReservationInfo.Update(entity);
             await _manager.SaveAsync();
@@ -100,6 +101,8 @@ namespace Services
             var entity = await _manager.ReservationInfo.GetOneReservationInfoByIdAsync(id, trackChanges, includeRelated: true);
             if (entity is null)
                 throw new ArgumentException(nameof(entity));
+            if (entity.ReservationStartDate <= DateTime.Now)
+                throw new Exception("Your reservation has started. You cannot make changes");
 
             _manager.ReservationInfo.DeleteOneReservationInfo(entity);
             await _manager.SaveAsync();
@@ -122,12 +125,13 @@ namespace Services
         }
 
 
-        public async Task<Boolean> IsAvailable(ReservationInfo reservationInfo, int reservationTime)
+        public async Task<Boolean> IsAvailable(ReservationInfo reservationInfo)
         {
             var reservations = await GetAllReservationInfosAsync(false);
 
             return reservations.Any(r =>
-            r.ReservationStartDate <= reservationInfo.ReservationStartDate.AddHours(24) &&
+            r.Id != reservationInfo.Id &&
+            r.ReservationStartDate <= reservationInfo.ReservationStartDate.AddHours(r.Duration) &&
             r.ReservationEndDate >= reservationInfo.ReservationStartDate &&
             reservationInfo.ChairId == r.ChairId);
         }

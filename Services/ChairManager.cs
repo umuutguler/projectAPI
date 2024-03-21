@@ -78,6 +78,7 @@ namespace Services
             if (chair == null)
                 throw new ChairNotFoundException(id);
 
+            chair.Price = updatedChair.Price;
             chair.Status = updatedChair.Status; // Güncelleme işlemleri, updatedChair içindeki özelliklere göre yapılmalıdır
             chair.TableId = updatedChair.TableId; 
 

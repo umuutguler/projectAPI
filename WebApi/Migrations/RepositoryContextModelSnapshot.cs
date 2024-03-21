@@ -30,6 +30,9 @@ namespace WebApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
@@ -46,54 +49,63 @@ namespace WebApi.Migrations
                         new
                         {
                             Id = 1,
+                            Price = 10m,
                             Status = false,
                             TableId = 1
                         },
                         new
                         {
                             Id = 2,
+                            Price = 5m,
                             Status = false,
                             TableId = 1
                         },
                         new
                         {
                             Id = 3,
+                            Price = 15m,
                             Status = false,
                             TableId = 1
                         },
                         new
                         {
                             Id = 4,
+                            Price = 12m,
                             Status = false,
                             TableId = 2
                         },
                         new
                         {
                             Id = 5,
+                            Price = 15m,
                             Status = false,
                             TableId = 2
                         },
                         new
                         {
                             Id = 6,
+                            Price = 10m,
                             Status = false,
                             TableId = 2
                         },
                         new
                         {
                             Id = 7,
+                            Price = 8m,
                             Status = false,
                             TableId = 3
                         },
                         new
                         {
                             Id = 8,
+                            Price = 10m,
                             Status = false,
                             TableId = 3
                         },
                         new
                         {
                             Id = 9,
+                            Price = 5m,
                             Status = false,
                             TableId = 3
                         });
@@ -191,27 +203,27 @@ namespace WebApi.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2024, 3, 18, 13, 33, 5, 835, DateTimeKind.Local).AddTicks(1999),
+                            CreatedDate = new DateTime(2024, 3, 21, 12, 39, 33, 823, DateTimeKind.Local).AddTicks(3206),
                             Description = "Description",
-                            LastUpdate = new DateTime(2024, 3, 18, 13, 33, 5, 835, DateTimeKind.Local).AddTicks(2014),
+                            LastUpdate = new DateTime(2024, 3, 21, 12, 39, 33, 823, DateTimeKind.Local).AddTicks(3223),
                             Price = 100m,
                             Title = "Product 1"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2024, 3, 18, 13, 33, 5, 835, DateTimeKind.Local).AddTicks(2017),
+                            CreatedDate = new DateTime(2024, 3, 21, 12, 39, 33, 823, DateTimeKind.Local).AddTicks(3224),
                             Description = "Description",
-                            LastUpdate = new DateTime(2024, 3, 18, 13, 33, 5, 835, DateTimeKind.Local).AddTicks(2017),
+                            LastUpdate = new DateTime(2024, 3, 21, 12, 39, 33, 823, DateTimeKind.Local).AddTicks(3225),
                             Price = 75m,
                             Title = "Product 2"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2024, 3, 18, 13, 33, 5, 835, DateTimeKind.Local).AddTicks(2018),
+                            CreatedDate = new DateTime(2024, 3, 21, 12, 39, 33, 823, DateTimeKind.Local).AddTicks(3226),
                             Description = "Description",
-                            LastUpdate = new DateTime(2024, 3, 18, 13, 33, 5, 835, DateTimeKind.Local).AddTicks(2019),
+                            LastUpdate = new DateTime(2024, 3, 21, 12, 39, 33, 823, DateTimeKind.Local).AddTicks(3226),
                             Price = 200m,
                             Title = "Product 3"
                         });
@@ -231,8 +243,14 @@ namespace WebApi.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("Duration")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("ReservationEndDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<decimal>("ReservationPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("ReservationStartDate")
                         .HasColumnType("datetime2");
@@ -409,19 +427,19 @@ namespace WebApi.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "7b30de99-88cc-4ee2-a9fe-720101b6f289",
+                            Id = "9acf5763-fca5-4d0d-80a1-2806a5302ddc",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "6d502cad-a271-4b9b-926d-322f78e9a9e6",
+                            Id = "3389b6bb-27a5-4d49-9ac1-80eaa5955e34",
                             Name = "Editor",
                             NormalizedName = "EDITOR"
                         },
                         new
                         {
-                            Id = "ffb310f1-7058-4861-9fa7-3cf6493acc3b",
+                            Id = "45fdf8c8-3891-4d3e-95cf-931b38b68b31",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });

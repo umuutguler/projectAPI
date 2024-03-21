@@ -12,10 +12,13 @@ namespace Entities.Models
     {
         [Key]
         public int Id { get; set; }
-        public DateTime CreateDate { get; set; }
-        public List<DateTime> Updatdate { get; set; }
+        public Boolean Status { get; set; }
+        public Decimal ReservationPrice { get; set; }
+        public int Duration { get; set; }
         public DateTime ReservationStartDate { get; set; }
         public DateTime ReservationEndDate { get; set; }
+        public DateTime CreateDate { get; set; }
+        public List<DateTime> Updatdate { get; set; }
 
         [ForeignKey("User")]
         public string UserId { get; set; }
@@ -25,7 +28,7 @@ namespace Entities.Models
         public int ChairId { get; set; }
         public Chair Chair { get; set; }
 
-        public Boolean Status { get; set; }
+        
 
  
 

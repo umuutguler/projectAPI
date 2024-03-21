@@ -25,15 +25,15 @@ namespace Repositories.EFCore.Config
 
             // Veritabanına önceden tanımlanmış Table verilerini ekleyelim
             builder.HasData(
-                new Chair { Id = 1, Status = false, TableId = 1 },
-                new Chair { Id = 2, Status = false, TableId = 1 },
-                new Chair { Id = 3, Status = false, TableId = 1 },
-                new Chair { Id = 4, Status = false, TableId = 2 },
-                new Chair { Id = 5, Status = false, TableId = 2 },
-                new Chair { Id = 6, Status = false, TableId = 2 },
-                new Chair { Id = 7, Status = false, TableId = 3 },
-                new Chair { Id = 8, Status = false, TableId = 3 },
-                new Chair { Id = 9, Status = false, TableId = 3 }
+                new Chair { Id = 1, Status = false, Price = 10, TableId = 1 },
+                new Chair { Id = 2, Status = false, Price = 5, TableId = 1 },
+                new Chair { Id = 3, Status = false, Price = 15, TableId = 1 },
+                new Chair { Id = 4, Status = false, Price = 12, TableId = 2 },
+                new Chair { Id = 5, Status = false, Price = 15, TableId = 2 },
+                new Chair { Id = 6, Status = false, Price = 10, TableId = 2 },
+                new Chair { Id = 7, Status = false, Price = 8, TableId = 3 },
+                new Chair { Id = 8, Status = false, Price = 10, TableId = 3 },
+                new Chair { Id = 9, Status = false, Price = 5, TableId = 3 }
                 // Diğer Table verileri
             );
         }

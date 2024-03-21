@@ -141,6 +141,7 @@ namespace WebApi.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Status = table.Column<bool>(type: "bit", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     TableId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -245,13 +246,15 @@ namespace WebApi.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Updatdate = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false),
+                    ReservationPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Duration = table.Column<int>(type: "int", nullable: false),
                     ReservationStartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ReservationEndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Updatdate = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ChairId = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<bool>(type: "bit", nullable: false)
+                    ChairId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -274,9 +277,9 @@ namespace WebApi.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "6d502cad-a271-4b9b-926d-322f78e9a9e6", null, "Editor", "EDITOR" },
-                    { "7b30de99-88cc-4ee2-a9fe-720101b6f289", null, "User", "USER" },
-                    { "ffb310f1-7058-4861-9fa7-3cf6493acc3b", null, "Admin", "ADMIN" }
+                    { "3389b6bb-27a5-4d49-9ac1-80eaa5955e34", null, "Editor", "EDITOR" },
+                    { "45fdf8c8-3891-4d3e-95cf-931b38b68b31", null, "Admin", "ADMIN" },
+                    { "9acf5763-fca5-4d0d-80a1-2806a5302ddc", null, "User", "USER" }
                 });
 
             migrationBuilder.InsertData(
@@ -299,9 +302,9 @@ namespace WebApi.Migrations
                 columns: new[] { "Id", "CreatedDate", "Description", "LastUpdate", "Price", "Title" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 3, 18, 13, 33, 5, 835, DateTimeKind.Local).AddTicks(1999), "Description", new DateTime(2024, 3, 18, 13, 33, 5, 835, DateTimeKind.Local).AddTicks(2014), 100m, "Product 1" },
-                    { 2, new DateTime(2024, 3, 18, 13, 33, 5, 835, DateTimeKind.Local).AddTicks(2017), "Description", new DateTime(2024, 3, 18, 13, 33, 5, 835, DateTimeKind.Local).AddTicks(2017), 75m, "Product 2" },
-                    { 3, new DateTime(2024, 3, 18, 13, 33, 5, 835, DateTimeKind.Local).AddTicks(2018), "Description", new DateTime(2024, 3, 18, 13, 33, 5, 835, DateTimeKind.Local).AddTicks(2019), 200m, "Product 3" }
+                    { 1, new DateTime(2024, 3, 21, 12, 39, 33, 823, DateTimeKind.Local).AddTicks(3206), "Description", new DateTime(2024, 3, 21, 12, 39, 33, 823, DateTimeKind.Local).AddTicks(3223), 100m, "Product 1" },
+                    { 2, new DateTime(2024, 3, 21, 12, 39, 33, 823, DateTimeKind.Local).AddTicks(3224), "Description", new DateTime(2024, 3, 21, 12, 39, 33, 823, DateTimeKind.Local).AddTicks(3225), 75m, "Product 2" },
+                    { 3, new DateTime(2024, 3, 21, 12, 39, 33, 823, DateTimeKind.Local).AddTicks(3226), "Description", new DateTime(2024, 3, 21, 12, 39, 33, 823, DateTimeKind.Local).AddTicks(3226), 200m, "Product 3" }
                 });
 
             migrationBuilder.InsertData(
@@ -316,18 +319,18 @@ namespace WebApi.Migrations
 
             migrationBuilder.InsertData(
                 table: "Chairs",
-                columns: new[] { "Id", "Status", "TableId" },
+                columns: new[] { "Id", "Price", "Status", "TableId" },
                 values: new object[,]
                 {
-                    { 1, false, 1 },
-                    { 2, false, 1 },
-                    { 3, false, 1 },
-                    { 4, false, 2 },
-                    { 5, false, 2 },
-                    { 6, false, 2 },
-                    { 7, false, 3 },
-                    { 8, false, 3 },
-                    { 9, false, 3 }
+                    { 1, 10m, false, 1 },
+                    { 2, 5m, false, 1 },
+                    { 3, 15m, false, 1 },
+                    { 4, 12m, false, 2 },
+                    { 5, 15m, false, 2 },
+                    { 6, 10m, false, 2 },
+                    { 7, 8m, false, 3 },
+                    { 8, 10m, false, 3 },
+                    { 9, 5m, false, 3 }
                 });
 
             migrationBuilder.CreateIndex(
