@@ -32,7 +32,7 @@ namespace Services
            _reservationInfoService = new Lazy<IReservationInfoService>(() => new  ReservationInfoManager(repositoryManager));
            _tableService = new Lazy<ITableService> (() => new TableManager(repositoryManager));
            _chairService = new Lazy<IChairService>(() => new ChairManager(repositoryManager, ReservationInfoService));
-           _userService = new Lazy<IUserService>(() => new UserManager(repositoryManager, ReservationInfoService));
+           _userService = new Lazy<IUserService>(() => new UserManager(repositoryManager));
         }
 
         public IProductService ProductService => _productService.Value;

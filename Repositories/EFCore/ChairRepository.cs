@@ -21,7 +21,8 @@ namespace Repositories.EFCore
 
             if (includeRelated)
             {
-                query = query.Include(c => c.Table);
+                query = query.Include(c => c.Table)
+                              .ThenInclude(c => c.Department);
             }
 
             return await query.ToListAsync();
