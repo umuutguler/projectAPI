@@ -42,7 +42,10 @@ namespace Services
             if (user.DepartmentId != chair.Table.DepartmentId)
                 throw new Exception($"Chair by id: {reservationInfo.ChairId} does not belong to your department. ");
 
-            reservationInfo.ReservationPrice = reservationInfo.Duration * chair.Price;
+            CurrencyManager currencyManager = new CurrencyManager();
+            Decimal dollarRate = await currencyManager.GetUSDRate();
+
+            reservationInfo.ReservationPrice = reservationInfo.Duration * chair.Price * dollarRate;
             reservationInfo.CreateDate = DateTime.Now;
             reservationInfo.Updatdate ??= new List<DateTime>();
             reservationInfo.Updatdate.Add(DateTime.Now);
@@ -71,12 +74,11 @@ namespace Services
                 throw new Exception($"User could not found.");
             if (user.DepartmentId != newchair.Table.DepartmentId)
                 throw new Exception($"Chair by id: {reservationInfo.ChairId} does not belong to your department. ");
-
-
             if (newchair.Status == true && entity.ChairId!=reservationInfo.ChairId)
                 throw new Exception($"Chair by id:{reservationInfo.ChairId} is already reserved ");
-            
 
+            CurrencyManager currencyManager = new CurrencyManager();
+            Decimal dollarRate = await currencyManager.GetUSDRate();
 
             entity.ReservationStartDate = reservationInfo.ReservationStartDate;
             entity.Duration = reservationInfo.Duration;
@@ -86,7 +88,7 @@ namespace Services
             entity.UserId = token;
             entity.User = reservationInfo.User;
             entity.Updatdate.Add(DateTime.Now);
-            entity.ReservationPrice = reservationInfo.Duration * newchair.Price;
+            entity.ReservationPrice = reservationInfo.Duration * newchair.Price * dollarRate;
 
             if (await IsAvailable(entity))
                 throw new Exception($"Chair by Id: {entity.ChairId}  {entity.ReservationStartDate}-{entity.ReservationEndDate} is already reserved ");
@@ -101,8 +103,8 @@ namespace Services
             var entity = await _manager.ReservationInfo.GetOneReservationInfoByIdAsync(id, trackChanges, includeRelated: true);
             if (entity is null)
                 throw new ArgumentException(nameof(entity));
-            if (entity.ReservationStartDate <= DateTime.Now)
-                throw new Exception("Your reservation has started. You cannot make changes");
+            /*if (entity.ReservationStartDate <= DateTime.Now)
+                throw new Exception("Your reservation has started. You cannot make changes");*/
 
             _manager.ReservationInfo.DeleteOneReservationInfo(entity);
             await _manager.SaveAsync();
