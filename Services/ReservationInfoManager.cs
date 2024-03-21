@@ -1,5 +1,6 @@
 ﻿using Entities.Models;
 using Repositories.Contracts;
+using Repositories.EFCore;
 using Services.Contracts;
 
 namespace Services
@@ -7,13 +8,18 @@ namespace Services
     public class ReservationInfoManager : IReservationInfoService
     {
         private readonly IRepositoryManager _manager;
-        public ReservationInfoManager(IRepositoryManager manager)
+        private readonly RepositoryContext _context;
+        public ReservationInfoManager(IRepositoryManager manager, RepositoryContext context)
         {
             _manager = manager;
+            _context = context;
         }
 
-        public async Task<IEnumerable<ReservationInfo>> GetAllReservationInfosAsync(bool trackChanges) => 
-            await _manager.ReservationInfo.GetAllReservationInfosAsync(trackChanges, includeRelated: true);
+        public async Task<IEnumerable<ReservationInfo>> GetAllReservationInfosAsync(bool trackChanges)
+        {
+            return await _manager.ReservationInfo.GetAllReservationInfosAsync(trackChanges, includeRelated: true);
+        }
+            
         public async Task<IEnumerable<ReservationInfo>> GetAllReservationInfosByUserId(bool trackChanges, string token)
         {
             var reservations = await _manager.ReservationInfo.GetAllReservationInfosAsync(trackChanges, includeRelated: true);
@@ -61,6 +67,8 @@ namespace Services
 
             var newchair = await _manager.Chair.GetOneChairByIdAsync(reservationInfo.ChairId, false, true);
             var user = await _manager.User.GetOneUserByIdAsync(token, false, true);
+            if (user is null)
+                throw new Exception($"User could not found.");
 
             if (newchair.Status == true && entity.ChairId!=reservationInfo.ChairId)
                 throw new Exception($"Chair by id:{reservationInfo.ChairId} is already reserved ");
@@ -97,16 +105,6 @@ namespace Services
             await _manager.SaveAsync();
         }
 
-        public async Task<Boolean> IsAvailable(ReservationInfo reservationInfo, int reservationTime)
-        {
-            var reservations = await GetAllReservationInfosAsync(false);
-
-            return reservations.Any(r =>
-            r.ReservationStartDate <= reservationInfo.ReservationStartDate.AddHours(24) &&
-            r.ReservationEndDate >= reservationInfo.ReservationStartDate &&
-            reservationInfo.ChairId == r.ChairId);
-        }
-
         public async Task<ReservationInfo> GetOneReservationInfosByChairId(bool trackChanges, int chairId)
         {
             var reservation = await _manager.ReservationInfo.GetAllReservationInfosAsync(trackChanges, includeRelated: true);
@@ -121,6 +119,28 @@ namespace Services
                 .GetAllChairsAsync(trackChanges, includeRelated: true);
 
             return chairs.Where(c => c.TableId == tableId);
+        }
+
+
+        public async Task<Boolean> IsAvailable(ReservationInfo reservationInfo, int reservationTime)
+        {
+            var reservations = await GetAllReservationInfosAsync(false);
+
+            return reservations.Any(r =>
+            r.ReservationStartDate <= reservationInfo.ReservationStartDate.AddHours(24) &&
+            r.ReservationEndDate >= reservationInfo.ReservationStartDate &&
+            reservationInfo.ChairId == r.ChairId);
+        }
+
+        public async Task AreReservationsUpToDate() // IEnumerable<ReservationInfo> reservations
+        {
+            var reservations = await GetAllReservationInfosAsync(true);
+
+            var endReservations = reservations.Where(r => r.ReservationEndDate < DateTime.Now && r.Status == true);
+            endReservations.ToList().ForEach(r => r.Status = false);
+
+            _context.ReservationInfos.UpdateRange(endReservations);
+            _context.SaveChanges();
         }
     }
 }

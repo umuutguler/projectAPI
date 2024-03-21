@@ -87,5 +87,12 @@ namespace Presentation.Controllers
                 .ChairService.GetAllEmptyChairsAsync(false, userId));
         }
 
+        [HttpPut("uptodate")]
+        public async Task<IActionResult> ReservationsUpToDate()
+        {
+            await _manager.ReservationInfoService.AreReservationsUpToDate();
+            return NoContent();
+        }
+
     }
 }
