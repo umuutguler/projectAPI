@@ -15,19 +15,14 @@ namespace Services
     public class UserManager : IUserService
     {
         private readonly IRepositoryManager _manager;
-        private readonly RepositoryContext _context;
-        private readonly IReservationInfoService _reservationInfoService;
-        public UserManager(IRepositoryManager manager, IReservationInfoService reservationInfoService, RepositoryContext context) //, IServiceManager service)
+        public UserManager(IRepositoryManager manager)
         {
             _manager = manager;
-            _reservationInfoService = reservationInfoService;
-                //_service = service;
         }
 
         public async Task DeleteOneUserAsync(string id, bool trackChanges=false)
         {
             var user = await _manager.User.GetOneUserByIdAsync(id, false, true); // Rezervasyonları da al
-
             if (user is null)
                 throw new ArgumentException(nameof(user));
 
@@ -35,8 +30,6 @@ namespace Services
             {
                 _manager.ReservationInfo.DeleteOneReservationInfo(reservation);
             }
-
-            // Tek tek rezervasyon silmeye gerek yok
             _manager.User.DeleteOneUser(user);
             await _manager.SaveAsync();
 
@@ -60,7 +53,6 @@ namespace Services
             entity.UserName = user.UserName ?? entity.UserName;
             entity.PasswordHash = user.PasswordHash ?? entity.PasswordHash;
             entity.PhoneNumber = user.PhoneNumber ?? entity.PhoneNumber;
-
 
             _manager.User.Update(entity);
             await _manager.SaveAsync();

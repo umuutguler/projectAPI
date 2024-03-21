@@ -20,8 +20,7 @@ namespace Services
         public readonly Lazy<IUserService> _userService;
 
 
-        public ServiceManager(IRepositoryManager repositoryManager, 
-            RepositoryContext context,
+        public ServiceManager(IRepositoryManager repositoryManager,
             ILoggerService _logger, 
             IMapper mapper, 
             IDataShaper<ProductDto> shaper,
@@ -34,7 +33,7 @@ namespace Services
            _reservationInfoService = new Lazy<IReservationInfoService>(() => new  ReservationInfoManager(repositoryManager));
            _tableService = new Lazy<ITableService> (() => new TableManager(repositoryManager));
            _chairService = new Lazy<IChairService> (() => new ChairManager(repositoryManager));
-            _userService = new Lazy<IUserService>(() => new UserManager(repositoryManager, ReservationInfoService, context));
+            _userService = new Lazy<IUserService>(() => new UserManager(repositoryManager));
         }
 
         public IProductService ProductService => _productService.Value;
