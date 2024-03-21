@@ -17,12 +17,12 @@ namespace Presentation.Controllers
 
         [Authorize]
         [HttpGet("allUsers")]
-        public async Task<IActionResult> GetAllUsersAsync()=>
+        public async Task<IActionResult> AllUsersAsync()=>
             Ok(await _manager.UserService.GetAllUsersAsync(false));
 
         [Authorize]
         [HttpGet("User")]
-        public async Task<IActionResult> GetOneUserInfoLoggedIn()
+        public async Task<IActionResult> OneUserInfoLoggedIn()
         {
             var userId = HttpContext.User.Identity.Name;
             return Ok(await _manager.UserService.GetOneUserByIdAsync(userId, false));
@@ -30,7 +30,7 @@ namespace Presentation.Controllers
 
         [Authorize]
         [HttpPut("update")]
-        public async Task<IActionResult> UptadeOneUserAsync([FromBody] User user)
+        public async Task<IActionResult> OneUserAsync([FromBody] User user)
         {
             var userId = HttpContext.User.Identity.Name;
             await _manager.UserService.UpdateOneUserAsync(userId, user, false);

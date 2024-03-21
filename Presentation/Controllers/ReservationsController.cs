@@ -23,7 +23,7 @@ namespace Presentation.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllReservationsAsync()
+        public async Task<IActionResult> AllReservationsAsync()
         {
             return Ok(await _manager
                 .ReservationInfoService
@@ -31,7 +31,7 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("User")]
-        public async Task<IActionResult> GetAllReservationsByUserId()
+        public async Task<IActionResult> AllReservationsByUserId()
         {
             var userId = HttpContext.User.Identity.Name;
             var reservations = await _manager
@@ -41,13 +41,13 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetOneRReservationAsync([FromRoute] int id)
+        public async Task<IActionResult> OneRReservationAsync([FromRoute] int id)
         {
             return Ok(await _manager.ReservationInfoService.GetOneReservationInfoByIdAsync(id, false));
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateOneReservationAsync([FromBody] ReservationInfo reservationInfo)
+        public async Task<IActionResult> OneReservationAsync([FromBody] ReservationInfo reservationInfo)
         {
             //UserIdFromToken
             var userId = HttpContext.User.Identity.Name;
@@ -57,7 +57,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> UptadeOneReservationAsync([FromRoute(Name = "id")] int id,[FromBody] ReservationInfo reservationInfo)
+        public async Task<IActionResult> OneReservationAsync([FromRoute(Name = "id")] int id,[FromBody] ReservationInfo reservationInfo)
         {
 
             //UserIdFromToken
@@ -70,7 +70,7 @@ namespace Presentation.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        public async Task<IActionResult> DeleteOneReservationAsync([FromRoute(Name = "id")] int id)
+        public async Task<IActionResult> OneReservationAsync([FromRoute(Name = "id")] int id)
         {
 
             await _manager.ReservationInfoService.DeleteOneReservationInfoAsync(id, false);
@@ -79,7 +79,7 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("Empty")]
-        public async Task<IActionResult> GetAlEmptyChairsAsync()
+        public async Task<IActionResult> AllEmptyChairsAsync()
         {
             //UserIdFromToken
             var userId = HttpContext.User.Identity.Name;

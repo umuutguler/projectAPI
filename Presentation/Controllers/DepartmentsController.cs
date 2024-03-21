@@ -20,7 +20,7 @@ namespace Presentation.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllDepartmentsAsync()
+        public async Task<IActionResult> AllDepartmentsAsync()
         {
             return Ok(await _services
                 .DepartmentService
@@ -28,7 +28,7 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> GeOneDepartmentAsync([FromRoute] int id)
+        public async Task<IActionResult> OneDepartmentAsync([FromRoute] int id)
         {
             return Ok(await _services
                 .DepartmentService

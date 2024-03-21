@@ -21,7 +21,7 @@ namespace Presentation.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllTablesAsync()
+        public async Task<IActionResult> AllTablesAsync()
         {
             return Ok(await _services
                 .TableService
@@ -29,7 +29,7 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> GeOneTablesAsync([FromRoute] int id)
+        public async Task<IActionResult> OneTablesAsync([FromRoute] int id)
         {
             return Ok(await _services
                 .TableService
@@ -37,7 +37,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> UptadeTableByIdAsync([FromRoute(Name = "id")] int id, [FromBody] Table table)
+        public async Task<IActionResult> TableByIdAsync([FromRoute(Name = "id")] int id, [FromBody] Table table)
         {
             var updatedTableEntitiy = await _services.TableService.UpdateTableByIdAsync(id, table, true);
             if (updatedTableEntitiy == null)
@@ -47,7 +47,7 @@ namespace Presentation.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        public async Task<IActionResult> DeleteTableByIdAsync(int id)
+        public async Task<IActionResult> TableByIdAsync(int id)
         {
             /*var deletedTable = await _services.TableService.DeleteTableByIdAsync(id, trackChanges: true);
             if (deletedTable == null)

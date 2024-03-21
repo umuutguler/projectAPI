@@ -22,7 +22,7 @@ namespace Presentation.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllChairsAsync()
+        public async Task<IActionResult> AllChairsAsync()
         {
             return Ok(await _services
                 .ChairService
@@ -30,7 +30,7 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> GeOneChairsAsync([FromRoute] int id)
+        public async Task<IActionResult> OneChairsAsync([FromRoute] int id)
         {
             return Ok(await _services
                 .ChairService
@@ -38,14 +38,14 @@ namespace Presentation.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateOneChairAsync([FromBody] Chair chair)
+        public async Task<IActionResult> OneChairAsync([FromBody] Chair chair)
         {
             var entity = await _services.ChairService.CreateOneReservationInfoAsync(chair);
             return StatusCode(201, entity);
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> UptadeChairByIdAsync([FromRoute(Name = "id")] int id, [FromBody] Chair updatedChair) 
+        public async Task<IActionResult> ChairByIdAsync([FromRoute(Name = "id")] int id, [FromBody] Chair updatedChair) 
         {
             var updatedChairEntitiy = await _services.ChairService.UpdateChairByIdAsync(id, updatedChair, true);
             if (updatedChairEntitiy == null)
@@ -55,7 +55,7 @@ namespace Presentation.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        public async Task<IActionResult> DeleteChairByIdAsync([FromRoute]int id)
+        public async Task<IActionResult> ChairByIdAsync([FromRoute]int id)
         {
             await _services.ChairService.DeleteChairByIdAsync(id, trackChanges: true);
            
