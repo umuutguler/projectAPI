@@ -27,11 +27,5 @@ namespace Entities.Models
         [ForeignKey("Chair")]
         public int ChairId { get; set; }
         public Chair Chair { get; set; }
-
-        
-
- 
-
-
     }
 }

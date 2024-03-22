@@ -18,7 +18,10 @@ namespace Services
         public async Task<IEnumerable<ReservationInfo>> GetReservationsStatisticsAsync(DateTime startDate, DateTime endDate, bool trackChanges)
         {
             var reservations = await _reservationInfoService.GetAllReservationInfosAsync(trackChanges);
-            return reservations;
+            var reservationsByTimeRange = reservations.Where(r => r.ReservationStartDate >= startDate && r.ReservationEndDate <= endDate);
+
+
+            return reservationsByTimeRange;
         }
     }
 }
