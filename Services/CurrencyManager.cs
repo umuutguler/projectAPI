@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Globalization;
+using System.Text.Json;
 using Services.Contracts;
 namespace Services
 {
@@ -26,7 +27,7 @@ namespace Services
                 var jsonObject = JsonDocument.Parse(jsonContent).RootElement;
                 var usdObject = jsonObject.GetProperty("USD");
                 string dolar = usdObject.GetProperty("alis").GetString();
-                return decimal.Parse(dolar);
+                return decimal.Parse(dolar, CultureInfo.InvariantCulture);
             }
             else
             {

@@ -246,7 +246,7 @@ namespace WebApi.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Status = table.Column<bool>(type: "bit", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ReservationPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Duration = table.Column<int>(type: "int", nullable: false),
                     ReservationStartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -277,9 +277,9 @@ namespace WebApi.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "3389b6bb-27a5-4d49-9ac1-80eaa5955e34", null, "Editor", "EDITOR" },
-                    { "45fdf8c8-3891-4d3e-95cf-931b38b68b31", null, "Admin", "ADMIN" },
-                    { "9acf5763-fca5-4d0d-80a1-2806a5302ddc", null, "User", "USER" }
+                    { "01bafc0d-68ab-43fa-838d-1b1e9f7a4c74", null, "User", "USER" },
+                    { "d4b6fa9a-73c1-423b-8ea0-bd933c2c77ef", null, "Admin", "ADMIN" },
+                    { "ec3a0683-634a-4c26-b744-5b1cd5a58b3f", null, "Editor", "EDITOR" }
                 });
 
             migrationBuilder.InsertData(
@@ -302,9 +302,9 @@ namespace WebApi.Migrations
                 columns: new[] { "Id", "CreatedDate", "Description", "LastUpdate", "Price", "Title" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 3, 21, 12, 39, 33, 823, DateTimeKind.Local).AddTicks(3206), "Description", new DateTime(2024, 3, 21, 12, 39, 33, 823, DateTimeKind.Local).AddTicks(3223), 100m, "Product 1" },
-                    { 2, new DateTime(2024, 3, 21, 12, 39, 33, 823, DateTimeKind.Local).AddTicks(3224), "Description", new DateTime(2024, 3, 21, 12, 39, 33, 823, DateTimeKind.Local).AddTicks(3225), 75m, "Product 2" },
-                    { 3, new DateTime(2024, 3, 21, 12, 39, 33, 823, DateTimeKind.Local).AddTicks(3226), "Description", new DateTime(2024, 3, 21, 12, 39, 33, 823, DateTimeKind.Local).AddTicks(3226), 200m, "Product 3" }
+                    { 1, new DateTime(2024, 3, 22, 21, 39, 55, 732, DateTimeKind.Local).AddTicks(9080), "Description", new DateTime(2024, 3, 22, 21, 39, 55, 732, DateTimeKind.Local).AddTicks(9092), 100m, "Product 1" },
+                    { 2, new DateTime(2024, 3, 22, 21, 39, 55, 732, DateTimeKind.Local).AddTicks(9094), "Description", new DateTime(2024, 3, 22, 21, 39, 55, 732, DateTimeKind.Local).AddTicks(9094), 75m, "Product 2" },
+                    { 3, new DateTime(2024, 3, 22, 21, 39, 55, 732, DateTimeKind.Local).AddTicks(9095), "Description", new DateTime(2024, 3, 22, 21, 39, 55, 732, DateTimeKind.Local).AddTicks(9096), 200m, "Product 3" }
                 });
 
             migrationBuilder.InsertData(

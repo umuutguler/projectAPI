@@ -12,7 +12,7 @@ using Repositories.EFCore;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20240321093934_init")]
+    [Migration("20240322183956_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -206,27 +206,27 @@ namespace WebApi.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2024, 3, 21, 12, 39, 33, 823, DateTimeKind.Local).AddTicks(3206),
+                            CreatedDate = new DateTime(2024, 3, 22, 21, 39, 55, 732, DateTimeKind.Local).AddTicks(9080),
                             Description = "Description",
-                            LastUpdate = new DateTime(2024, 3, 21, 12, 39, 33, 823, DateTimeKind.Local).AddTicks(3223),
+                            LastUpdate = new DateTime(2024, 3, 22, 21, 39, 55, 732, DateTimeKind.Local).AddTicks(9092),
                             Price = 100m,
                             Title = "Product 1"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2024, 3, 21, 12, 39, 33, 823, DateTimeKind.Local).AddTicks(3224),
+                            CreatedDate = new DateTime(2024, 3, 22, 21, 39, 55, 732, DateTimeKind.Local).AddTicks(9094),
                             Description = "Description",
-                            LastUpdate = new DateTime(2024, 3, 21, 12, 39, 33, 823, DateTimeKind.Local).AddTicks(3225),
+                            LastUpdate = new DateTime(2024, 3, 22, 21, 39, 55, 732, DateTimeKind.Local).AddTicks(9094),
                             Price = 75m,
                             Title = "Product 2"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2024, 3, 21, 12, 39, 33, 823, DateTimeKind.Local).AddTicks(3226),
+                            CreatedDate = new DateTime(2024, 3, 22, 21, 39, 55, 732, DateTimeKind.Local).AddTicks(9095),
                             Description = "Description",
-                            LastUpdate = new DateTime(2024, 3, 21, 12, 39, 33, 823, DateTimeKind.Local).AddTicks(3226),
+                            LastUpdate = new DateTime(2024, 3, 22, 21, 39, 55, 732, DateTimeKind.Local).AddTicks(9096),
                             Price = 200m,
                             Title = "Product 3"
                         });
@@ -258,8 +258,9 @@ namespace WebApi.Migrations
                     b.Property<DateTime>("ReservationStartDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Updatdate")
                         .IsRequired()
@@ -430,19 +431,19 @@ namespace WebApi.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9acf5763-fca5-4d0d-80a1-2806a5302ddc",
+                            Id = "01bafc0d-68ab-43fa-838d-1b1e9f7a4c74",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "3389b6bb-27a5-4d49-9ac1-80eaa5955e34",
+                            Id = "ec3a0683-634a-4c26-b744-5b1cd5a58b3f",
                             Name = "Editor",
                             NormalizedName = "EDITOR"
                         },
                         new
                         {
-                            Id = "45fdf8c8-3891-4d3e-95cf-931b38b68b31",
+                            Id = "d4b6fa9a-73c1-423b-8ea0-bd933c2c77ef",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });

@@ -77,6 +77,13 @@ namespace Presentation.Controllers
 
             return NoContent();
         }
+        [HttpPut("cancel/{id:int}")]
+        public async Task<IActionResult> CancelReservation([FromRoute(Name = "id")] int id)
+        {
+            var userId = HttpContext.User.Identity.Name;
+            await _manager.ReservationInfoService.CancelOneReservationInfoAsync(id, false, userId);
+            return NoContent();
+        }
 
         [HttpGet("Empty")]
         public async Task<IActionResult> AllEmptyChairsAsync()

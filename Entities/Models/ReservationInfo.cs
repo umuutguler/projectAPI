@@ -12,7 +12,7 @@ namespace Entities.Models
     {
         [Key]
         public int Id { get; set; }
-        public Boolean Status { get; set; }
+        public String Status { get; set; }
         public Decimal ReservationPrice { get; set; }
         public int Duration { get; set; }
         public DateTime ReservationStartDate { get; set; }
