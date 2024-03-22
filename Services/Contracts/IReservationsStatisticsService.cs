@@ -10,8 +10,8 @@ namespace Services.Contracts
     public interface IReservationsStatisticsService
     {
         Task<IEnumerable<ReservationInfo>> GetReservationsStatisticsAsync(
-            DateTime reservationStartDate,
-            DateTime reservationEndDate,
+            DateTime startDate,
+            DateTime endDate,
             bool trackChanges);
     }
 }

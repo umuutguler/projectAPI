@@ -15,7 +15,7 @@ namespace Services
 
         }
 
-        public async Task<IEnumerable<ReservationInfo>> GetReservationsStatisticsAsync(DateTime reservationStartDate, DateTime reservationEndDate, bool trackChanges)
+        public async Task<IEnumerable<ReservationInfo>> GetReservationsStatisticsAsync(DateTime startDate, DateTime endDate, bool trackChanges)
         {
             var reservations = await _reservationInfoService.GetAllReservationInfosAsync(trackChanges);
             return reservations;

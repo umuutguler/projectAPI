@@ -101,5 +101,12 @@ namespace Presentation.Controllers
             return NoContent();
         }
 
+        [HttpGet("statistics/by-time-range")]
+        public async Task<IActionResult> ReservationsStatistics([FromBody] DateTime startDate, DateTime endDate)
+        {
+            var reservationsStatistics = await _manager.ReservationsStatisticsService.GetReservationsStatisticsAsync(startDate, endDate, false);
+            return Ok(reservationsStatistics);
+        }
+
     }
 }
