@@ -19,6 +19,7 @@ namespace Services
         public readonly Lazy<IChairService> _chairService;
         public readonly Lazy<IUserService> _userService;
         public readonly Lazy<ICurrencyService> _currencyService;
+        public readonly Lazy<IReservationsStatisticsService> _reservationsStatisticsService;
 
 
         public ServiceManager(IRepositoryManager repositoryManager, 
@@ -37,6 +38,7 @@ namespace Services
            _tableService = new Lazy<ITableService> (() => new TableManager(repositoryManager));
            _chairService = new Lazy<IChairService>(() => new ChairManager(repositoryManager, _reservationInfoService.Value));
            _userService = new Lazy<IUserService>(() => new UserManager(repositoryManager));
+           _reservationsStatisticsService = new Lazy<IReservationsStatisticsService>(() => new ReservationsStatisticsManager(repositoryManager, _reservationInfoService.Value));
         }
 
         public IProductService ProductService => _productService.Value;
@@ -49,5 +51,7 @@ namespace Services
         public IUserService UserService => _userService.Value;
 
         public ICurrencyService CurrencyService => _currencyService.Value;
+
+        public IReservationsStatisticsService ReservationsStatisticsService => _reservationsStatisticsService.Value;
     }
 }
