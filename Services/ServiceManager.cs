@@ -18,6 +18,7 @@ namespace Services
         public readonly Lazy<ITableService> _tableService;
         public readonly Lazy<IChairService> _chairService;
         public readonly Lazy<IUserService> _userService;
+        public readonly Lazy<ICurrencyService> _currencyService;
 
 
         public ServiceManager(IRepositoryManager repositoryManager, 
@@ -28,12 +29,13 @@ namespace Services
             UserManager<User> _userManager,// IAuthenticationService ifadesi UserManager ihtiyaç duyuyor
             IConfiguration _configuration)
         {
+            _currencyService = new Lazy<ICurrencyService>(() => new CurrencyManager());
            _productService = new Lazy<IProductService>(() => new ProductManager(repositoryManager , _logger, mapper, shaper)); // artık logger ifadesi de istiyor
            _departmentService = new Lazy<IDepartmentService>(() => new DepartmentManager(repositoryManager));
            _authenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationManager(_logger, mapper, _userManager, _configuration));
-           _reservationInfoService = new Lazy<IReservationInfoService>(() => new  ReservationInfoManager(repositoryManager, context));
+           _reservationInfoService = new Lazy<IReservationInfoService>(() => new  ReservationInfoManager(repositoryManager, context, _currencyService.Value));
            _tableService = new Lazy<ITableService> (() => new TableManager(repositoryManager));
-           _chairService = new Lazy<IChairService>(() => new ChairManager(repositoryManager, ReservationInfoService));
+           _chairService = new Lazy<IChairService>(() => new ChairManager(repositoryManager, _reservationInfoService.Value));
            _userService = new Lazy<IUserService>(() => new UserManager(repositoryManager));
         }
 
@@ -45,5 +47,7 @@ namespace Services
         public IChairService ChairService => _chairService.Value;
 
         public IUserService UserService => _userService.Value;
+
+        public ICurrencyService CurrencyService => _currencyService.Value;
     }
 }

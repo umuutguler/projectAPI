@@ -1,10 +1,16 @@
 ﻿using System.Text.Json;
+using Services.Contracts;
 namespace Services
 {
-    public class CurrencyManager
+    public class CurrencyManager : ICurrencyService
     {
+        public CurrencyManager()
+        {
+        }
+
         public async Task<Decimal> GetUSDRate()
         {
+
             string url = "https://api.genelpara.com/embed/para-birimleri.json";
             string userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36";
 

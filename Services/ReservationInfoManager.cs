@@ -9,10 +9,12 @@ namespace Services
     {
         private readonly IRepositoryManager _manager;
         private readonly RepositoryContext _context;
-        public ReservationInfoManager(IRepositoryManager manager, RepositoryContext context)
+        private readonly ICurrencyService _currencyManager;
+        public ReservationInfoManager(IRepositoryManager manager, RepositoryContext context, ICurrencyService currencyManager)
         {
             _manager = manager;
             _context = context;
+            _currencyManager = currencyManager;
         }
 
         public async Task<IEnumerable<ReservationInfo>> GetAllReservationInfosAsync(bool trackChanges)
@@ -42,10 +44,10 @@ namespace Services
             if (user.DepartmentId != chair.Table.DepartmentId)
                 throw new Exception($"Chair by id: {reservationInfo.ChairId} does not belong to your department. ");
 
-            CurrencyManager currencyManager = new CurrencyManager();
-            Decimal dollarRate = await currencyManager.GetUSDRate();
+            
+            Decimal dollarRate = await _currencyManager.GetUSDRate();
 
-            reservationInfo.ReservationPrice = reservationInfo.Duration * chair.Price * dollarRate;
+            reservationInfo.ReservationPrice = reservationInfo.Duration * chair.Price *  dollarRate;
             reservationInfo.CreateDate = DateTime.Now;
             reservationInfo.Updatdate ??= new List<DateTime>();
             reservationInfo.Updatdate.Add(DateTime.Now);
@@ -77,8 +79,7 @@ namespace Services
             if (newchair.Status == true && entity.ChairId!=reservationInfo.ChairId)
                 throw new Exception($"Chair by id:{reservationInfo.ChairId} is already reserved ");
 
-            CurrencyManager currencyManager = new CurrencyManager();
-            Decimal dollarRate = await currencyManager.GetUSDRate();
+            Decimal dollarRate = await _currencyManager.GetUSDRate();
 
             entity.ReservationStartDate = reservationInfo.ReservationStartDate;
             entity.Duration = reservationInfo.Duration;
