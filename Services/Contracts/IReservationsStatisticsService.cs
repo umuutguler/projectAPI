@@ -9,7 +9,17 @@ namespace Services.Contracts
 {
     public interface IReservationsStatisticsService
     {
-        Task<IEnumerable<ReservationInfo>> GetReservationsStatisticsAsync(
+        Task<IEnumerable<ReservationInfo>> GetReservationsByTimeRange(
+            DateTime startDate,
+            DateTime endDate,
+            bool trackChanges);
+
+        Task<(int TotalReservationCount, IEnumerable<ReservationInfo>)> MostReservedDepartmentAsync(
+            DateTime startDate,
+            DateTime endDate,
+            bool trackChanges);
+
+        Task<(int TotalReservationCount, IEnumerable<ReservationInfo>)> MostReservedUserAsync(
             DateTime startDate,
             DateTime endDate,
             bool trackChanges);

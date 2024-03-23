@@ -102,11 +102,30 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("statistics/by-time-range")]
-        public async Task<IActionResult> ReservationsStatistics([FromBody] DateTime startDate, DateTime endDate)
+        public async Task<IActionResult> ReservationsStatistics()
         {
-            var reservationsStatistics = await _manager.ReservationsStatisticsService.GetReservationsStatisticsAsync(startDate, endDate, false);
+            DateTime startDate = DateTime.Now;
+            DateTime endDate = startDate.AddDays(10);
+            var reservationsStatistics = await _manager.ReservationsStatisticsService.GetReservationsByTimeRange(startDate, endDate, false);
             return Ok(reservationsStatistics);
         }
 
+        [HttpGet("statistics/mostReserved")]
+        public async Task<IActionResult> MostReservedDepartment()
+        {
+            DateTime startDate = DateTime.Now;
+            DateTime endDate = startDate.AddDays(100);
+            var mostReservedDepartment = await _manager.ReservationsStatisticsService.MostReservedDepartmentAsync(startDate, endDate, false);
+            return Ok(mostReservedDepartment);
+        }
+
+        [HttpGet("statistics/mostReservedUser")]
+        public async Task<IActionResult> MostReservedUser()
+        {
+            DateTime startDate = DateTime.Now;
+            DateTime endDate = startDate.AddDays(100);
+            var mostReservedUser = await _manager.ReservationsStatisticsService.MostReservedUserAsync(startDate, endDate, false);
+            return Ok(mostReservedUser);
+        }
     }
 }
