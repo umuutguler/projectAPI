@@ -78,5 +78,34 @@ namespace Services
 
             return (totalReservationCount, mostReservedUserReservations);
         }
+
+        public async Task<(int TotalCancelledReservationCount, IEnumerable<ReservationInfo>)> MostCancelledUserAsync(DateTime startDate, DateTime endDate, bool trackChanges)
+        {
+            var reservations = await GetReservationsByTimeRange(startDate, endDate, trackChanges);
+
+            // Kullanıcı bazında iptal edilen rezervasyon sayısını alıyoruz
+            var userCancelledReservationCounts = reservations
+                .Where(r => r.Status == "canceled")
+                .GroupBy(r => r.UserId)
+                .Select(g => new { UserId = g.Key, CancelledReservationCount = g.Count() })
+                .ToList();
+
+            var mostCancelledUserCount = userCancelledReservationCounts
+                .OrderByDescending(g => g.CancelledReservationCount)
+                .FirstOrDefault();
+
+            // En çok rezervasyonu iptal eden kullanıcının ID'sini buluyoruz
+            var mostCancelledUserId = mostCancelledUserCount?.UserId;
+            // Toplam iptal edilen rezervasyon sayısını al
+            var totalCancelledReservationCount = mostCancelledUserCount?.CancelledReservationCount ?? 0;
+
+            // En çok rezervasyonu iptal eden kullanıcının iptal edilen rezervasyonlarını döndür
+            var mostCancelledUserReservations = mostCancelledUserCount != null
+                ? reservations.Where(r => r.UserId == mostCancelledUserCount.UserId && r.Status == "canceled")
+                : Enumerable.Empty<ReservationInfo>();
+
+            return (totalCancelledReservationCount, mostCancelledUserReservations);
+        }
+
     }
 }

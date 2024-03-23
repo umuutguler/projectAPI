@@ -127,5 +127,15 @@ namespace Presentation.Controllers
             var mostReservedUser = await _manager.ReservationsStatisticsService.MostReservedUserAsync(startDate, endDate, false);
             return Ok(mostReservedUser);
         }
+
+
+        [HttpGet("statistics/mostCancelledUser")]
+        public async Task<IActionResult> MostCancelledUser()
+        {
+            DateTime startDate = DateTime.Now;
+            DateTime endDate = startDate.AddDays(100);
+            var mostCancelledUser = await _manager.ReservationsStatisticsService.MostCancelledUserAsync(startDate, endDate, false);
+            return Ok(mostCancelledUser);
+        }
     }
 }

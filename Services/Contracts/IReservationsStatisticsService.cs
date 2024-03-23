@@ -23,5 +23,10 @@ namespace Services.Contracts
             DateTime startDate,
             DateTime endDate,
             bool trackChanges);
+
+         Task<(int TotalCancelledReservationCount, IEnumerable<ReservationInfo>)> MostCancelledUserAsync(
+            DateTime startDate,
+            DateTime endDate,
+            bool trackChanges);
     }
 }
