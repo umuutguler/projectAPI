@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Repositories.Contracts;
 using Services.Contracts;
 
@@ -26,18 +27,18 @@ namespace Services
 
         public async Task<(int TotalReservationCount, IEnumerable<ReservationInfo>)> MostReservedDepartmentAsync(DateTime startDate, DateTime endDate, bool trackChanges)
         {
-            var reservations = await GetReservationsByTimeRange(startDate, endDate, trackChanges); 
+            var reservations = await GetReservationsByTimeRange(startDate, endDate, trackChanges);
 
             // Gruplayıp her departmanın rezervasyon sayısını alıyoruz
             var departmentReservationCounts = reservations
                 .GroupBy(r => r.Chair.Table.DepartmentId)
                 .Select(g => new { DepartmentId = g.Key, ReservationCount = g.Count() })
                 .ToList();
-           
+
             var mostReservedDepartmentCount = departmentReservationCounts
                 .OrderByDescending(g => g.ReservationCount)
                 .FirstOrDefault();
-           
+
             // En çok rezervasyon yapılan departmanın ID'sini buluyoruz
             var mostReservedDepartmentId = mostReservedDepartmentCount?.DepartmentId;
             // Toplam rezervasyon sayısını al
@@ -107,5 +108,12 @@ namespace Services
             return (totalCancelledReservationCount, mostCancelledUserReservations);
         }
 
+        public async Task<(int TableReservationCount, IEnumerable<ReservationInfo>)> GetReservedChairCountByTableIdAsync(int id, DateTime startDate, DateTime endDate, bool trackChanges)
+        {
+            var reservations = await GetReservationsByTimeRange(startDate, endDate, trackChanges);
+            // Belirli bir masa ID'si ile ilgili rezervasyonları al
+            var tableReservations = reservations.Where(r => r.Chair.Table.Id == id && r.Status == "current");
+            return (tableReservations.Count(), tableReservations);
+        }
     }
 }

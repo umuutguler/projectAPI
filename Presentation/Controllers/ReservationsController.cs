@@ -137,5 +137,15 @@ namespace Presentation.Controllers
             var mostCancelledUser = await _manager.ReservationsStatisticsService.MostCancelledUserAsync(startDate, endDate, false);
             return Ok(mostCancelledUser);
         }
+
+        [HttpGet("TableReservationCount/{id}")]
+        public async Task<IActionResult> TableReservationCount([FromRoute] int id)
+        {
+            DateTime startDate = DateTime.Now;
+            DateTime endDate = startDate.AddDays(100);
+            var ReservedTableCount = await _manager.ReservationsStatisticsService.GetReservedChairCountByTableIdAsync(id, startDate, endDate, false);
+            return Ok(ReservedTableCount);
+        }
+
     }
 }

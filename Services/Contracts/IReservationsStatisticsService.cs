@@ -28,5 +28,10 @@ namespace Services.Contracts
             DateTime startDate,
             DateTime endDate,
             bool trackChanges);
+        Task<(int TableReservationCount, IEnumerable<ReservationInfo>)> GetReservedChairCountByTableIdAsync(
+            int id,
+            DateTime startDate,
+            DateTime endDate,
+            bool trackChanges);
     }
 }
