@@ -21,7 +21,6 @@ namespace Services
             var reservations = await _reservationInfoService.GetAllReservationInfosAsync(trackChanges);
             var reservationsByTimeRange = reservations.Where(r => r.ReservationStartDate >= startDate && r.ReservationEndDate <= endDate);
 
-
             return reservationsByTimeRange;
         }
 
@@ -30,27 +29,18 @@ namespace Services
             var reservations = await GetReservationsByTimeRange(startDate, endDate, trackChanges);
 
             // Gruplayıp her departmanın rezervasyon sayısını alıyoruz
-            var departmentReservationCounts = reservations
+            var mostReservedDepartmentId = reservations
                 .GroupBy(r => r.Chair.Table.DepartmentId)
-                .Select(g => new { DepartmentId = g.Key, ReservationCount = g.Count() })
-                .ToList();
-
-            var mostReservedDepartmentCount = departmentReservationCounts
-                .OrderByDescending(g => g.ReservationCount)
+                .OrderByDescending(g => g.Count())
+                .Select(g => g.Key)
                 .FirstOrDefault();
 
-            // En çok rezervasyon yapılan departmanın ID'sini buluyoruz
-            var mostReservedDepartmentId = mostReservedDepartmentCount?.DepartmentId;
-            // Toplam rezervasyon sayısını al
-            var totalReservationCount = mostReservedDepartmentCount?.ReservationCount ?? 0;
-
-
             // En çok rezervasyon yapılan departmana ait rezervasyonları döndür
-            var mostReservedDepartmentReservations = mostReservedDepartmentCount != null
-                ? reservations.Where(r => r.Chair.Table.DepartmentId == mostReservedDepartmentCount.DepartmentId)
+            var mostReservedDepartmentReservations = mostReservedDepartmentId != null
+                ? reservations.Where(r => r.Chair.Table.DepartmentId == mostReservedDepartmentId)
                 : Enumerable.Empty<ReservationInfo>();
 
-            return (totalReservationCount, mostReservedDepartmentReservations);
+            return (mostReservedDepartmentReservations.Count(), mostReservedDepartmentReservations);
         }
 
         public async Task<(int TotalReservationCount, IEnumerable<ReservationInfo>)> MostReservedUserAsync(DateTime startDate, DateTime endDate, bool trackChanges)
@@ -58,26 +48,17 @@ namespace Services
             var reservations = await GetReservationsByTimeRange(startDate, endDate, trackChanges);
 
             // Kullanıcı bazında rezervasyon sayısını alıyoruz
-            var userReservationCounts = reservations
+            var mostReservedUser = reservations
                 .GroupBy(r => r.UserId)
-                .Select(g => new { UserId = g.Key, ReservationCount = g.Count() })
-                .ToList();
-
-            var mostReservedUserCount = userReservationCounts
-                .OrderByDescending(g => g.ReservationCount)
+                .OrderByDescending(g => g.Count())
                 .FirstOrDefault();
 
-            // En çok rezervasyon yapan kullanıcının ID'sini buluyoruz
-            var mostReservedUserId = mostReservedUserCount?.UserId;
-            // Toplam rezervasyon sayısını al
-            var totalReservationCount = mostReservedUserCount?.ReservationCount ?? 0;
-
             // En çok rezervasyon yapan kullanıcının rezervasyonlarını döndür
-            var mostReservedUserReservations = mostReservedUserCount != null
-                ? reservations.Where(r => r.UserId == mostReservedUserCount.UserId)
+            var mostReservedUserReservations = mostReservedUser != null
+                ? reservations.Where(r => r.UserId == mostReservedUser.Key)
                 : Enumerable.Empty<ReservationInfo>();
 
-            return (totalReservationCount, mostReservedUserReservations);
+            return (mostReservedUserReservations.Count(), mostReservedUserReservations);
         }
 
         public async Task<(int TotalCancelledReservationCount, IEnumerable<ReservationInfo>)> MostCancelledUserAsync(DateTime startDate, DateTime endDate, bool trackChanges)
@@ -85,32 +66,23 @@ namespace Services
             var reservations = await GetReservationsByTimeRange(startDate, endDate, trackChanges);
 
             // Kullanıcı bazında iptal edilen rezervasyon sayısını alıyoruz
-            var userCancelledReservationCounts = reservations
+            var mostCancelledUser = reservations
                 .Where(r => r.Status == "canceled")
                 .GroupBy(r => r.UserId)
-                .Select(g => new { UserId = g.Key, CancelledReservationCount = g.Count() })
-                .ToList();
-
-            var mostCancelledUserCount = userCancelledReservationCounts
-                .OrderByDescending(g => g.CancelledReservationCount)
+                .OrderByDescending(g => g.Count())
                 .FirstOrDefault();
 
-            // En çok rezervasyonu iptal eden kullanıcının ID'sini buluyoruz
-            var mostCancelledUserId = mostCancelledUserCount?.UserId;
-            // Toplam iptal edilen rezervasyon sayısını al
-            var totalCancelledReservationCount = mostCancelledUserCount?.CancelledReservationCount ?? 0;
-
             // En çok rezervasyonu iptal eden kullanıcının iptal edilen rezervasyonlarını döndür
-            var mostCancelledUserReservations = mostCancelledUserCount != null
-                ? reservations.Where(r => r.UserId == mostCancelledUserCount.UserId && r.Status == "canceled")
+            var mostCancelledUserReservations = mostCancelledUser != null
+                ? reservations.Where(r => r.UserId == mostCancelledUser.Key && r.Status == "canceled")
                 : Enumerable.Empty<ReservationInfo>();
 
-            return (totalCancelledReservationCount, mostCancelledUserReservations);
+            return (mostCancelledUserReservations.Count(), mostCancelledUserReservations);
         }
 
-        public async Task<(int TableReservationCount, IEnumerable<ReservationInfo>)> GetReservedChairCountByTableIdAsync(int id, DateTime startDate, DateTime endDate, bool trackChanges)
+        public async Task<(int TableReservationCount, IEnumerable<ReservationInfo>)> GetReservedChairCountByTableIdAsync(int id, DateTime reservationStartDate, DateTime reservationEndDate, bool trackChanges)
         {
-            var reservations = await GetReservationsByTimeRange(startDate, endDate, trackChanges);
+            var reservations = await GetReservationsByTimeRange(reservationStartDate, reservationEndDate, trackChanges);
             // Belirli bir masa ID'si ile ilgili rezervasyonları al
             var tableReservations = reservations.Where(r => r.Chair.Table.Id == id && r.Status == "current");
             return (tableReservations.Count(), tableReservations);

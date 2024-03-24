@@ -102,50 +102,44 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("statistics/by-time-range")]
-        public async Task<IActionResult> ReservationsStatistics()
+        public async Task<IActionResult> ReservationsStatistics([FromBody] ReservationDateRange dateRange)
         {
-            DateTime startDate = DateTime.Now;
-            DateTime endDate = startDate.AddDays(10);
-            var reservationsStatistics = await _manager.ReservationsStatisticsService.GetReservationsByTimeRange(startDate, endDate, false);
+            var reservationsStatistics = await _manager.ReservationsStatisticsService.GetReservationsByTimeRange(dateRange.ReservationStartDate, dateRange.ReservationEndDate, false);
             return Ok(reservationsStatistics);
         }
 
         [HttpGet("statistics/mostReserved")]
-        public async Task<IActionResult> MostReservedDepartment()
+        public async Task<IActionResult> MostReservedDepartment([FromBody] ReservationDateRange dateRange)
         {
-            DateTime startDate = DateTime.Now;
-            DateTime endDate = startDate.AddDays(100);
-            var mostReservedDepartment = await _manager.ReservationsStatisticsService.MostReservedDepartmentAsync(startDate, endDate, false);
+            var mostReservedDepartment = await _manager.ReservationsStatisticsService.MostReservedDepartmentAsync(dateRange.ReservationStartDate, dateRange.ReservationEndDate, false);
             return Ok(mostReservedDepartment);
         }
 
         [HttpGet("statistics/mostReservedUser")]
-        public async Task<IActionResult> MostReservedUser()
+        public async Task<IActionResult> MostReservedUser([FromBody] ReservationDateRange dateRange)
         {
-            DateTime startDate = DateTime.Now;
-            DateTime endDate = startDate.AddDays(100);
-            var mostReservedUser = await _manager.ReservationsStatisticsService.MostReservedUserAsync(startDate, endDate, false);
+            var mostReservedUser = await _manager.ReservationsStatisticsService.MostReservedUserAsync(dateRange.ReservationStartDate, dateRange.ReservationEndDate, false);
             return Ok(mostReservedUser);
         }
 
 
         [HttpGet("statistics/mostCancelledUser")]
-        public async Task<IActionResult> MostCancelledUser()
+        public async Task<IActionResult> MostCancelledUser([FromBody] ReservationDateRange dateRange)
         {
-            DateTime startDate = DateTime.Now;
-            DateTime endDate = startDate.AddDays(100);
-            var mostCancelledUser = await _manager.ReservationsStatisticsService.MostCancelledUserAsync(startDate, endDate, false);
+            var mostCancelledUser = await _manager.ReservationsStatisticsService.MostCancelledUserAsync(dateRange.ReservationStartDate, dateRange.ReservationEndDate, false);
             return Ok(mostCancelledUser);
         }
 
         [HttpGet("TableReservationCount/{id}")]
-        public async Task<IActionResult> TableReservationCount([FromRoute] int id)
+        public async Task<IActionResult> TableReservationCount([FromRoute] int id, [FromBody] ReservationDateRange dateRange)
         {
-            DateTime startDate = DateTime.Now;
-            DateTime endDate = startDate.AddDays(100);
-            var ReservedTableCount = await _manager.ReservationsStatisticsService.GetReservedChairCountByTableIdAsync(id, startDate, endDate, false);
+            var ReservedTableCount = await _manager.ReservationsStatisticsService.GetReservedChairCountByTableIdAsync(id, dateRange.ReservationStartDate, dateRange.ReservationEndDate, false);
             return Ok(ReservedTableCount);
         }
-
+        public class ReservationDateRange
+        {
+            public DateTime ReservationStartDate { get; set; }
+            public DateTime ReservationEndDate { get; set; }
+        }
     }
 }
