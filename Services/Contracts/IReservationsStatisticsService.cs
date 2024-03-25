@@ -34,11 +34,14 @@ namespace Services.Contracts
             DateTime endDate,
             bool trackChanges);
 
-        Task<string> GenerateReservationReport(
+        Task<List<string>> GenerateReservationReport(
             int tableId,
             DateTime startDate, 
             DateTime endDate, 
             bool trackChanges);
-
+        Task<List<string>> ChairOccupancyRate(
+            DateTime reservationStartDate,
+            DateTime reservationEndDate,
+            bool trackChanges);
     }
 }

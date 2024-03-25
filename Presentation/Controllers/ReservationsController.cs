@@ -137,6 +137,13 @@ namespace Presentation.Controllers
             return Ok(ReservedTableCount);
         }
 
+        [HttpGet("statistics/chair-occupancy-rate")]
+        public async Task<IActionResult> ChairOccupancyRate([FromBody] ReservationDateRange dateRange)
+        {
+            var chairOccupancyRate = await _manager.ReservationsStatisticsService.ChairOccupancyRate(dateRange.ReservationStartDate, dateRange.ReservationEndDate, false);
+            return Ok(chairOccupancyRate);
+        }
+
         [HttpGet("statistics/Report")]
         public async Task<IActionResult> GenerateReservationReport([FromRoute] int id, [FromBody] ReservationDateRange dateRange)
         {

@@ -40,9 +40,10 @@ namespace Services
             // En çok rezervasyon yapılan departmana ait rezervasyon sayısını buluyoruz
             var mostReservedDepartmentReservationCount = reservations
                 .Count(r => r.Chair.Table.DepartmentId == mostReservedDepartmentId);
+            var mostReservedDepartment = await _manager.Department.GetOneDepartmentByIdAsync(mostReservedDepartmentId, trackChanges, true);
 
             // İstenen çıktıyı oluşturuyoruz
-            var result = $"Most Reservation Department: {mostReservedDepartmentId}, Reservation Count: {mostReservedDepartmentReservationCount}";
+            var result = $"Most Reservation Department: {mostReservedDepartment.DepartmentName}, Reservation Count: {mostReservedDepartmentReservationCount}";
 
 
             return result;
@@ -63,7 +64,8 @@ namespace Services
                 ? reservations.Where(r => r.UserId == mostReservedUser.Key)
                 : Enumerable.Empty<ReservationInfo>();
 
-            return $"Most Reserved User: {mostReservedUser.Key},  Reservation Count: {mostReservedUser.Count()}";
+            var user = await _manager.User.GetOneUserByIdAsync(mostReservedUser.Key, trackChanges, true);
+            return $"Most Reserved User: {user.FirstName} {user.LastName},  Reservation Count: {mostReservedUser.Count()}";
         }
 
         public async Task<string> MostCancelledUserAsync(DateTime startDate, DateTime endDate, bool trackChanges)
@@ -81,8 +83,8 @@ namespace Services
             var mostCancelledUserReservations = mostCancelledUser != null
                 ? reservations.Where(r => r.UserId == mostCancelledUser.Key && r.Status == "canceled")
                 : Enumerable.Empty<ReservationInfo>();
-
-            return $"Most Cancelled User: {mostCancelledUser.Key}, Cancelled Reservation Count: {mostCancelledUser.Count()}";
+            var user = await _manager.User.GetOneUserByIdAsync(mostCancelledUser.Key, trackChanges, true);
+            return $"Most Cancelled User: {user.FirstName} {user.LastName}, Cancelled Reservation Count: {mostCancelledUser.Count()}";
         }
 
         public async Task<string> GetReservedChairCountByTableIdAsync(int id, DateTime reservationStartDate, DateTime reservationEndDate, bool trackChanges)
@@ -94,22 +96,37 @@ namespace Services
         }
 
 
-        public async Task<string> GenerateReservationReport(int tableId, DateTime startDate, DateTime endDate, bool trackChanges)
+        public async Task<List<string>> ChairOccupancyRate(DateTime reservationStartDate, DateTime reservationEndDate, bool trackChanges)
+        {
+            var chairs = await _manager.Chair.GetAllChairsAsync(trackChanges, includeRelated: true);
+            List<string> chairOccupancyRates = new List<string>();
+            foreach (var chair in chairs)
+            {
+                var reservations = await _reservationInfoService.GetAllReservationInfosByChairId(chair.Id, trackChanges);
+                int totalDuration = reservations
+                    .Where(r => r.Status != "canceled" && r.ReservationStartDate >= reservationStartDate && r.ReservationEndDate <= reservationEndDate)
+                    .Sum(r => r.Duration);
+                TimeSpan difference = reservationEndDate - reservationStartDate;
+                double totalHours = difference.TotalHours;
+                double occupancyRate = (totalDuration / totalHours) * 100; 
+                string chairOccupancyRate = $"Chair Id: {chair.Id} Occupancy Rate By Time Range: %{occupancyRate}";
+                chairOccupancyRates.Add(chairOccupancyRate);
+            }
+            return chairOccupancyRates;
+        }
+
+        public async Task<List<string>> GenerateReservationReport(int tableId, DateTime startDate, DateTime endDate, bool trackChanges)
         {
             var mostReservedDepartment = await MostReservedDepartmentAsync(startDate, endDate, trackChanges);
             var mostReservedUser = await MostReservedUserAsync(startDate, endDate, trackChanges);
             var mostCancelledUser = await MostCancelledUserAsync(startDate, endDate, trackChanges);
-            var tableReservation = await GetReservedChairCountByTableIdAsync(tableId, startDate, endDate, trackChanges);
+            var chairOccupancyRates = await ChairOccupancyRate(startDate, endDate, trackChanges);
+            var reservedChairCountByTableId = await GetReservedChairCountByTableIdAsync(tableId);
+            List<string> report = new List<string>();
+            report.AddRange(new[] { mostReservedUser, mostCancelledUser, mostReservedDepartment });
+            report.AddRange(chairOccupancyRates);
 
-            var report = new
-            {
-                mostReservedDepartment,
-                mostReservedUser,
-                mostCancelledUser,
-                tableReservation
-            };
-
-            return JsonSerializer.Serialize(report, new JsonSerializerOptions { WriteIndented = true });
+            return report;
         }
     }
 
