@@ -28,6 +28,14 @@ namespace Services
             return reservationsByUserId;
         }
 
+        public async Task<IEnumerable<ReservationInfo>> GetAllReservationInfosByChairId(int chairId, bool trackChanges)
+        {
+            var reservations = await _manager.ReservationInfo.GetAllReservationInfosAsync(trackChanges, includeRelated: true);
+            var reservationsByChairId = reservations.Where(r => r.ChairId == chairId);
+            return reservationsByChairId;
+        }
+
+
         public async Task<ReservationInfo> GetOneReservationInfoByIdAsync(int id, bool trackChanges) => 
             await _manager.ReservationInfo.GetOneReservationInfoByIdAsync(id, trackChanges, includeRelated: true);
         public async Task<ReservationInfo> GetOneReservationInfosByChairId(bool trackChanges, int chairId)
