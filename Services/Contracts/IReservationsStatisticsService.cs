@@ -14,24 +14,31 @@ namespace Services.Contracts
             DateTime endDate,
             bool trackChanges);
 
-        Task<(int TotalReservationCount, IEnumerable<ReservationInfo>)> MostReservedDepartmentAsync(
+        Task<string> MostReservedDepartmentAsync(
             DateTime startDate,
             DateTime endDate,
             bool trackChanges);
 
-        Task<(int TotalReservationCount, IEnumerable<ReservationInfo>)> MostReservedUserAsync(
+        Task<string> MostReservedUserAsync(
             DateTime startDate,
             DateTime endDate,
             bool trackChanges);
 
-         Task<(int TotalCancelledReservationCount, IEnumerable<ReservationInfo>)> MostCancelledUserAsync(
+         Task<string> MostCancelledUserAsync(
             DateTime startDate,
             DateTime endDate,
             bool trackChanges);
-        Task<(int TableReservationCount, IEnumerable<ReservationInfo>)> GetReservedChairCountByTableIdAsync(
+        Task<string> GetReservedChairCountByTableIdAsync(
             int id,
             DateTime startDate,
             DateTime endDate,
             bool trackChanges);
+
+        Task<string> GenerateReservationReport(
+            int tableId,
+            DateTime startDate, 
+            DateTime endDate, 
+            bool trackChanges);
+
     }
 }

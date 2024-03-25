@@ -136,10 +136,22 @@ namespace Presentation.Controllers
             var ReservedTableCount = await _manager.ReservationsStatisticsService.GetReservedChairCountByTableIdAsync(id, dateRange.ReservationStartDate, dateRange.ReservationEndDate, false);
             return Ok(ReservedTableCount);
         }
+
+        [HttpGet("statistics/Report")]
+        public async Task<IActionResult> GenerateReservationReport([FromRoute] int id, [FromBody] ReservationDateRange dateRange)
+        {
+            var report = await _manager.ReservationsStatisticsService.GenerateReservationReport(id, dateRange.ReservationStartDate, dateRange.ReservationEndDate, false);
+            return Ok(report);
+        }
+
+
+
         public class ReservationDateRange
         {
             public DateTime ReservationStartDate { get; set; }
             public DateTime ReservationEndDate { get; set; }
         }
+
+
     }
 }
