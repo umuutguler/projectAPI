@@ -1,9 +1,6 @@
 ﻿using Entities.Models;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Repositories.Contracts;
 using Services.Contracts;
-using System.Text;
-using System.Text.Json;
 
 namespace Services
 {
@@ -121,7 +118,6 @@ namespace Services
             var mostReservedUser = await MostReservedUserAsync(startDate, endDate, trackChanges);
             var mostCancelledUser = await MostCancelledUserAsync(startDate, endDate, trackChanges);
             var chairOccupancyRates = await ChairOccupancyRate(startDate, endDate, trackChanges);
-            var reservedChairCountByTableId = await GetReservedChairCountByTableIdAsync(tableId);
             List<string> report = new List<string>();
             report.AddRange(new[] { mostReservedUser, mostCancelledUser, mostReservedDepartment });
             report.AddRange(chairOccupancyRates);

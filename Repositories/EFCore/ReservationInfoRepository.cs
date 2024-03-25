@@ -18,7 +18,7 @@ namespace Repositories.EFCore
 
         public async Task<IEnumerable<ReservationInfo>> GetAllReservationInfosAsync(bool trackChanges, bool includeRelated = true)
         {
-            IQueryable<ReservationInfo> query = FindAll(trackChanges).OrderBy(r => r.Id);
+            IQueryable<ReservationInfo> query = FindAll(trackChanges).OrderByDescending(r => r.ReservationStartDate);
 
             if (includeRelated)
             {
