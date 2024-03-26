@@ -1,5 +1,6 @@
 ﻿using System.Linq.Dynamic.Core.Tokenizer;
 using Entities.Models;
+using Entities.RequestFeatures;
 using Repositories.Contracts;
 using Repositories.EFCore;
 using Services.Contracts;
@@ -21,12 +22,17 @@ namespace Services
         public async Task<IEnumerable<ReservationInfo>> GetAllReservationInfosAsync(bool trackChanges) =>
             await _manager.ReservationInfo.GetAllReservationInfosAsync(trackChanges, includeRelated: true);
             
-        public async Task<IEnumerable<ReservationInfo>> GetAllReservationInfosByUserId(bool trackChanges, string token)
+
+
+        public async Task<IEnumerable<ReservationInfo>> GetAllReservationInfosByUserId(ReservationParameters reservationParameters, bool trackChanges, string token)
         {
-            var reservations = await _manager.ReservationInfo.GetAllReservationInfosAsync(trackChanges, includeRelated: true);
+            var reservations = await _manager.ReservationInfo.GetAllReservationInfosByUserIdAsync(reservationParameters, trackChanges, includeRelated: true);
             var reservationsByUserId = reservations.Where(r => r.UserId == token);
             return reservationsByUserId;
         }
+
+
+
 
         public async Task<IEnumerable<ReservationInfo>> GetAllReservationInfosByChairId(int chairId, bool trackChanges)
         {
@@ -38,6 +44,8 @@ namespace Services
 
         public async Task<ReservationInfo> GetOneReservationInfoByIdAsync(int id, bool trackChanges) => 
             await _manager.ReservationInfo.GetOneReservationInfoByIdAsync(id, trackChanges, includeRelated: true);
+
+
         public async Task<ReservationInfo> GetOneReservationInfosByChairId(bool trackChanges, int chairId)
         {
             var reservation = await _manager.ReservationInfo.GetAllReservationInfosAsync(trackChanges, includeRelated: true);

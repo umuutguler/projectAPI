@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Entities.DataTransferObjects;
 using Entities.Models;
+using Entities.RequestFeatures;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using Services.Contracts;
@@ -31,12 +32,12 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("User")]
-        public async Task<IActionResult> AllReservationsByUserId()
+        public async Task<IActionResult> AllReservationsByUserIdAsync([FromQuery] ReservationParameters reservationParameters)
         {
             var userId = HttpContext.User.Identity.Name;
             var reservations = await _manager
                 .ReservationInfoService
-                .GetAllReservationInfosByUserId(false, userId);
+                .GetAllReservationInfosByUserId(reservationParameters,true, userId);
             return Ok(reservations);
         }
 

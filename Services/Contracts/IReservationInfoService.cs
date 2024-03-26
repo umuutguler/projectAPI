@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Entities.Models;
+using Entities.RequestFeatures;
 
 namespace Services.Contracts
 {
     public interface IReservationInfoService
     {
         Task<IEnumerable<ReservationInfo>> GetAllReservationInfosAsync(bool trackChanges);
-        Task<IEnumerable<ReservationInfo>> GetAllReservationInfosByUserId(bool trackChanges, String token);
+        Task<IEnumerable<ReservationInfo>> GetAllReservationInfosByUserId(ReservationParameters reservationParameters ,bool trackChanges, String token);
         Task<IEnumerable<ReservationInfo>> GetAllReservationInfosByChairId(int chairId, bool trackChanges);
         Task<ReservationInfo> GetOneReservationInfosByChairId(bool trackChanges, int chairId);
         Task<IEnumerable<Chair>> GetAllChairsByTableId(int tableId, bool trackChanges); 

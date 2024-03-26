@@ -62,10 +62,6 @@ namespace Services
                 {
                     chair.Status = true;
                 }
-                else
-                {
-                    chair.Status = false;
-                }
             }
 
             if (filteredChairs.Count == 0)
