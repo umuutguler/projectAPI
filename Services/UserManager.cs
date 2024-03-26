@@ -47,12 +47,14 @@ namespace Services
             if (entity is null)
                 throw new Exception($"User with id:{id} could not found.");
 
-            entity.FirstName = user.FirstName ?? entity.FirstName;
-            entity.LastName = user.LastName ?? entity.LastName;
-            entity.Email = user.Email ?? entity.Email;
-            entity.UserName = user.UserName ?? entity.UserName;
-            entity.PasswordHash = user.PasswordHash ?? entity.PasswordHash;
-            entity.PhoneNumber = user.PhoneNumber ?? entity.PhoneNumber;
+            entity.FirstName = !string.IsNullOrEmpty(user.FirstName) ? user.FirstName : entity.FirstName;
+            entity.LastName = !string.IsNullOrEmpty(user.LastName) ? user.LastName : entity.LastName;
+            entity.Email = !string.IsNullOrEmpty(user.Email) ? user.Email : entity.Email;
+            entity.UserName = !string.IsNullOrEmpty(user.UserName) ? user.UserName : entity.UserName;
+            entity.NormalizedUserName = !string.IsNullOrEmpty(user.UserName) ? user.UserName : entity.NormalizedUserName;
+            entity.PasswordHash = !string.IsNullOrEmpty(user.PasswordHash) ? user.PasswordHash : entity.PasswordHash;
+            entity.PhoneNumber = !string.IsNullOrEmpty(user.PhoneNumber) ? user.PhoneNumber : entity.PhoneNumber;
+
 
             _manager.User.Update(entity);
             await _manager.SaveAsync();
