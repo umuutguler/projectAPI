@@ -41,7 +41,7 @@ namespace Services
         }
 
         // Empty Chairs
-        public async Task<IEnumerable<Chair>> GetAllEmptyChairsAsync(bool trackChanges, string token)
+        public async Task<IEnumerable<Chair>> GetAllEmptyChairsAsync(DateTime startDate,bool trackChanges, string token)
         {
             var chairs = await _manager
                 .Chair
