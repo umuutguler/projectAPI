@@ -13,7 +13,7 @@ namespace Services.Contracts
         Task<Chair> GetOneChairByIdAsync(int id, bool trackChanges);
         Task<Chair> CreateOneReservationInfoAsync(Chair chair);
 
-        Task<IEnumerable<Chair>> GetAllEmptyChairsAsync(DateTime startDate,bool trackChange, string token);
+        Task<IEnumerable<Chair>> GetAllEmptyChairsAsync(ReservationInfo reservationInfo,bool trackChange, string token);
 
         Task<Chair> UpdateChairByIdAsync(int id,Chair updatedChair, bool trackChanges);
         Task DeleteChairByIdAsync(int id, bool trackChanges);

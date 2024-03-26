@@ -86,21 +86,14 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("Empty")]
-        public async Task<IActionResult> AllEmptyChairsAsync([FromBody] EmptyChairsRequestModel model)
+        public async Task<IActionResult> AllEmptyChairsAsync([FromQuery] ReservationInfo reservation)
         {
             //UserIdFromToken
             var userId = HttpContext.User.Identity.Name;
-            var startDate = model.StartDate;
-            var duration = model.Duration;
             return Ok(await _manager
-                .ChairService.GetAllEmptyChairsAsync(startDate, false, userId));
+                .ChairService.GetAllEmptyChairsAsync(reservation ,false, userId));
         }
 
-        public class EmptyChairsRequestModel
-        {
-            public DateTime StartDate { get; set; }
-            public int Duration { get; set; }
-        }
 
         [HttpPut("uptodate")]
         public async Task<IActionResult> ReservationsUpToDate()

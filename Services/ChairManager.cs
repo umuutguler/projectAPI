@@ -41,7 +41,8 @@ namespace Services
         }
 
         // Empty Chairs
-        public async Task<IEnumerable<Chair>> GetAllEmptyChairsAsync(DateTime startDate,bool trackChanges, string token)
+        public async Task<IEnumerable<Chair>> GetAllEmptyChairsAsync(
+            ReservationInfo reservationInfo ,bool trackChanges, string token)
         {
             var chairs = await _manager
                 .Chair
@@ -49,10 +50,24 @@ namespace Services
             var user = await _manager.User.GetOneUserByIdAsync(token, false, true);
             if (user is null)
                 throw new Exception("Please Log in");
-
             var filteredChairs = chairs.Where(chair =>
-                chair.Status == false &&
-                 chair.Table.DepartmentId == user.DepartmentId).ToList();
+                chair.Table.DepartmentId == user.DepartmentId).ToList();
+            foreach (var chair in filteredChairs)
+            {
+                var reservationsbyChair = await _reservationInfoService.GetAllReservationInfosByChairId(chair.Id,trackChanges);
+                if (reservationsbyChair.Any(r =>
+                    r.ReservationStartDate <= reservationInfo.ReservationStartDate.AddHours(r.Duration) &&
+                    r.ReservationEndDate >= reservationInfo.ReservationStartDate &&
+                    r.Status == "current"))
+                {
+                    chair.Status = true;
+                }
+                else
+                {
+                    chair.Status = false;
+                }
+            }
+
             if (filteredChairs.Count == 0)
                 throw new Exception("All the chairs are full");
             return filteredChairs;

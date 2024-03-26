@@ -20,6 +20,7 @@ namespace Services.Contracts
         Task CancelOneReservationInfoAsync(int id, bool trackChanges, String token);
 
         Task DeleteOneReservationInfoAsync(int id, bool trackChanges);
+        Task<Boolean> IsAvailable(ReservationInfo reservationInfo);
 
         Task AreReservationsUpToDate();
     }
