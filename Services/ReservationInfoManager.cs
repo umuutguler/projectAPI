@@ -28,6 +28,11 @@ namespace Services
         {
             var reservations = await _manager.ReservationInfo.GetAllReservationInfosByUserIdAsync(reservationParameters, trackChanges, includeRelated: true);
             var reservationsByUserId = reservations.Where(r => r.UserId == token);
+            // Status özelliği kontrol edilir ve ona göre filtreleme yapılır
+            if (!string.IsNullOrEmpty(reservationParameters.Status))
+            {
+                reservationsByUserId = reservationsByUserId.Where(r => r.Status == reservationParameters.Status);
+            }
             return reservationsByUserId;
         }
 

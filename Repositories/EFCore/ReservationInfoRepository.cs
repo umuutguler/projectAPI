@@ -64,6 +64,12 @@ namespace Repositories.EFCore
                              .ThenInclude(r => r.Table);
             }
 
+            // Filtreleme işlemi
+            if (!string.IsNullOrEmpty(reservationParameters.Status))
+            {
+                query = query.Where(r => r.Status == reservationParameters.Status);
+            }
+
             return await query
                 .Skip((reservationParameters.PageNumber - 1) * reservationParameters.PageSize)
                 .Take(reservationParameters.PageSize)
