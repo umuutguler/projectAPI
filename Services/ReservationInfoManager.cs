@@ -21,19 +21,18 @@ namespace Services
 
         public async Task<IEnumerable<ReservationInfo>> GetAllReservationInfosAsync(bool trackChanges) =>
             await _manager.ReservationInfo.GetAllReservationInfosAsync(trackChanges, includeRelated: true);
-            
 
 
-        public async Task<IEnumerable<ReservationInfo>> GetAllReservationInfosByUserId(ReservationParameters reservationParameters, bool trackChanges, string token)
+        public async Task<(IEnumerable<ReservationInfo>, MetaData)> GetAllReservationInfosByUserId(ReservationParameters reservationParameters, bool trackChanges, string token)
         {
-            var reservations = await _manager.ReservationInfo.GetAllReservationInfosByUserIdAsync(reservationParameters, trackChanges, includeRelated: true);
+            var reservationsPagedList = await _manager.ReservationInfo.GetAllReservationInfosByUserIdAsync(reservationParameters, trackChanges, includeRelated: true);
+
+            var reservations = reservationsPagedList.ToList();
             var reservationsByUserId = reservations.Where(r => r.UserId == token);
-            // Status özelliği kontrol edilir ve ona göre filtreleme yapılır
-            if (!string.IsNullOrEmpty(reservationParameters.Status))
-            {
-                reservationsByUserId = reservationsByUserId.Where(r => r.Status == reservationParameters.Status);
-            }
-            return reservationsByUserId;
+
+            var metaData = reservationsPagedList.MetaData;
+
+            return (reservationsByUserId, metaData);
         }
 
 

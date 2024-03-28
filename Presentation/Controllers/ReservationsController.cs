@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core.Tokenizer;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Entities.DataTransferObjects;
 using Entities.Models;
@@ -31,15 +32,67 @@ namespace Presentation.Controllers
                 .GetAllReservationInfosAsync(false));
         }
 
+        /*   [HttpGet("User")]
+           public async Task<IActionResult> AllReservationsByUserIdAsync([FromQuery] ReservationParameters reservationParameters)
+           {
+               var userId = HttpContext.User.Identity.Name;
+               var reservations = await _manager
+                   .ReservationInfoService
+                   .GetAllReservationInfosByUserId(reservationParameters,true, userId);
+               return Ok(reservations);
+           }*/
+
+        /* [HttpGet("User")]
+         public async Task<IActionResult> AllReservationsByUserIdAsync([FromQuery] ReservationParameters reservationParameters)
+         {
+             var userId = HttpContext.User.Identity.Name;
+             (IEnumerable<ReservationInfo> reservations, MetaData metaData) = await _manager
+                 .ReservationInfoService
+                 .GetAllReservationInfosByUserId(reservationParameters, true, userId);
+
+             Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metaData)); // Sayfalama bilgilerini header'a ekleyelim
+
+             var response = new
+             {
+                 Reservations = reservations,
+                 MetaData = metaData
+             };
+
+             return Ok(response);
+         }
+        */
+        
         [HttpGet("User")]
         public async Task<IActionResult> AllReservationsByUserIdAsync([FromQuery] ReservationParameters reservationParameters)
         {
             var userId = HttpContext.User.Identity.Name;
-            var reservations = await _manager
-                .ReservationInfoService
-                .GetAllReservationInfosByUserId(reservationParameters,true, userId);
-            return Ok(reservations);
+            var (reservations, metaData) = await _manager.ReservationInfoService.GetAllReservationInfosByUserId(reservationParameters, true, userId);
+
+            // Sayfalama bilgilerini güncelle
+            metaData.TotalCount = reservations.Count(); // Tüm rezervasyonların sayısını al
+            metaData.PageSize = reservationParameters.PageSize; // Sayfa boyutunu güncelle
+            metaData.CurrentPage = reservationParameters.PageNumber; // Şu anki sayfayı güncelle
+
+            // Sayfalama bilgilerine göre rezervasyonları al
+            var paginatedReservations = reservations.Skip((reservationParameters.PageNumber - 1) * reservationParameters.PageSize)
+                                                   .Take(reservationParameters.PageSize)
+                                                   .ToList(); // Rezervasyonları liste olarak al
+
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metaData)); // Sayfalama bilgilerini header'a ekleyelim
+
+            var response = new
+            {
+                Reservations = paginatedReservations,
+                MetaData = metaData
+            };
+
+            return Ok(response);
         }
+
+        
+
+
+
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> OneRReservationAsync([FromRoute] int id)

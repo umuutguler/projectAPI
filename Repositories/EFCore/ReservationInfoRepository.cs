@@ -51,29 +51,22 @@ namespace Repositories.EFCore
 
         public void UpdateOneReservationInfo(ReservationInfo reservationInfo) => Update(reservationInfo);
 
-        public async Task<IEnumerable<ReservationInfo>> GetAllReservationInfosByUserIdAsync(ReservationParameters reservationParameters, bool trackChanges, bool includeRelated )
+        public async Task<PagedList<ReservationInfo>> GetAllReservationInfosByUserIdAsync(ReservationParameters reservationParameters, bool trackChanges, bool includeRelated )
 
         {
 
             IQueryable<ReservationInfo> query = FindAll(trackChanges).OrderByDescending(r => r.ReservationStartDate);
                 
-            if (includeRelated)
-            {
-                query = query.Include(r => r.User)
-                             .Include(r => r.Chair)
-                             .ThenInclude(r => r.Table);
-            }
-
+         
             // Filtreleme işlemi
             if (!string.IsNullOrEmpty(reservationParameters.Status))
             {
                 query = query.Where(r => r.Status == reservationParameters.Status);
             }
 
-            return await query
-                .Skip((reservationParameters.PageNumber - 1) * reservationParameters.PageSize)
-                .Take(reservationParameters.PageSize)
-                .ToListAsync();
+
+            var reservations = await query.ToListAsync();
+            return PagedList<ReservationInfo>.ToPagedList(reservations, reservationParameters.PageNumber, reservationParameters.PageSize);
         }
     }
 }
