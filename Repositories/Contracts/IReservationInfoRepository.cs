@@ -12,7 +12,7 @@ namespace Repositories.Contracts
     {
         Task<IEnumerable<ReservationInfo>> GetAllReservationInfosAsync(bool trackChanges, bool includeRelated);
         Task<ReservationInfo> GetOneReservationInfoByIdAsync(int id, bool trackChanges, bool includeRelated);
-        Task<PagedList<ReservationInfo>> GetAllReservationInfosByUserIdAsync(ReservationParameters reservationParameters, bool trackChanges, bool includeRelated);
+        Task<IEnumerable<ReservationInfo>> GetAllReservationInfosByUserIdAsync(bool trackChanges, bool includeRelated);
         void CreateOneReservationInfo(ReservationInfo reservationInfo);
         void UpdateOneReservationInfo(ReservationInfo reservationInfo);
         void DeleteOneReservationInfo(ReservationInfo reservationInfo);

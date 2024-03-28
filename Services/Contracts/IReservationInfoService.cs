@@ -11,7 +11,7 @@ namespace Services.Contracts
     public interface IReservationInfoService
     {
         Task<IEnumerable<ReservationInfo>> GetAllReservationInfosAsync(bool trackChanges);
-        Task<(IEnumerable<ReservationInfo>, MetaData metaData)> GetAllReservationInfosByUserId(ReservationParameters reservationParameters ,bool trackChanges, String token);
+        Task<(IEnumerable<ReservationInfo> reservations, MetaData metaData)> GetAllReservationInfosByUserId(ReservationParameters reservationParameters ,bool trackChanges, String token);
         Task<IEnumerable<ReservationInfo>> GetAllReservationInfosByChairId(int chairId, bool trackChanges);
         Task<ReservationInfo> GetOneReservationInfosByChairId(bool trackChanges, int chairId);
         Task<IEnumerable<Chair>> GetAllChairsByTableId(int tableId, bool trackChanges); 

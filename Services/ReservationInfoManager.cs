@@ -4,6 +4,7 @@ using Entities.RequestFeatures;
 using Repositories.Contracts;
 using Repositories.EFCore;
 using Services.Contracts;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Services
 {
@@ -23,16 +24,23 @@ namespace Services
             await _manager.ReservationInfo.GetAllReservationInfosAsync(trackChanges, includeRelated: true);
 
 
-        public async Task<(IEnumerable<ReservationInfo>, MetaData)> GetAllReservationInfosByUserId(ReservationParameters reservationParameters, bool trackChanges, string token)
+        public async Task<(IEnumerable<ReservationInfo> reservations, MetaData metaData)> GetAllReservationInfosByUserId(ReservationParameters reservationParameters, bool trackChanges, string token)
         {
-            var reservationsPagedList = await _manager.ReservationInfo.GetAllReservationInfosByUserIdAsync(reservationParameters, trackChanges, includeRelated: true);
-
-            var reservations = reservationsPagedList.ToList();
+            var allReservations= await _manager.ReservationInfo.GetAllReservationInfosByUserIdAsync(trackChanges, includeRelated: true);
+            var reservations = allReservations.ToList();
             var reservationsByUserId = reservations.Where(r => r.UserId == token);
+
+            if (!string.IsNullOrEmpty(reservationParameters.Status))
+            {
+                reservationsByUserId = reservationsByUserId.Where(r => r.Status == reservationParameters.Status);
+            }
+
+            var reservationsPagedList = PagedList<ReservationInfo>
+                .ToPagedList(reservationsByUserId, reservationParameters.PageNumber, reservationParameters.PageSize);
 
             var metaData = reservationsPagedList.MetaData;
 
-            return (reservationsByUserId, metaData);
+            return (reservationsPagedList, metaData);
         }
 
 
