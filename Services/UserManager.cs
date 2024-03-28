@@ -69,6 +69,11 @@ namespace Services
             var _user = await _userManager.FindByIdAsync(id);
             if (_user is null)
                 throw new Exception($"User with id:{id} could not found.");
+            var result = (_user != null && await _userManager.CheckPasswordAsync(_user, userForChangePassword.CurrentPassword));
+            if (!result)
+                throw new Exception("Your current password is incorrect");
+
+
             if (userForChangePassword.NewPassword != userForChangePassword.NewPasswordAgain)
                 throw new Exception("New passwords are not the same");
             await _userManager.ChangePasswordAsync(_user,
