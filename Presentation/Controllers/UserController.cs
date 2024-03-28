@@ -1,4 +1,5 @@
-﻿using Entities.Models;
+﻿using Entities.DataTransferObjects;
+using Entities.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
@@ -47,6 +48,14 @@ namespace Presentation.Controllers
             return NoContent();
         }
 
+        [Authorize]
+        [HttpPut("change-password")]
+        public async Task<IActionResult> ChangePassword([FromBody] UserForChangePassword forChangePassword)
+        {
+            var userId = HttpContext.User.Identity.Name;
+            await _manager.UserService.ChangePassword(userId, forChangePassword, false);
+            return NoContent();
+        }
 
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Entities.DataTransferObjects;
 using Entities.Models;
 
 namespace Services.Contracts
@@ -13,5 +14,6 @@ namespace Services.Contracts
         Task<User> GetOneUserByIdAsync(string id, bool trackChanges);
         Task UpdateOneUserAsync(string id, User user, bool trackChanges);
         Task DeleteOneUserAsync(string id, bool trackChanges);
+        Task ChangePassword(string id, UserForChangePassword userForChangePassword, bool trackChanges);
     }
 }

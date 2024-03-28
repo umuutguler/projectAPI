@@ -7,6 +7,7 @@ using Entities.Models;
 using Entities.RequestFeatures;
 using Microsoft.EntityFrameworkCore;
 using Repositories.Contracts;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Repositories.EFCore
 {
@@ -54,10 +55,13 @@ namespace Repositories.EFCore
         public async Task<IEnumerable<ReservationInfo>> GetAllReservationInfosByUserIdAsync(bool trackChanges, bool includeRelated )
 
         {
-            var reservations = await FindAll(trackChanges)
-                .OrderByDescending(r => r.ReservationStartDate)
-                .ToListAsync();
-            return reservations;
+            IQueryable<ReservationInfo> query = FindAll(trackChanges).OrderByDescending(r => r.ReservationStartDate);
+            if (includeRelated)
+            {
+                query = query.Include(r => r.User);
+            }
+           
+            return await query.ToListAsync();
             
         }
     }

@@ -4,7 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Entities.DataTransferObjects;
 using Entities.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Repositories.Contracts;
 using Repositories.EFCore;
@@ -15,9 +17,11 @@ namespace Services
     public class UserManager : IUserService
     {
         private readonly IRepositoryManager _manager;
-        public UserManager(IRepositoryManager manager)
+        private readonly UserManager<User> _userManager;
+        public UserManager(IRepositoryManager manager, UserManager<User> userManager)
         {
             _manager = manager;
+            _userManager = userManager;
         }
 
         public async Task DeleteOneUserAsync(string id, bool trackChanges=false)
@@ -58,6 +62,18 @@ namespace Services
 
             _manager.User.Update(entity);
             await _manager.SaveAsync();
+        }
+
+        public async Task ChangePassword (string id, UserForChangePassword userForChangePassword, bool trackChanges)
+        {
+            var _user = await _userManager.FindByIdAsync(id);
+            if (_user is null)
+                throw new Exception($"User with id:{id} could not found.");
+            if (userForChangePassword.NewPassword != userForChangePassword.NewPasswordAgain)
+                throw new Exception("New passwords are not the same");
+            await _userManager.ChangePasswordAsync(_user,
+                userForChangePassword.CurrentPassword,
+                userForChangePassword.NewPassword);
         }
     }
 }
