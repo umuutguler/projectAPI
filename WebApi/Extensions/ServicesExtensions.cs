@@ -126,5 +126,10 @@ namespace WebApi.Extensions
             );
         }
 
+        public static void ConfigurePayment(this IServiceCollection services)
+        {
+            services.AddScoped<IPaymentService, PaymentManager>();
+        }
+
     }
 }

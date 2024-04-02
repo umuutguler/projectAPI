@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using NLog;
 using Presentation.ActionFilters;
 using Repositories.EFCore;
+using Services;
 using Services.Contracts;
 using WebApi.Extensions;
 
@@ -47,6 +48,7 @@ builder.Services.ConfigureJWT(builder.Configuration);
 builder.Services.AddMemoryCache(); // İstekleri saymak için 
 builder.Services.ConfigureRateLimitingOptions(); // RateLimit Konfigürasyonu - ServicesExtensions
 builder.Services.AddHttpContextAccessor();
+builder.Services.ConfigurePayment();
 
 var app = builder.Build();
 
