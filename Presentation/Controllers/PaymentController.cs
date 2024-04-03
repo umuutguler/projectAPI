@@ -19,13 +19,13 @@ namespace Presentation.Controllers
             _paymentService = paymentService;
         }
 
-        [HttpPost("make-payment")]
+        /*[HttpPost("make-payment")]
         public IActionResult MakePayment()
         {
             var paymentResult = _paymentService.MakePayment();
             // İşlem sonucuna göre uygun bir yanıt döndürün
             return Ok(paymentResult); // Örneğin, ödeme işlemi başarılı olduysa 200 OK yanıtı döndürün
-        }
+        }*/
 
        /* [HttpGet("payment-status")]
         public IActionResult CheckPaymentStatus()

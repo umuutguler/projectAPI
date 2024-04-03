@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Entities.DataTransferObjects;
 using Entities.Models;
 using Entities.RequestFeatures;
 
@@ -24,5 +25,7 @@ namespace Services.Contracts
         Task<Boolean> IsAvailable(ReservationInfo reservationInfo);
 
         Task AreReservationsUpToDate();
+
+        Task<ReservationInfo> CreateReservationWithPayment(PaymentDto paymentDto, String token);
     }
 }

@@ -15,10 +15,12 @@ namespace Services
     {
         private readonly IRepositoryManager _manager;
         private readonly IReservationInfoService _reservationInfoService;
-        public ChairManager(IRepositoryManager manager, IReservationInfoService reservationInfoService)
+        private readonly ICurrencyService _currencyService;
+        public ChairManager(IRepositoryManager manager, IReservationInfoService reservationInfoService, ICurrencyService currencyService)
         {
             _manager = manager;
             _reservationInfoService = reservationInfoService;
+            _currencyService = currencyService;
         }
 
         public async Task<Chair> CreateOneReservationInfoAsync(Chair chair)
@@ -62,6 +64,9 @@ namespace Services
                 {
                     chair.Status = true;
                 }
+                Decimal dollarRate = await _currencyService.GetUSDRate();
+                Decimal price = chair.Price * reservationInfo.Duration * dollarRate;
+                chair.Price = (int)Math.Round(price);
             }
 
             if (filteredChairs.Count == 0)

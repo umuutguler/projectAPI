@@ -28,15 +28,16 @@ namespace Services
             IMapper mapper, 
             IDataShaper<ProductDto> shaper,
             UserManager<User> _userManager,// IAuthenticationService ifadesi UserManager ihtiyaç duyuyor
-            IConfiguration _configuration)
+            IConfiguration _configuration,
+            IPaymentService _paymentService)
         {
             _currencyService = new Lazy<ICurrencyService>(() => new CurrencyManager());
            _productService = new Lazy<IProductService>(() => new ProductManager(repositoryManager , _logger, mapper, shaper)); // artık logger ifadesi de istiyor
            _departmentService = new Lazy<IDepartmentService>(() => new DepartmentManager(repositoryManager));
            _authenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationManager(_logger, mapper, _userManager, _configuration));
-           _reservationInfoService = new Lazy<IReservationInfoService>(() => new  ReservationInfoManager(repositoryManager, context, _currencyService.Value));
+           _reservationInfoService = new Lazy<IReservationInfoService>(() => new  ReservationInfoManager(repositoryManager, context, _currencyService.Value, _paymentService));
            _tableService = new Lazy<ITableService> (() => new TableManager(repositoryManager));
-           _chairService = new Lazy<IChairService>(() => new ChairManager(repositoryManager, _reservationInfoService.Value));
+           _chairService = new Lazy<IChairService>(() => new ChairManager(repositoryManager, _reservationInfoService.Value, _currencyService.Value));
            _userService = new Lazy<IUserService>(() => new UserManager(repositoryManager, _userManager));
            _reservationsStatisticsService = new Lazy<IReservationsStatisticsService>(() => new ReservationsStatisticsManager(repositoryManager, _reservationInfoService.Value));
         }

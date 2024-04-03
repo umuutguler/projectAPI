@@ -68,6 +68,15 @@ namespace Presentation.Controllers
             var reservation = await _manager.ReservationInfoService.CreateOneReservationInfoAsync(reservationInfo, userId);
             return StatusCode(201, reservation);
         }
+        [HttpPost("with-payment")]
+        public async Task<IActionResult> ReservationWithPayment([FromBody] PaymentDto paymentDto)
+        {
+            //UserIdFromToken
+            var userId = HttpContext.User.Identity.Name;
+
+            var reservation = await _manager.ReservationInfoService.CreateReservationWithPayment(paymentDto, userId);
+            return StatusCode(201, reservation);
+        }
 
         [HttpPut("{id:int}")]
         public async Task<IActionResult> OneReservationAsync([FromRoute(Name = "id")] int id,[FromBody] ReservationInfo reservationInfo)

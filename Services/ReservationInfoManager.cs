@@ -1,6 +1,8 @@
 ﻿using System.Linq.Dynamic.Core.Tokenizer;
+using Entities.DataTransferObjects;
 using Entities.Models;
 using Entities.RequestFeatures;
+using Iyzipay.Model;
 using Repositories.Contracts;
 using Repositories.EFCore;
 using Services.Contracts;
@@ -13,11 +15,17 @@ namespace Services
         private readonly IRepositoryManager _manager;
         private readonly RepositoryContext _context;
         private readonly ICurrencyService _currencyManager;
-        public ReservationInfoManager(IRepositoryManager manager, RepositoryContext context, ICurrencyService currencyManager)
+        private readonly IPaymentService _paymentService;
+        public ReservationInfoManager(
+            IRepositoryManager manager, 
+            RepositoryContext context, 
+            ICurrencyService currencyManager,
+            IPaymentService paymentService)
         {
             _manager = manager;
             _context = context;
             _currencyManager = currencyManager;
+            _paymentService = paymentService;
         }
 
         public async Task<IEnumerable<ReservationInfo>> GetAllReservationInfosAsync(bool trackChanges) =>
@@ -200,5 +208,52 @@ namespace Services
 
             return chairs.Where(c => c.TableId == tableId);
         }
+
+        // Create Reservation with Payment
+
+        public async Task<ReservationInfo> CreateReservationWithPayment(PaymentDto paymentDto, String token)
+        {
+            ReservationInfo reservationInfo = new ReservationInfo();
+            if (paymentDto is null)
+                throw new ArgumentException(nameof(paymentDto));
+
+            var chair = await _manager.Chair.GetOneChairByIdAsync(paymentDto.ChairId, false, true);
+            var user = await _manager.User.GetOneUserByIdAsync(token, false, true);
+            if (user is null)
+                throw new Exception($"User could not found.");
+            if (user.DepartmentId != chair.Table.DepartmentId)
+                throw new Exception($"Chair by id: {paymentDto.ChairId} does not belong to your department. ");
+
+            reservationInfo.ChairId = paymentDto.ChairId;
+            reservationInfo.Duration = paymentDto.Duration;
+            reservationInfo.ReservationStartDate = paymentDto.ReservationStartDate;
+
+            Decimal dollarRate = await _currencyManager.GetUSDRate();
+            Decimal price = reservationInfo.Duration * chair.Price * dollarRate;
+            reservationInfo.ReservationPrice = (int)Math.Round(price);
+            reservationInfo.CreateDate = DateTime.Now;
+            reservationInfo.Updatdate ??= new List<DateTime>();
+            reservationInfo.Updatdate.Add(DateTime.Now);
+            reservationInfo.ReservationEndDate = reservationInfo.ReservationStartDate.AddHours(reservationInfo.Duration);
+            reservationInfo.Status = "current";
+            reservationInfo.UserId = token;
+
+
+            if (await IsAvailable(reservationInfo))
+                throw new Exception($"Chair by Id: {reservationInfo.ChairId}  {reservationInfo.ReservationStartDate}-{reservationInfo.ReservationEndDate} is already reserved ");
+
+            var payment = _paymentService.MakePayment(user, paymentDto, reservationInfo);
+            if (payment.Status == "success")
+            {
+                _manager.ReservationInfo.CreateOneReservationInfo(reservationInfo);
+                await _manager.SaveAsync();
+                return reservationInfo;
+            }
+            else
+            {
+                throw new Exception("Payment failed.");
+            }
+        }
+
     }
 }

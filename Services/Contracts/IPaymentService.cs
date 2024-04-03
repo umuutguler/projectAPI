@@ -1,4 +1,6 @@
-﻿using Iyzipay.Model;
+﻿using Entities.DataTransferObjects;
+using Entities.Models;
+using Iyzipay.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +11,6 @@ namespace Services.Contracts
 {
     public interface IPaymentService
     {
-        Payment MakePayment();
+        Payment MakePayment(User user, PaymentDto paymentDto, ReservationInfo reservationInfo);
     }
 }
