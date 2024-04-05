@@ -11,18 +11,18 @@ namespace Services
     public class PaymentManager : IPaymentService
     {
         private User? _user;
-        public Payment MakePayment(User user, PaymentDto paymentDto, ReservationInfo reservationInfo)
+        public ThreedsInitialize MakePayment(User user, PaymentDto paymentDto, ReservationInfo reservationInfo)
         {
             // İyzico ödeme seçeneklerinin tanımlanması
             Options options = new Options();
-            options.ApiKey = "sandbox-CxFMJiRR0kISQiRxLZA67DcFQjWN4JBC";
-            options.SecretKey = "sandbox-3x51sfH47ANSOq9zB4uOohQwjIxVk3rT";
+            options.ApiKey = "sandbox-xQSjaIGweUzZQqkTFhQzS4twwjtdGpsr";
+            options.SecretKey = "sandbox-j1c6mprklo1XLN2UclHtElcipY5go37g";
             options.BaseUrl = "https://sandbox-api.iyzipay.com";
 
             // Ödeme isteğinin oluşturulması
             CreatePaymentRequest request = new CreatePaymentRequest();
             request.Locale = Locale.TR.ToString();
-            request.ConversationId = "123456789";
+            request.ConversationId = reservationInfo.Id.ToString();
             request.Price = reservationInfo.ReservationPrice.ToString();
             double totalPriceAsInt = int.Parse(request.Price) + (int.Parse(request.Price) * 0.05);
             request.PaidPrice = totalPriceAsInt.ToString();
@@ -87,9 +87,11 @@ namespace Services
             basketItems.Add(firstBasketItem);
 
             request.BasketItems = basketItems;
+            request.CallbackUrl = "https://deviyzico.com/";
 
-            // Ödemenin gerçekleştirilmesi ve sonucun dönüşü
-            return Payment.Create(request, options);
+            ThreedsInitialize threedsInitialize = ThreedsInitialize.Create(request, options);
+
+            return threedsInitialize;
 
         }
     }

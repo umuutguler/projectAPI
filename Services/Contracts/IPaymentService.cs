@@ -11,6 +11,6 @@ namespace Services.Contracts
 {
     public interface IPaymentService
     {
-        Payment MakePayment(User user, PaymentDto paymentDto, ReservationInfo reservationInfo);
+        ThreedsInitialize MakePayment(User user, PaymentDto paymentDto, ReservationInfo reservationInfo);
     }
 }

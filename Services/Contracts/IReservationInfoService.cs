@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Entities.DataTransferObjects;
 using Entities.Models;
 using Entities.RequestFeatures;
+using Iyzipay.Model;
 
 namespace Services.Contracts
 {
@@ -26,6 +27,6 @@ namespace Services.Contracts
 
         Task AreReservationsUpToDate();
 
-        Task<ReservationInfo> CreateReservationWithPayment(PaymentDto paymentDto, String token);
+        Task<ThreedsInitialize> CreateReservationWithPayment(PaymentDto paymentDto, String token);
     }
 }

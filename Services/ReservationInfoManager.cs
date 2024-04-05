@@ -211,7 +211,7 @@ namespace Services
 
         // Create Reservation with Payment
 
-        public async Task<ReservationInfo> CreateReservationWithPayment(PaymentDto paymentDto, String token)
+        public async Task<ThreedsInitialize> CreateReservationWithPayment(PaymentDto paymentDto, String token)
         {
             ReservationInfo reservationInfo = new ReservationInfo();
             if (paymentDto is null)
@@ -238,20 +238,21 @@ namespace Services
             reservationInfo.Status = "current";
             reservationInfo.UserId = token;
 
-
             if (await IsAvailable(reservationInfo))
                 throw new Exception($"Chair by Id: {reservationInfo.ChairId}  {reservationInfo.ReservationStartDate}-{reservationInfo.ReservationEndDate} is already reserved ");
-
+            
+            
             var payment = _paymentService.MakePayment(user, paymentDto, reservationInfo);
+            Console.WriteLine(payment.ToString());
             if (payment.Status == "success")
             {
                 _manager.ReservationInfo.CreateOneReservationInfo(reservationInfo);
                 await _manager.SaveAsync();
-                return reservationInfo;
+                return payment;
             }
             else
             {
-                throw new Exception("Payment failed.");
+                throw new Exception($"Payment failed.  {payment.ErrorMessage}");
             }
         }
 
