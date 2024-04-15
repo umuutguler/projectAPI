@@ -75,7 +75,7 @@ namespace Presentation.Controllers
             var userId = "08dcdc0c-9ce7-4075-be81-712b5095a1ab";
 
             var reservation = await _manager.ReservationInfoService.CreateReservationWithPayment(paymentDto, userId);
-            return StatusCode(201, reservation);
+            return Ok(reservation);
         }
 
         [HttpPut("{id:int}")]
