@@ -3,7 +3,6 @@ using Entities.Models;
 using Iyzipay;
 using Iyzipay.Model;
 using Iyzipay.Request;
-using Microsoft.AspNetCore.Identity;
 using Services.Contracts;
 
 namespace Services

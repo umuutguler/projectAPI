@@ -72,7 +72,7 @@ namespace Presentation.Controllers
         public async Task<IActionResult> ReservationWithPayment([FromBody] PaymentDto paymentDto)
         {
             //UserIdFromToken
-            var userId = "08dcdc0c-9ce7-4075-be81-712b5095a1ab";
+            var userId = HttpContext.User.Identity.Name;
 
             var reservation = await _manager.ReservationInfoService.CreateReservationWithPayment(paymentDto, userId);
             return Ok(reservation);

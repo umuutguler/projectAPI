@@ -1531,3 +1531,29 @@
 2024-04-05 14:21:31.6017 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
 2024-04-05 14:21:31.6162 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\Umut.Guler\Source\Repos\umuutguler\projectAPI\WebApi\nlog.config
 2024-04-05 14:21:31.6320 Info Configuration initialized.
+2024-04-15 10:14:54.0883 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-04-15 10:14:54.1349 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-04-15 10:14:54.1490 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\Umut.Guler\Source\Repos\umuutguler\projectAPI\WebApi\nlog.config
+2024-04-15 10:14:54.1639 Info Configuration initialized.
+2024-04-15 10:17:19.6678 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-04-15 10:17:19.7033 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-04-15 10:17:19.7033 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\Umut.Guler\Source\Repos\umuutguler\projectAPI\WebApi\nlog.config
+2024-04-15 10:17:19.7221 Info Configuration initialized.
+2024-04-15 10:18:30.1105 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-04-15 10:18:30.1426 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-04-15 10:18:30.1426 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\Umut.Guler\Source\Repos\umuutguler\projectAPI\WebApi\nlog.config
+2024-04-15 10:18:30.1608 Info Configuration initialized.
+2024-04-16 08:49:17.9414 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-04-16 08:49:17.9802 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-04-16 08:49:17.9925 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\Umut.Guler\Source\Repos\umuutguler\projectAPI\WebApi\nlog.config
+2024-04-16 08:49:18.0087 Info Configuration initialized.
+2024-04-16 09:29:45.9946 Info AppDomain Shutting down. LogFactory closing...
+2024-04-16 09:29:46.0211 Info LogFactory has been closed.
+2024-04-16 09:57:27.2318 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-04-16 09:57:27.2587 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-04-16 09:57:27.2679 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\Umut.Guler\Source\Repos\umuutguler\projectAPI\WebApi\nlog.config
+2024-04-16 09:57:27.2679 Info Configuration initialized.
+2024-04-16 09:58:07.7283 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-04-16 09:58:07.7716 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-04-16 09:58:07.7908 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\Umut.Guler\Source\Repos\umuutguler\projectAPI\WebApi\nlog.config
+2024-04-16 09:58:07.8266 Info Configuration initialized.
