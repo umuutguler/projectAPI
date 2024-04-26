@@ -23,7 +23,37 @@ namespace Services
             _currencyService = currencyService;
         }
 
-        public async Task<Chair> CreateOneReservationInfoAsync(Chair chair)
+        public Task<Chair> CreateOneReservationInfoAsync(Chair chair)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteChairByIdAsync(int id, bool trackChanges)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Chair>> GetAllChairsAsync(bool trackChanges)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Chair>> GetAllEmptyChairsAsync(ReservationInfo reservationInfo, bool trackChange, string token)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Chair> GetOneChairByIdAsync(int id, bool trackChanges)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Chair> UpdateChairByIdAsync(int id, Chair updatedChair, bool trackChanges)
+        {
+            throw new NotImplementedException();
+        }
+
+        /*public async Task<Chair> CreateOneReservationInfoAsync(Chair chair)
         {
             if (chair is null)
                 throw new ArgumentException(nameof(chair));
@@ -136,7 +166,6 @@ namespace Services
             _manager.Table.DeleteOneTable(table);
             await _manager.SaveAsync();
         }*/
-
 
     }
 }

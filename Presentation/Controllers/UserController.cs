@@ -44,7 +44,7 @@ namespace Presentation.Controllers
         [HttpDelete("deleteUser")]
         public async Task<IActionResult> DeleteOneUserAsync([FromBody] User user)
         {
-            await _manager.UserService.DeleteOneUserAsync(user.Id, false);
+            await _manager.UserService.DeleteOneUserAsync(user.Id.ToString(), false);
             return NoContent();
         }
 

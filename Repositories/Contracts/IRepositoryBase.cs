@@ -4,17 +4,21 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace Repositories.Contracts
 {
     public interface IRepositoryBase<T>
     {
-        IQueryable<T> FindAll(bool trackChanges);
+        Task Create(T entity);
+        Task Update(T entity);
+        Task Delete(ObjectId id);
+        Task<List<T>> GetList();
+        Task<T> GetById(ObjectId id);
+        Task<int> Count();
+        Task<List<T>> GetFilteredList(Expression<Func<T,bool>> predicate);
 
-        IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression, bool trackChanges);
-
-        void Create(T entity);
-        void Update(T entity);
-        void Delete(T entity);
+        
     }
 }

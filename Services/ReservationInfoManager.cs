@@ -28,6 +28,7 @@ namespace Services
             _paymentService = paymentService;
         }
 
+
         public async Task<IEnumerable<ReservationInfo>> GetAllReservationInfosAsync(bool trackChanges) =>
             await _manager.ReservationInfo.GetAllReservationInfosAsync(trackChanges, includeRelated: true);
 
@@ -82,8 +83,8 @@ namespace Services
             var user = await _manager.User.GetOneUserByIdAsync(token, false, true);
             if (user is null)
                 throw new Exception($"User could not found.");
-            if (user.DepartmentId != chair.Table.DepartmentId)
-                throw new Exception($"Chair by id: {reservationInfo.ChairId} does not belong to your department. ");
+            /*if (user.DepartmentId != chair.Table.DepartmentId)
+                throw new Exception($"Chair by id: {reservationInfo.ChairId} does not belong to your department. ");*/
             
             Decimal dollarRate = await _currencyManager.GetUSDRate();
             reservationInfo.ReservationPrice = reservationInfo.Duration * chair.Price *  dollarRate;
@@ -111,13 +112,13 @@ namespace Services
             var user = await _manager.User.GetOneUserByIdAsync(token, false, true);
             if (user is null)
                 throw new Exception($"User could not found.");
-            if (user.Id != entity.UserId)
+            if (user.Id.ToString() != entity.UserId)
                 throw new Exception("This reservation does not belong to you");
 
             if (entity.ReservationStartDate <= DateTime.Now)
                 throw new Exception("Your reservation has started. You cannot make changes");
-            if (user.DepartmentId != newchair.Table.DepartmentId)
-                throw new Exception($"Chair by id: {reservationInfo.ChairId} does not belong to your department. ");
+            /*if (user.DepartmentId != newchair.Table.DepartmentId)
+                throw new Exception($"Chair by id: {reservationInfo.ChairId} does not belong to your department. ");*/
             if (newchair.Status == true && entity.ChairId!=reservationInfo.ChairId)
                 throw new Exception($"Chair by id:{reservationInfo.ChairId} is already reserved ");
 
@@ -129,7 +130,6 @@ namespace Services
             entity.ReservationStartDate = reservationInfo.ReservationStartDate;
             entity.Duration = reservationInfo.Duration;
             entity.ChairId = reservationInfo.ChairId;
-            entity.Chair = reservationInfo.Chair;
             entity.ReservationEndDate = reservationInfo.ReservationStartDate.AddHours(entity.Duration);
             entity.Updatdate.Add(DateTime.Now);
             entity.ReservationPrice = reservationInfo.Duration * newchair.Price * dollarRate;
@@ -150,8 +150,8 @@ namespace Services
             var user = await _manager.User.GetOneUserByIdAsync(token, false, true);
             if (user is null)
                 throw new Exception($"User could not found.");
-            if (user.Id != entity.UserId)
-                throw new Exception("This reservation does not belong to you");
+            /*if (user.Id != entity.UserId)
+                throw new Exception("This reservation does not belong to you");*/
             if (entity.ReservationStartDate <= DateTime.Now)
                 throw new Exception("Your reservation has started. You cannot make changes");
             if (entity.Status != "current")
@@ -221,8 +221,8 @@ namespace Services
             var user = await _manager.User.GetOneUserByIdAsync(token, false, true);
             if (user is null)
                 throw new Exception($"User could not found.");
-            if (user.DepartmentId != chair.Table.DepartmentId)
-                throw new Exception($"Chair by id: {paymentDto.ChairId} does not belong to your department. ");
+            /*if (user.DepartmentId != chair.Table.DepartmentId)
+                throw new Exception($"Chair by id: {paymentDto.ChairId} does not belong to your department. ");*/
 
             reservationInfo.ChairId = paymentDto.ChairId;
             reservationInfo.Duration = paymentDto.Duration;

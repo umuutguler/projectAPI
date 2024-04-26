@@ -1,6 +1,7 @@
 ﻿using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using MongoDB.Bson;
 
 namespace Repositories.EFCore.Config
 {
@@ -8,54 +9,47 @@ namespace Repositories.EFCore.Config
     {
         public void Configure(EntityTypeBuilder<Department> builder)
         {
-            builder.HasKey(d => d.DepartmentId); // Primery Key
-            builder.Property(d => d.DepartmentName).IsRequired();
-
-            builder.HasMany(d => d.Tables) // Bir Department birden fazla Table'a sahip olacak
-               .WithOne(t => t.Department) // Bir Table bir Department'e ait olacak
-               .HasForeignKey(t => t.DepartmentId) // Table tablosunda DepartmentId alanı ile dış anahtar ilişkisi
-               .OnDelete(DeleteBehavior.Cascade); // Opsiyonel: Department silindiğinde ilgili table'lar da silinir
 
 
             builder.HasData(
                 new Department()
                 {
-                    DepartmentId = 1,
+                    DepartmentId = ObjectId.GenerateNewId(),
                     DepartmentName = "Yazılım Geliştirme"
                 },
                 new Department()
                 {
-                    DepartmentId = 2,
+                    DepartmentId = ObjectId.GenerateNewId(),
                     DepartmentName = "Test ve Kalite Güvence"
                 },
                 new Department()
                 {
-                    DepartmentId = 3,
+                    DepartmentId = ObjectId.GenerateNewId(),
                     DepartmentName = "Proje Yönetimi"
                 },
                 new Department()
                 {
-                    DepartmentId = 4,
+                    DepartmentId = ObjectId.GenerateNewId(),
                     DepartmentName = "Ürün Yönetimi"
                 },
                 new Department()
                 {
-                    DepartmentId = 5,
+                    DepartmentId = ObjectId.GenerateNewId(),
                     DepartmentName = "Satış ve Pazarlama"
                 },
                 new Department()
                 {
-                    DepartmentId = 6,
+                    DepartmentId = ObjectId.GenerateNewId(),
                     DepartmentName = "İnsan Kaynakları"
                 },
                 new Department()
                 {
-                    DepartmentId = 7,
+                    DepartmentId = ObjectId.GenerateNewId(),
                     DepartmentName = "Finans ve Muhasebe"
                 },
                 new Department()
                 {
-                    DepartmentId = 8,
+                    DepartmentId = ObjectId.GenerateNewId(),
                     DepartmentName = "Bilgi Teknolojileri (BT)"
                 }
             );

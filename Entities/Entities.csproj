@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Iyzipay" Version="2.1.61" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.2" />
+    <PackageReference Include="MongoDB.Bson" Version="2.25.0" />
   </ItemGroup>
 
 </Project>

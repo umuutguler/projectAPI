@@ -44,7 +44,7 @@ namespace Services
             Buyer buyer = new Buyer();
 
 
-            buyer.Id = user.Id;
+            buyer.Id = user.Id.ToString();
             buyer.Name = user.FirstName;
             buyer.Surname = user.LastName;
             buyer.GsmNumber = user.PhoneNumber;

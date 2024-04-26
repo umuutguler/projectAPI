@@ -2,6 +2,8 @@
 using Entities.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.EntityFrameworkCore.Extensions;
+using Repositories.EFCore.Config;
 
 namespace Repositories.EFCore
 {
@@ -10,7 +12,6 @@ namespace Repositories.EFCore
         public RepositoryContext(DbContextOptions options) :
             base(options)
         { }
-        public DbSet<Product> Products { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<ReservationInfo> ReservationInfos { get; set; }
         public DbSet<Chair> Chairs { get; set; }
@@ -20,23 +21,15 @@ namespace Repositories.EFCore
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Department>().ToCollection("Departments");
+            modelBuilder.Entity<ReservationInfo>().ToCollection("ReservationInfos");
+            modelBuilder.Entity<Chair>().ToCollection("Chairs");
+            modelBuilder.Entity<Table>().ToCollection("Tables");
+            modelBuilder.Entity<User>().ToCollection("Users");
 
-            modelBuilder.Entity<ReservationInfo>()
-                .ToTable("Reservations")
-                .HasKey(x => x.Id);
-
-            modelBuilder.Entity<User>()
-              .ToTable("Users")
-              .HasKey(x => x.Id);
-
-            modelBuilder.Entity<ReservationInfo>()
-              .HasOne(x => x.User)
-              .WithMany(x => x.ReservationInfos)
-              .HasForeignKey(x => x.UserId)
-              .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            modelBuilder.ApplyConfiguration(new ChairConfig());
+            modelBuilder.ApplyConfiguration(new DepartmentConfig());
+            modelBuilder.ApplyConfiguration(new TableConfig());
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
