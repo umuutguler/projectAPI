@@ -32,11 +32,11 @@ namespace Services
             _mapper = mapper;
             _shaper = shaper;
         }
-
+        /*
         public async Task <ProductDto> CreateOneProductAsync(ProductDtoForInsertion productDto) //ProductDtoForInsertion dan Product nesnesine bir tanım gerçekleştirmeliyiz. MappingProfile ekle
         {
             var entity = _mapper.Map<Product>(productDto); // BookDtoForInsertion tan Book a geçiş
-            _manager.Product.CreateOneProduct(entity);
+            _manager.Product.Create(entity);
             await _manager.SaveAsync();
             return _mapper.Map<ProductDto>(entity); //Book tan BookDto ya geçiş -  return book;
         }
@@ -45,7 +45,7 @@ namespace Services
         {
             var entity = await GetOneBookByIdAndCheckExists(id, trackChanges);
            
-            _manager.Product.DeleteOneProduct(entity);
+            _manager.Product.Delete(id);
             await _manager.SaveAsync();
         }
 
@@ -105,6 +105,6 @@ namespace Services
                 throw new ProductNotFoundException(id);
             }
             return entity;
-        }
+        }*/
     }
 }

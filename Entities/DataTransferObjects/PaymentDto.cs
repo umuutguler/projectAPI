@@ -10,7 +10,7 @@ namespace Entities.DataTransferObjects
     {
         public DateTime ReservationStartDate { get; init; }
         public int Duration { get; init; }
-        public int ChairId { get; init; }
+        public string ChairId { get; init; }
 
         public required string CardName { get; init; }
         public required string CardNumber { get; init; }

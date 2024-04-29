@@ -25,7 +25,7 @@ namespace Presentation.Controllers
         {
             _manager = manager;
         }
-
+        /*
         [HttpHead]
         [HttpGet(Name = "GetAllProductsAsync")]
         public async Task<IActionResult> GetAllProductsAsync([FromQuery] ProductParameters productParameters)
@@ -108,6 +108,6 @@ namespace Presentation.Controllers
                                                                                            // Allow key - Diğer HTTP metodları ise value
             return Ok();
         }
-
+        */
     }
 }

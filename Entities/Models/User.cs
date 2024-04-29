@@ -14,7 +14,7 @@ namespace Entities.Models
         public DateTime RefreshTokenExpiryTime { get; set; }
 
         // Ref: navigation property
-        public int DepartmentId { get; set; }
+        public string DepartmentId { get; set; }
         public ICollection<ReservationInfo> ReservationInfos { get; set; }
     }
 }

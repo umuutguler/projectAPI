@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using Services.Contracts;
 
 namespace Presentation.Controllers
@@ -28,7 +29,7 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> OneDepartmentAsync([FromRoute] int id)
+        public async Task<IActionResult> OneDepartmentAsync([FromRoute] ObjectId id)
         {
             return Ok(await _services
                 .DepartmentService

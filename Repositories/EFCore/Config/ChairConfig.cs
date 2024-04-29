@@ -16,15 +16,15 @@ namespace Repositories.EFCore.Config
         {
             // Veritabanına önceden tanımlanmış Table verilerini ekleyelim
             builder.HasData(
-                new Chair { Id = ObjectId.GenerateNewId(), Status = false, Price = 10, TableId = 1 },
-                new Chair { Id = ObjectId.GenerateNewId(), Status = false, Price = 5, TableId = 1 },
-                new Chair { Id = ObjectId.GenerateNewId(), Status = false, Price = 15, TableId = 1 },
-                new Chair { Id = ObjectId.GenerateNewId(), Status = false, Price = 12, TableId = 2 },
-                new Chair { Id = ObjectId.GenerateNewId(), Status = false, Price = 15, TableId = 2 },
-                new Chair { Id = ObjectId.GenerateNewId(), Status = false, Price = 10, TableId = 2 },
-                new Chair { Id = ObjectId.GenerateNewId(), Status = false, Price = 8, TableId = 3 },
-                new Chair { Id = ObjectId.GenerateNewId(), Status = false, Price = 10, TableId = 3 },
-                new Chair { Id = ObjectId.GenerateNewId(), Status = false, Price = 5, TableId = 3 }
+                new Chair { Id = ObjectId.GenerateNewId(), Status = false, Price = 10, TableId = "1" },
+                new Chair { Id = ObjectId.GenerateNewId(), Status = false, Price = 5, TableId = "1" },
+                new Chair { Id = ObjectId.GenerateNewId(), Status = false, Price = 15, TableId = "1" },
+                new Chair { Id = ObjectId.GenerateNewId(), Status = false, Price = 12, TableId = "2" },
+                new Chair { Id = ObjectId.GenerateNewId(), Status = false, Price = 15, TableId = "2" },
+                new Chair { Id = ObjectId.GenerateNewId(), Status = false, Price = 10, TableId = "2" },
+                new Chair { Id = ObjectId.GenerateNewId(), Status = false, Price = 8, TableId = "3" },
+                new Chair { Id = ObjectId.GenerateNewId(), Status = false, Price = 10, TableId = "3" },
+                new Chair { Id = ObjectId.GenerateNewId(), Status = false, Price = 5, TableId = "3" }
                 // Diğer Table verileri
             );
         }

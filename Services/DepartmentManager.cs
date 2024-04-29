@@ -1,5 +1,6 @@
 ﻿using Entities.Exceptions;
 using Entities.Models;
+using MongoDB.Bson;
 using Repositories.Contracts;
 using Services.Contracts;
 
@@ -16,15 +17,14 @@ namespace Services
         public async Task<IEnumerable<Department>> GetAllDepartmentsAsync(bool trackChanges)
         {
             return await _manager
-                .Department
-                .GetAllDepartmentsAsync(trackChanges, includeRelated: true);
+                .Department.GetList();
         }
 
-        public async Task<Department> GetOneDepartmentByIdAsync(int id, bool trackChanges)
+        public async Task<Department> GetOneDepartmentByIdAsync(ObjectId id, bool trackChanges)
         {
             var department = await _manager
                .Department
-               .GetOneDepartmentByIdAsync(id, trackChanges, includeRelated: true);
+               .GetById(id);
             if (department is null)
                 throw new DepartmentNotFoundException(id);
 

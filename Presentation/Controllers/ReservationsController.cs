@@ -9,6 +9,7 @@ using Entities.DataTransferObjects;
 using Entities.Models;
 using Entities.RequestFeatures;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using Newtonsoft.Json.Linq;
 using Services.Contracts;
 
@@ -53,8 +54,8 @@ namespace Presentation.Controllers
 
 
 
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> OneRReservationAsync([FromRoute] int id)
+        [HttpGet("{id:ObjectId}")]
+        public async Task<IActionResult> OneRReservationAsync([FromRoute] ObjectId id)
         {
             return Ok(await _manager.ReservationInfoService.GetOneReservationInfoByIdAsync(id, false));
         }
@@ -78,8 +79,8 @@ namespace Presentation.Controllers
             return Ok(reservation);
         }
 
-        [HttpPut("{id:int}")]
-        public async Task<IActionResult> OneReservationAsync([FromRoute(Name = "id")] int id,[FromBody] ReservationInfo reservationInfo)
+        [HttpPut("{id:ObjectId}")]
+        public async Task<IActionResult> OneReservationAsync([FromRoute(Name = "id")] ObjectId id,[FromBody] ReservationInfo reservationInfo)
         {
 
             //UserIdFromToken
@@ -91,16 +92,16 @@ namespace Presentation.Controllers
             return StatusCode(200, updatedReservation);
         }
 
-        [HttpDelete("{id:int}")]
-        public async Task<IActionResult> OneReservationAsync([FromRoute(Name = "id")] int id)
+        [HttpDelete("{id:ObjectId}")]
+        public async Task<IActionResult> OneReservationAsync([FromRoute(Name = "id")] ObjectId id)
         {
 
             await _manager.ReservationInfoService.DeleteOneReservationInfoAsync(id, false);
 
             return NoContent();
         }
-        [HttpPut("cancel/{id:int}")]
-        public async Task<IActionResult> CancelReservation([FromRoute(Name = "id")] int id)
+        [HttpPut("cancel/{id:ObjectId}")]
+        public async Task<IActionResult> CancelReservation([FromRoute(Name = "id")] ObjectId id)
         {
             var userId = HttpContext.User.Identity.Name;
             await _manager.ReservationInfoService.CancelOneReservationInfoAsync(id, false, userId);

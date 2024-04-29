@@ -12,7 +12,7 @@ namespace Entities.Models
         public ObjectId Id { get; set; }
         public Boolean Status { get; set; }
         public Decimal Price { get; set; }
-        public int TableId { get; set; }
+        public string TableId { get; set; }
 
         public ICollection<ReservationInfo> ReservationInfos { get; set; }
 

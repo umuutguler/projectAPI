@@ -3,6 +3,7 @@ using Entities.DataTransferObjects;
 using Entities.Models;
 using Entities.RequestFeatures;
 using Iyzipay.Model;
+using MongoDB.Bson;
 using Repositories.Contracts;
 using Repositories.EFCore;
 using Services.Contracts;
@@ -30,7 +31,7 @@ namespace Services
 
 
         public async Task<IEnumerable<ReservationInfo>> GetAllReservationInfosAsync(bool trackChanges) =>
-            await _manager.ReservationInfo.GetAllReservationInfosAsync(trackChanges, includeRelated: true);
+            await _manager.ReservationInfo.GetList();
 
 
         public async Task<(IEnumerable<ReservationInfo> reservations, MetaData metaData)> GetAllReservationInfosByUserId(ReservationParameters reservationParameters, bool trackChanges, string token)
@@ -57,20 +58,20 @@ namespace Services
 
         public async Task<IEnumerable<ReservationInfo>> GetAllReservationInfosByChairId(int chairId, bool trackChanges)
         {
-            var reservations = await _manager.ReservationInfo.GetAllReservationInfosAsync(trackChanges, includeRelated: true);
-            var reservationsByChairId = reservations.Where(r => r.ChairId == chairId);
+            var reservations = await _manager.ReservationInfo.GetList();
+            var reservationsByChairId = reservations.Where(r => r.ChairId.Equals(chairId));
             return reservationsByChairId;
         }
 
 
-        public async Task<ReservationInfo> GetOneReservationInfoByIdAsync(int id, bool trackChanges) => 
-            await _manager.ReservationInfo.GetOneReservationInfoByIdAsync(id, trackChanges, includeRelated: true);
+        public async Task<ReservationInfo> GetOneReservationInfoByIdAsync(ObjectId id, bool trackChanges) =>
+            await _manager.ReservationInfo.GetById(id);
 
 
         public async Task<ReservationInfo> GetOneReservationInfosByChairId(bool trackChanges, int chairId)
         {
-            var reservation = await _manager.ReservationInfo.GetAllReservationInfosAsync(trackChanges, includeRelated: true);
-            var reservationByChairId = reservation.SingleOrDefault(c => c.ChairId == chairId);
+            var reservation = await _manager.ReservationInfo.GetList();
+            var reservationByChairId = reservation.SingleOrDefault(c => c.ChairId.Equals(chairId));
             return reservationByChairId;
         }
 
@@ -79,8 +80,8 @@ namespace Services
             if (reservationInfo is null)
                 throw new ArgumentException(nameof(reservationInfo));
 
-            var chair = await _manager.Chair.GetOneChairByIdAsync(reservationInfo.ChairId, false, true);
-            var user = await _manager.User.GetOneUserByIdAsync(token, false, true);
+            var chair = await _manager.Chair.GetById(ObjectId.Parse(reservationInfo.ChairId));
+            var user = await _manager.User.GetById(ObjectId.Parse(token));
             if (user is null)
                 throw new Exception($"User could not found.");
             /*if (user.DepartmentId != chair.Table.DepartmentId)
@@ -98,18 +99,18 @@ namespace Services
             if (await IsAvailable(reservationInfo))
                 throw new Exception($"Chair by Id: {reservationInfo.ChairId}  {reservationInfo.ReservationStartDate}-{reservationInfo.ReservationEndDate} is already reserved ");
 
-            _manager.ReservationInfo.CreateOneReservationInfo(reservationInfo);
+            _manager.ReservationInfo.Create(reservationInfo);
             await _manager.SaveAsync();
             return reservationInfo;
         }
 
-        public async Task UpdateOneReservationInfoAsync(int id, ReservationInfo reservationInfo, bool trackChanges, String token)
+        public async Task UpdateOneReservationInfoAsync(ObjectId id, ReservationInfo reservationInfo, bool trackChanges, String token)
         {
-            var entity = await _manager.ReservationInfo.GetOneReservationInfoByIdAsync(id, trackChanges, includeRelated: true);
+            var entity = await _manager.ReservationInfo.GetById(id);
             if (entity is null)
                 throw new Exception($"Reservation with id:{id} could not found.");
-            var newchair = await _manager.Chair.GetOneChairByIdAsync(reservationInfo.ChairId, false, true);
-            var user = await _manager.User.GetOneUserByIdAsync(token, false, true);
+            var newchair = await _manager.Chair.GetById(ObjectId.Parse(reservationInfo.ChairId));
+            var user = await _manager.User.GetById(ObjectId.Parse(token));
             if (user is null)
                 throw new Exception($"User could not found.");
             if (user.Id.ToString() != entity.UserId)
@@ -142,12 +143,12 @@ namespace Services
             await _manager.SaveAsync();
         }
 
-        public async Task CancelOneReservationInfoAsync(int id, bool trackChanges, String token)
+        public async Task CancelOneReservationInfoAsync(ObjectId id, bool trackChanges, String token)
         {
-            var entity = await _manager.ReservationInfo.GetOneReservationInfoByIdAsync(id, trackChanges, includeRelated: true);
+            var entity = await _manager.ReservationInfo.GetById(id);
             if (entity is null)
                 throw new Exception($"Reservation with id:{id} could not found.");
-            var user = await _manager.User.GetOneUserByIdAsync(token, false, true);
+            var user = await _manager.User.GetById(ObjectId.Parse(token));
             if (user is null)
                 throw new Exception($"User could not found.");
             /*if (user.Id != entity.UserId)
@@ -162,15 +163,15 @@ namespace Services
             await _manager.SaveAsync();
         }
 
-        public async Task DeleteOneReservationInfoAsync(int id, bool trackChanges)
+        public async Task DeleteOneReservationInfoAsync(ObjectId id, bool trackChanges)
         {
-            var entity = await _manager.ReservationInfo.GetOneReservationInfoByIdAsync(id, trackChanges, includeRelated: true);
+            var entity = await _manager.ReservationInfo.GetById(id);
             if (entity is null)
                 throw new ArgumentException(nameof(entity));
             /*if (entity.ReservationStartDate <= DateTime.Now)
                 throw new Exception("Your reservation has started. You cannot make changes");*/
 
-            _manager.ReservationInfo.DeleteOneReservationInfo(entity);
+            _manager.ReservationInfo.Delete(id);
             await _manager.SaveAsync();
         }
 
@@ -204,9 +205,9 @@ namespace Services
         {
             var chairs = await _manager
                 .Chair
-                .GetAllChairsAsync(trackChanges, includeRelated: true);
+                .GetList();
 
-            return chairs.Where(c => c.TableId == tableId);
+            return chairs.Where(c => c.TableId.Equals(tableId));
         }
 
         // Create Reservation with Payment
@@ -217,8 +218,8 @@ namespace Services
             if (paymentDto is null)
                 throw new ArgumentException(nameof(paymentDto));
 
-            var chair = await _manager.Chair.GetOneChairByIdAsync(paymentDto.ChairId, false, true);
-            var user = await _manager.User.GetOneUserByIdAsync(token, false, true);
+            var chair = await _manager.Chair.GetById(ObjectId.Parse(paymentDto.ChairId));
+            var user = await _manager.User.GetById(ObjectId.Parse(token));
             if (user is null)
                 throw new Exception($"User could not found.");
             /*if (user.DepartmentId != chair.Table.DepartmentId)
@@ -246,7 +247,7 @@ namespace Services
             Console.WriteLine(payment.ToString());
             if (payment.Status == "success")
             {
-                _manager.ReservationInfo.CreateOneReservationInfo(reservationInfo);
+                _manager.ReservationInfo.Create(reservationInfo);
                 await _manager.SaveAsync();
                 return payment;
             }

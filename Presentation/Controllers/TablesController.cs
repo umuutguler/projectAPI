@@ -1,5 +1,6 @@
 ﻿using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using Services.Contracts;
 using System;
 using System.Collections.Generic;
@@ -28,8 +29,8 @@ namespace Presentation.Controllers
                 .GetAllTablesAsync(false));
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> OneTablesAsync([FromRoute] int id)
+        [HttpGet("{id:ObjectId}")]
+        public async Task<IActionResult> OneTablesAsync([FromRoute] ObjectId id)
         {
             return Ok(await _services
                 .TableService
@@ -37,7 +38,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> TableByIdAsync([FromRoute(Name = "id")] int id, [FromBody] Table table)
+        public async Task<IActionResult> TableByIdAsync([FromRoute(Name = "id")] ObjectId id, [FromBody] Table table)
         {
             var updatedTableEntitiy = await _services.TableService.UpdateTableByIdAsync(id, table, true);
             if (updatedTableEntitiy == null)
@@ -46,8 +47,8 @@ namespace Presentation.Controllers
             return NoContent(); //204
         }
 
-        [HttpDelete("{id:int}")]
-        public async Task<IActionResult> TableByIdAsync(int id)
+        [HttpDelete("{id:ObjectId}")]
+        public async Task<IActionResult> TableByIdAsync(ObjectId id)
         {
             /*var deletedTable = await _services.TableService.DeleteTableByIdAsync(id, trackChanges: true);
             if (deletedTable == null)

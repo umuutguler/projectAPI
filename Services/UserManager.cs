@@ -8,6 +8,7 @@ using Entities.DataTransferObjects;
 using Entities.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Bson;
 using Repositories.Contracts;
 using Repositories.EFCore;
 using Services.Contracts;
@@ -26,28 +27,28 @@ namespace Services
 
         public async Task DeleteOneUserAsync(string id, bool trackChanges=false)
         {
-            var user = await _manager.User.GetOneUserByIdAsync(id, false, true); // Rezervasyonları da al
+            var user = await _manager.User.GetById(ObjectId.Parse(id)); // Rezervasyonları da al
             if (user is null)
                 throw new ArgumentException(nameof(user));
 
-            foreach (var reservation in user.ReservationInfos)
+            /*foreach (var reservation in user.ReservationInfos)
             {
                 _manager.ReservationInfo.DeleteOneReservationInfo(reservation);
-            }
-            _manager.User.DeleteOneUser(user);
+            }*/
+            _manager.User.Delete(user.Id);
             await _manager.SaveAsync();
 
         }
 
         public async Task<IEnumerable<User>> GetAllUsersAsync(bool trackChanges) =>
-            await _manager.User.GetAllUsersAsync(false, true);
+            await _manager.User.GetList();
 
         public async Task<User> GetOneUserByIdAsync(string id, bool trackChanges) =>
-            await _manager.User.GetOneUserByIdAsync(id, false, true);
+            await _manager.User.GetById(ObjectId.Parse(id));
 
         public async Task UpdateOneUserAsync(string id, User user, bool trackChanges)
         {
-            var entity = await _manager.User.GetOneUserByIdAsync(id, false, true);
+            var entity = await _manager.User.GetById(ObjectId.Parse(id));
             if (entity is null)
                 throw new Exception($"User with id:{id} could not found.");
 

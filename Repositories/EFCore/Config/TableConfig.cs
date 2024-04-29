@@ -17,9 +17,9 @@ namespace Repositories.EFCore.Config
 
             // Veritabanına önceden tanımlanmış Table verilerini ekleyelim
             builder.HasData(
-                new Table { Id = ObjectId.GenerateNewId(), Status = false, DepartmentId = 1 },
-                new Table { Id = ObjectId.GenerateNewId(), Status = false, DepartmentId = 2 },
-                new Table { Id = ObjectId.GenerateNewId(), Status = false, DepartmentId = 2 }
+                new Table { Id = ObjectId.GenerateNewId(), Status = false, DepartmentId = "1" },
+                new Table { Id = ObjectId.GenerateNewId(), Status = false, DepartmentId = "2" },
+                new Table { Id = ObjectId.GenerateNewId(), Status = false, DepartmentId = "2" }
                 // Diğer Table verileri
             );
         }

@@ -22,6 +22,6 @@ namespace Entities.Models
 
 
         public string UserId { get; set; }
-        public int ChairId { get; set; }
+        public string ChairId { get; set; }
     }
 }
